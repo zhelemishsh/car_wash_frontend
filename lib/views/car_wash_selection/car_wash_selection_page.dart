@@ -58,7 +58,7 @@ class CarWashSelectionPageState
           ),
           Positioned(
             left: 15,
-            top: 15,
+            top: 30,
             child: accountMenuButton(),
           ),
           Positioned(
@@ -138,7 +138,7 @@ class CarWashSelectionPageState
               ),
             ],
           ),
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(6),
           child: childWidget,
         );
       },

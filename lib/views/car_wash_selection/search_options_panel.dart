@@ -1,6 +1,8 @@
+import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/theme/custom_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../models/car.dart';
 import '../../theme/app_colors.dart';
 import '../time_picker/time_picker_popup.dart';
 
@@ -19,14 +21,17 @@ class SearchOptionsPanel extends StatefulWidget {
 }
 
 class SearchOptionsPanelState extends State<SearchOptionsPanel> {
-  String _selectedDay = "Today";
-  TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: TimeOfDay.now().minute);
-  List<ServiceIcon> carServices = [
-    ServiceIcon(CustomIcons.flask, "Interior dry cleaning"),
-    ServiceIcon(CustomIcons.disk, "Disk cleaning"),
-    ServiceIcon(CustomIcons.clean, "Body polishing"),
-    ServiceIcon(CustomIcons.engine, "Engine cleaning")
+  final WashOrderBuilder _orderBuilder = WashOrderBuilder();
+
+  final List<ServiceWidgetData> _carServices = [
+    ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask, "Interior dry cleaning"),
+    ServiceWidgetData(WashService.diskCleaning, CustomIcons.disk, "Disk cleaning"),
+    ServiceWidgetData(WashService.bodyPolishing, CustomIcons.clean, "Body polishing"),
+    ServiceWidgetData(WashService.engineCleaning, CustomIcons.engine, "Engine cleaning")
+  ];
+
+  final List<Car> _cars = [
+    Car("1", "Mercedes-Benz A"), Car("2", "BMW X7 M60i"),
   ];
 
   @override
@@ -67,26 +72,9 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
           height: 55,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: carServices.length,
+            itemCount: _carServices.length,
             itemBuilder: (BuildContext context, int index) {
-              return  styledButton(
-                isToggled: false,
-                onPressed: () {},
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      carServices[index].iconData,
-                      size: 35,
-                    ),
-                    Container(
-                      constraints: const BoxConstraints(maxWidth: 75),
-                      padding: const EdgeInsets.only(left: 4),
-                      child: Text(carServices[index].serviceName, softWrap: true,),
-                    ),
-                  ],
-                )
-              );
+              return carServiceWidget(_carServices[index]);
             },
           ),
         ),
@@ -94,17 +82,48 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
     );
   }
 
+  Widget carServiceWidget(ServiceWidgetData serviceData) {
+    return styledButton(
+        isToggled: _orderBuilder.services.contains(serviceData.service),
+        onPressed: () {
+          if (_orderBuilder.services.contains(serviceData.service)) {
+            _orderBuilder.deleteService(serviceData.service);
+          }
+          else {
+            _orderBuilder.addService(serviceData.service);
+          }
+          setState(() {});
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              serviceData.iconData,
+              size: 35,
+            ),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 75),
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(serviceData.serviceName, softWrap: true,),
+            ),
+          ],
+        )
+    );
+  }
+
   List<Widget> carNamesList() {
-    List<String> cars = ["Mercedes-Benz A", "BMW X7 M60i"];
     List<Widget> carNames = [];
-    for (String car in cars) {
+    for (Car car in _cars) {
       carNames.add(
         Expanded(
           flex: 1,
           child: styledButton(
-            onPressed: () {},
-            isToggled: false,
-            child: Text(car),
+            onPressed: () {
+              _orderBuilder.car = car;
+              setState(() {});
+            },
+            isToggled: _orderBuilder.car?.number == car.number,
+            child: Text(car.name),
           ),
         ),
       );
@@ -125,16 +144,10 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
 
   Widget startTimeButton() {
     return timeButton(
-      time: _startTime,
+      time: _orderBuilder.startTime,
       onTimePicked: (TimeOfDay selectedTime) {
-        if (_selectedDay == "Today"
-            && isTimeBefore(selectedTime, TimeOfDay.now())) {
-          return false;
-        }
-        _startTime = selectedTime;
-        if (isTimeBefore(_endTime, _startTime)) {
-          _endTime = _startTime;
-        }
+        try {_orderBuilder.startTime = selectedTime;}
+        on Exception catch(_) {return false;}
         setState(() {});
         return true;
       },
@@ -143,12 +156,10 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
 
   Widget endTimeButton() {
     return timeButton(
-      time: _endTime,
+      time: _orderBuilder.endTime,
       onTimePicked: (TimeOfDay selectedTime) {
-        if (isTimeBefore(selectedTime, _startTime)) {
-          return false;
-        }
-        _endTime = selectedTime;
+        try {_orderBuilder.endTime = selectedTime;}
+        on Exception catch(_) {return false;}
         setState(() {});
         return true;
       },
@@ -192,10 +203,10 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
   Widget dayButton(String day) {
     return styledButton(
       onPressed: () {
-        _selectedDay = day;
+        _orderBuilder.washDay = day;
         setState(() {});
       },
-      isToggled: _selectedDay == day,
+      isToggled: _orderBuilder.washDay == day,
       child: Text(
         day,
         style: Theme.of(context).textTheme.titleSmall,
@@ -236,17 +247,12 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
     final min = time.minute.toString().padLeft(2, "0");
     return "$hour:$min";
   }
-
-  bool isTimeBefore(TimeOfDay time1, TimeOfDay time2) {
-    return time1.hour < time2.hour
-        || (time1.hour == time2.hour
-            && time1.minute < time2.minute);
-  }
 }
 
-class ServiceIcon {
+class ServiceWidgetData {
+  WashService service;
   IconData iconData;
   String serviceName;
 
-  ServiceIcon(this.iconData, this.serviceName);
+  ServiceWidgetData(this.service, this.iconData, this.serviceName);
 }
