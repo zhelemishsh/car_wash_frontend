@@ -68,7 +68,7 @@ class MapPanelState extends State<MapPanel> {
     );
   }
 
-  Future<SearchArea> getSearchArea(MapPosition position, double radius) async {
+  Future<SearchArea> getSearchArea() async {
     double screenWidth = MediaQuery.of(context).size.width *
         MediaQuery.of(context).devicePixelRatio;
     double screenHeight = MediaQuery.of(context).size.height *
@@ -89,7 +89,7 @@ class MapPanelState extends State<MapPanel> {
     );
     double radius = _calcDistance(centerPoint!, borderPoint!);
     SearchArea area = SearchArea(
-      MapPosition(centerPoint!.latitude, centerPoint.longitude),
+      MapPosition(centerPoint.latitude, centerPoint.longitude),
       radius,
     );
     return area;

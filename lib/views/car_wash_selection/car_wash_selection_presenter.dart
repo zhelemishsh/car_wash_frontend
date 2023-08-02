@@ -1,10 +1,12 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
+import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/repository/wash_offers_repository.dart';
 import 'package:car_wash_frontend/views/car_wash_selection/car_wash_selection_contract.dart';
 import 'package:flutter/material.dart';
 
 class CarWashSelectionPresenter {
   final CarWashSelectionContract _view;
+  final WashOrderBuilder _orderBuilder = WashOrderBuilder();
   SearchState _searchState = SearchState.optionsSelection;
   final WashOffersRepository _washOffersRepository = WashOffersRepository();
   final List<CarWashOffer> _offers = [];
@@ -24,8 +26,13 @@ class CarWashSelectionPresenter {
     return _searchState;
   }
 
+  WashOrderBuilder get orderBuilder => _orderBuilder;
+
   void loadWashOffers() {
     Future(() async {
+      orderBuilder.searchArea = await _view.getSearchArea();
+      WashOrder order = orderBuilder.build();
+
       _view.hideBottomPanel();
       await Future.delayed(const Duration(milliseconds: 500));
       _searchState = SearchState.offersShowing;

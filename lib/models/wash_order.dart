@@ -3,7 +3,13 @@ import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:flutter/material.dart';
 
 class WashOrder {
+  DateTime startTime;
+  DateTime endTime;
+  Car car;
+  List<WashService> services;
+  SearchArea searchArea;
 
+  WashOrder(this.startTime, this.endTime, this.car, this.services, this.searchArea);
 }
 
 class WashOrderBuilder {
@@ -12,18 +18,17 @@ class WashOrderBuilder {
     hour: TimeOfDay.now().hour + 1,
     minute: TimeOfDay.now().minute,
   );
-  String? _washDay;
-  Car? _car;
+  String? washDay;
+  Car? car;
+  SearchArea? searchArea;
   final List<WashService> _services = [];
 
   TimeOfDay get startTime => _startTime;
   TimeOfDay get endTime => _endTime;
-  String? get washDay => _washDay;
-  Car? get car => _car;
   Iterable<WashService> get services => _services;
 
   set startTime(TimeOfDay time) {
-    if (_washDay == "Today" && _isTimeBefore(time, TimeOfDay.now())) {
+    if (washDay == "Today" && _isTimeBefore(time, TimeOfDay.now())) {
       throw Exception("Wrong start time");
     }
     _startTime = time;
@@ -38,9 +43,6 @@ class WashOrderBuilder {
     }
     _endTime = time;
   }
-
-  set washDay(String? day) => _washDay = day;
-  set car(Car? car) => _car = car;
 
   void addService(WashService service) {
     if (!_services.contains(service)) {
@@ -57,13 +59,33 @@ class WashOrderBuilder {
         || (time1.hour == time2.hour
             && time1.minute < time2.minute);
   }
+
+  WashOrder build() {
+    DateTime date = DateTime.now();
+    switch (washDay) {
+      case "Tomorrow":
+        date = date.add(const Duration(days: 1));
+        break;
+      case "Day about":
+        date = date.add(const Duration(days: 2));
+    }
+    DateTime startDateTime = date.copyWith(
+      hour: startTime.hour, minute: startTime.minute,
+    );
+    DateTime endDateTime = date.copyWith(
+      hour: endTime.hour, minute: endTime.minute,
+    );
+    return WashOrder(
+      startDateTime, endDateTime, car!, services.toList(), searchArea!,
+    );
+  }
 }
 
 class SearchArea {
-  MapPosition position;
+  MapPosition centerPosition;
   double radius;
 
-  SearchArea(this.position, this.radius);
+  SearchArea(this.centerPosition, this.radius);
 }
 
 enum WashService {

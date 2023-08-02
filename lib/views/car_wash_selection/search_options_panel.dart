@@ -8,9 +8,11 @@ import '../time_picker/time_picker_popup.dart';
 
 class SearchOptionsPanel extends StatefulWidget {
   final Function() onSearchButtonPressed;
+  final WashOrderBuilder orderBuilder;
 
   const SearchOptionsPanel({
     Key? key,
+    required this.orderBuilder,
     required this.onSearchButtonPressed,
   }) : super(key: key);
 
@@ -21,8 +23,6 @@ class SearchOptionsPanel extends StatefulWidget {
 }
 
 class SearchOptionsPanelState extends State<SearchOptionsPanel> {
-  final WashOrderBuilder _orderBuilder = WashOrderBuilder();
-
   final List<ServiceWidgetData> _carServices = [
     ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask, "Interior dry cleaning"),
     ServiceWidgetData(WashService.diskCleaning, CustomIcons.disk, "Disk cleaning"),
@@ -84,13 +84,13 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
 
   Widget carServiceWidget(ServiceWidgetData serviceData) {
     return styledButton(
-        isToggled: _orderBuilder.services.contains(serviceData.service),
+        isToggled: widget.orderBuilder.services.contains(serviceData.service),
         onPressed: () {
-          if (_orderBuilder.services.contains(serviceData.service)) {
-            _orderBuilder.deleteService(serviceData.service);
+          if (widget.orderBuilder.services.contains(serviceData.service)) {
+            widget.orderBuilder.deleteService(serviceData.service);
           }
           else {
-            _orderBuilder.addService(serviceData.service);
+            widget.orderBuilder.addService(serviceData.service);
           }
           setState(() {});
         },
@@ -119,10 +119,10 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
           flex: 1,
           child: styledButton(
             onPressed: () {
-              _orderBuilder.car = car;
+              widget.orderBuilder.car = car;
               setState(() {});
             },
-            isToggled: _orderBuilder.car?.number == car.number,
+            isToggled: widget.orderBuilder.car?.number == car.number,
             child: Text(car.name),
           ),
         ),
@@ -144,9 +144,9 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
 
   Widget startTimeButton() {
     return timeButton(
-      time: _orderBuilder.startTime,
+      time: widget.orderBuilder.startTime,
       onTimePicked: (TimeOfDay selectedTime) {
-        try {_orderBuilder.startTime = selectedTime;}
+        try {widget.orderBuilder.startTime = selectedTime;}
         on Exception catch(_) {return false;}
         setState(() {});
         return true;
@@ -156,9 +156,9 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
 
   Widget endTimeButton() {
     return timeButton(
-      time: _orderBuilder.endTime,
+      time: widget.orderBuilder.endTime,
       onTimePicked: (TimeOfDay selectedTime) {
-        try {_orderBuilder.endTime = selectedTime;}
+        try {widget.orderBuilder.endTime = selectedTime;}
         on Exception catch(_) {return false;}
         setState(() {});
         return true;
@@ -203,10 +203,10 @@ class SearchOptionsPanelState extends State<SearchOptionsPanel> {
   Widget dayButton(String day) {
     return styledButton(
       onPressed: () {
-        _orderBuilder.washDay = day;
+        widget.orderBuilder.washDay = day;
         setState(() {});
       },
-      isToggled: _orderBuilder.washDay == day,
+      isToggled: widget.orderBuilder.washDay == day,
       child: Text(
         day,
         style: Theme.of(context).textTheme.titleSmall,

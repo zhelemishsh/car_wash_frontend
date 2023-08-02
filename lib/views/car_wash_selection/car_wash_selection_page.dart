@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
+import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/car_wash_selection/car_wash_selection_contract.dart';
@@ -156,6 +157,7 @@ class CarWashSelectionPageState
         onSearchButtonPressed: () {
           _presenter.loadWashOffers();
         },
+        orderBuilder: _presenter.orderBuilder,
       ),
     );
   }
@@ -208,5 +210,10 @@ class CarWashSelectionPageState
   void updateWashOffers() {
     _washOffersPanelKey.currentState?.updatePage();
     _mapKey.currentState?.updatePage();
+  }
+
+  @override
+  Future<SearchArea> getSearchArea() {
+    return _mapKey.currentState!.getSearchArea();
   }
 }
