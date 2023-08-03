@@ -30,7 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   yandex_mapkit: ^3.2.0
-#  geolocator: ^9.0.2
+  geolocator: ^9.0.2
   carousel_slider: ^4.2.1
   flutter_swipe_detector: ^2.0.0
   screenshot: ^2.1.0

@@ -31,7 +31,7 @@ class CarWashSelectionPresenter {
   void loadWashOffers() {
     Future(() async {
       orderBuilder.searchArea = await _view.getSearchArea();
-      WashOrder order = orderBuilder.build();
+      WashOrder order = orderBuilder.build(); //TODO send to server
 
       _view.hideBottomPanel();
       await Future.delayed(const Duration(milliseconds: 500));

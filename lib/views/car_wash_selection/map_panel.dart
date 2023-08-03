@@ -5,6 +5,7 @@ import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:great_circle_distance_calculator/great_circle_distance_calculator.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -31,6 +32,8 @@ class MapPanelState extends State<MapPanel> {
   List<MapObject> placemarks = [];
   final screenshotController = ScreenshotController();
   String selectedCarWash = "";
+  final double _minZoom = 10.5;
+  bool _isZoomTooSmall = false;
   final double _searchCircleRadius = 170;
   late YandexMapController _mapController;
 
@@ -49,7 +52,20 @@ class MapPanelState extends State<MapPanel> {
             vertical: VerticalAlignment.top,
           ),
           onMapCreated: (YandexMapController controller) {
-            _mapController = controller;
+            Future(_getUserLocationPermission).then((value) {
+              _mapController = controller;
+              moveCameraToUser();
+            });
+          },
+          onCameraPositionChanged: (position, reason, finished) {
+            if (!_isZoomTooSmall && position.zoom < _minZoom) {
+              _isZoomTooSmall = true;
+              setState(() {});
+            }
+            if (_isZoomTooSmall && position.zoom >= _minZoom) {
+              _isZoomTooSmall = false;
+              setState(() {});
+            }
           },
           onMapTap: (Point point) {
             widget.onMapTouched();
@@ -58,14 +74,35 @@ class MapPanelState extends State<MapPanel> {
         ),
         Align(
           alignment: Alignment.center,
-          child: IgnorePointer(
-            child: CustomPaint(
-              painter: CirclePainter(_searchCircleRadius),
-            ),
-          ),
+          child: searchAreaCircle(),
         )
       ],
     );
+  }
+
+  void moveCameraToUser() async {
+    _mapController.moveCamera(
+      CameraUpdate.newCameraPosition(CameraPosition(
+        zoom: _minZoom + 0.5,
+        target: await _getUserLocation(),
+      ))
+    );
+  }
+
+  Future<Point> _getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    return Point(latitude: position.latitude, longitude: position.longitude);
+  }
+
+  void _getUserLocationPermission() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied
+        || permission == LocationPermission.deniedForever) {
+      while (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+      }
+    }
   }
 
   Future<SearchArea> getSearchArea() async {
@@ -137,6 +174,28 @@ class MapPanelState extends State<MapPanel> {
     return await screenshotController.captureFromWidget(
       widget,
       delay: const Duration(seconds: 0),
+    );
+  }
+
+  Widget searchAreaCircle() {
+    Color circleColor = _isZoomTooSmall ? AppColors.orange : AppColors.mapBlue;
+
+    return IgnorePointer(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        width: _searchCircleRadius * 2,
+        height: _searchCircleRadius * 2,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: circleColor.withOpacity(0.7),
+            width: 3,
+          ),
+          color: circleColor.withOpacity(0.2),
+          borderRadius: BorderRadius.all(
+            Radius.circular(_searchCircleRadius),
+          ),
+        ),
+      ),
     );
   }
 
@@ -244,26 +303,4 @@ class MapPanelState extends State<MapPanel> {
       ],
     );
   }
-}
-
-class CirclePainter extends CustomPainter {
-  final double _circleRadius;
-
-  CirclePainter(this._circleRadius);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paintCircle = Paint()
-      ..color = AppColors.mapBlue.withOpacity(0.3)
-      ..style = PaintingStyle.fill;
-    var paintOutline = Paint()
-      ..color = AppColors.mapBlue.withOpacity(0.9)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 5;
-    canvas.drawCircle(const Offset(0, 0), _circleRadius, paintCircle,);
-    canvas.drawCircle(const Offset(0, 0), _circleRadius, paintOutline,);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => true;
 }
