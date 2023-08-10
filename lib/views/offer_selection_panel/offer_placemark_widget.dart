@@ -1,4 +1,5 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/app_colors.dart';
@@ -21,19 +22,12 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(10),
-      width: 800,
-      height: 145,
-      child: Stack(
+      padding: const EdgeInsets.all(5),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Positioned(
-            left: 230,
-            child: _offerInfoPanel(widget.offer),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: _placemarkIcon(),
-          ),
+          _placemarkIcon(),
+          _offerInfoPanel(widget.offer),
         ],
       ),
     );
@@ -56,13 +50,16 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
 
   Widget _offerInfoPanel(CarWashOffer offer) {
     return Container(
+      width: 130,
+      height: 70,
+      alignment: Alignment.center,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         color: AppColors.lightGrey,
         boxShadow: [
           BoxShadow(
             color: Color.fromRGBO(0, 0, 0, 0.4),
-            blurRadius: 6,
+            blurRadius: 4,
             offset: Offset(0, 0),
           ),
         ],
@@ -72,9 +69,12 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            offer.name,
-            style: Theme.of(context).textTheme.titleMedium,
+          FittedBox(
+            child: Text(
+              offer.name,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            fit: BoxFit.fill,
           ),
           Container(
             child: _pricePanel(offer.price),

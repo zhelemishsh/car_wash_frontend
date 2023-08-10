@@ -76,13 +76,17 @@ class OfferSelectionPanelState
   List<PlacemarkData> _buildPlacemarks() {
     return _presenter.offers.map((offer) {
       return PlacemarkData(
-        OfferPlacemarkWidget(
+        offset: const Offset(0.205, 0.803),
+        widget: OfferPlacemarkWidget(
           offer: offer,
         ),
-        Point(
+        position: Point(
           latitude: offer.position.latitude,
           longitude: offer.position.longitude,
         ),
+        onPressed: () {
+          _showConfirmingDialog(offer);
+        },
       );
     }).toList();
   }

@@ -14,7 +14,7 @@ class WashOffersRepository {
     CarWashOffer(1, MapPosition(56.632075, 47.869551), "Pomoika", 500, "Pushkin street 25 75", 5.00, TimeOfDay.now(), TimeOfDay.now()),
     CarWashOffer(2, MapPosition(56.639453, 47.823855), "Auto wash", 300, "Lenin street 43 24", 2.99, TimeOfDay.now(), TimeOfDay.now()),
     CarWashOffer(3, MapPosition(56.642757, 47.913773), "Carcarich", 456, "Red Army street 54 32", 4.04, TimeOfDay.now(), TimeOfDay.now()),
-    CarWashOffer(4, MapPosition(56.621488, 47.872083), "Skin Bumper", 423, "Maksim street 14 88", 4.88, TimeOfDay.now(), TimeOfDay.now()),
+    CarWashOffer(4, MapPosition(56.621488, 47.872083), "Skin Bumper Maksim", 423, "Maksim street 14 88", 4.88, TimeOfDay.now(), TimeOfDay.now()),
   ];
   int _currentCount = 0;
 

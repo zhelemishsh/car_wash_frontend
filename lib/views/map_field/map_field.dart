@@ -75,7 +75,7 @@ class MapFieldState extends State<MapField> {
     List<MapObject> placemarks = [];
     for (PlacemarkData data in placemarksWidgetsBuilder()) {
       Uint8List image = await _makeImageFromOfferWidget(data.widget);
-      placemarks.add(_makePlacemark(data.position, image));
+      placemarks.add(_makePlacemark(data, image));
     }
     return placemarks;
   }
@@ -105,17 +105,23 @@ class MapFieldState extends State<MapField> {
     ).haversineDistance();
   }
 
-  PlacemarkMapObject _makePlacemark(Point position, Uint8List placeMarkImage) {
+  PlacemarkMapObject _makePlacemark(PlacemarkData data, Uint8List placeMarkImage) {
     return PlacemarkMapObject(
-      mapId: MapObjectId("${position.latitude} ${position.longitude}"),
+      consumeTapEvents: true,
+      zIndex: -data.position.latitude,
+      mapId: MapObjectId("${data.position.latitude} ${data.position.longitude}"),
+      onTap: (mapObject, point) {
+        data.onPressed();
+      },
       point: Point(
-        latitude: position.latitude,
-        longitude: position.longitude,
+        latitude: data.position.latitude,
+        longitude: data.position.longitude,
       ),
       opacity: 1,
       icon: PlacemarkIcon.single(
         PlacemarkIconStyle(
           image: BitmapDescriptor.fromBytes(placeMarkImage),
+          anchor: data.offset,
         ),
       ),
     );
@@ -132,6 +138,13 @@ class MapFieldState extends State<MapField> {
 class PlacemarkData {
   Widget widget;
   Point position;
+  Function() onPressed;
+  Offset offset;
 
-  PlacemarkData(this.widget, this.position);
+  PlacemarkData({
+    required this.widget,
+    required this.position,
+    required this.onPressed,
+    required this.offset,
+  });
 }
