@@ -77,6 +77,7 @@ class BottomPanelState extends State<BottomPanel> {
     Scaffold.of(context).showBottomSheet(
       (context) {
         return Container(
+          width: double.infinity,
           decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(

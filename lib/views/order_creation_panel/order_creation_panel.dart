@@ -36,10 +36,10 @@ class OrderCreationPanelState
   final _bottomPanelKey = GlobalKey<BottomPanelState>();
   final _searchAreaCircleKey = GlobalKey<SearchAreaCircleState>();
   final List<ServiceWidgetData> _carServices = [
-    ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask, "Interior dry cleaning"),
-    ServiceWidgetData(WashService.diskCleaning, CustomIcons.disk, "Disk cleaning"),
-    ServiceWidgetData(WashService.bodyPolishing, CustomIcons.clean, "Body polishing"),
-    ServiceWidgetData(WashService.engineCleaning, CustomIcons.engine, "Engine cleaning")
+    ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask),
+    ServiceWidgetData(WashService.diskCleaning, CustomIcons.disk),
+    ServiceWidgetData(WashService.bodyPolishing, CustomIcons.clean),
+    ServiceWidgetData(WashService.engineCleaning, CustomIcons.engine)
   ];
 
   @override
@@ -142,7 +142,7 @@ class OrderCreationPanelState
             Container(
               constraints: const BoxConstraints(maxWidth: 75),
               padding: const EdgeInsets.only(left: 4),
-              child: Text(serviceData.serviceName, softWrap: true,),
+              child: Text(serviceData.service.parseToString(), softWrap: true,),
             ),
           ],
         )
@@ -296,7 +296,6 @@ class OrderCreationPanelState
 class ServiceWidgetData {
   WashService service;
   IconData iconData;
-  String serviceName;
 
-  ServiceWidgetData(this.service, this.iconData, this.serviceName);
+  ServiceWidgetData(this.service, this.iconData);
 }

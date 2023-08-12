@@ -4,6 +4,7 @@ import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_pa
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_panel.dart';
 import 'package:flutter/material.dart';
 
+import '../accepted_order_panel/accepted_order_panel.dart';
 import '../map_field/map_field.dart';
 
 class MainPage extends StatefulWidget {
@@ -46,12 +47,19 @@ class MainPageState extends State<MainPage> {
       case OrderState.offerSelection:
         return OfferSelectionPanel(
           mapKey: _mapKey,
-          onOfferSelected: () {},
+          onOfferSelected: () {
+            _orderState = OrderState.waitingForWash;
+            setState(() {});
+          },
+        );
+      case OrderState.waitingForWash:
+        return AcceptedOrderPanel(
+          mapKey: _mapKey,
         );
     }
   }
 }
 
 enum OrderState {
-  orderCreation, offerSelection
+  orderCreation, offerSelection, waitingForWash
 }

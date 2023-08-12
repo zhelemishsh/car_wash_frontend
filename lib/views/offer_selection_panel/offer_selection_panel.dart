@@ -121,7 +121,9 @@ class OfferSelectionPanelState
       builder: (context) {
         return ConfirmingDialog(
           offer: offer,
-          onConfirmed: () {},
+          onConfirmed: () {
+            widget.onOfferSelected();
+          },
         );
       },
     );

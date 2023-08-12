@@ -89,5 +89,20 @@ class SearchArea {
 }
 
 enum WashService {
-  interiorDryCleaning, diskCleaning, bodyPolishing, engineCleaning,
+  interiorDryCleaning, diskCleaning, bodyPolishing, engineCleaning
+}
+
+extension ParseToString on WashService {
+  String parseToString() {
+    switch (this) {
+      case WashService.interiorDryCleaning:
+        return "Interior dry cleaning";
+      case WashService.diskCleaning:
+        return "Disk cleaning";
+      case WashService.bodyPolishing:
+        return "Body polishing";
+      case WashService.engineCleaning:
+        return "Engine cleaning";
+    }
+  }
 }

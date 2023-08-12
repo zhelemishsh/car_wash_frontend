@@ -1,4 +1,6 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/utils/time_utils.dart';
+import 'package:car_wash_frontend/views/stateless_views/rounded_icon_text.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/car_wash_offer.dart';
@@ -54,13 +56,20 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
   Widget _offerDataPanel(CarWashOffer offer) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 15,),
+      width: 160,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _iconOfferPanel(Icons.currency_ruble_rounded, offer.price.toString()),
-          _iconOfferPanel(
-            Icons.schedule_rounded,
-            "${_formatTime(offer.startTime)} - ${_formatTime(offer.endTime)}",
+          RoundedIconText(
+            iconData: Icons.currency_ruble_rounded,
+            size: 30,
+            text: offer.price.toString(),
+          ),
+          RoundedIconText(
+            iconData: Icons.schedule_rounded,
+            size: 30,
+            text: "${TimeUtils.formatTime(offer.startTime)} - "
+                "${TimeUtils.formatTime(offer.endTime)}",
           ),
         ],
       ),
@@ -86,7 +95,10 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
 
   Widget _acceptButton() {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pop(context);
+        widget.onConfirmed();
+      },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -127,10 +139,5 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
         size: size - 5,
       ),
     );
-  }
-
-  String _formatTime(TimeOfDay time) {
-    return '${time.hour.toString().padLeft(2, '0')}'
-        ':${time.minute.toString().padLeft(2, '0')}';
   }
 }
