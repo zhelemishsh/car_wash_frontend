@@ -1,4 +1,5 @@
 import 'package:car_wash_frontend/models/wash_order.dart';
+import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_panel.dart';
@@ -29,8 +30,49 @@ class MainPageState extends State<MainPage> {
         children: [
           mapField,
           _orderStateWidget(),
+          _menuButton(),
+          _userPositionButton(),
         ],
       ),
+    );
+  }
+
+  Widget _menuButton() {
+    return Positioned(
+      top: 30,
+      left: 10,
+      child: FloatingActionButton.small(
+        heroTag: "menu button",
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        child: const Icon(
+          Icons.menu_rounded,
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AccountMenuPage()),
+          );
+        },
+      )
+    );
+  }
+
+  Widget _userPositionButton() {
+    return Positioned(
+        top: 30,
+        right: 10,
+        child: FloatingActionButton.small(
+          heroTag: "user position button",
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          child: const Icon(
+            Icons.near_me_rounded,
+          ),
+          onPressed: () {
+            _mapKey.currentState?.moveCameraToUser(10);
+          },
+        )
     );
   }
 

@@ -39,6 +39,7 @@ class MapFieldState extends State<MapField> {
         zoom: zoom,
         target: await _getUserLocation(),
       )),
+      animation: const MapAnimation(type: MapAnimationType.smooth),
     );
   }
 
