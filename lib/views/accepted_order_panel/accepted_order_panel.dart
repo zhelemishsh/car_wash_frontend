@@ -1,8 +1,8 @@
+import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
-import 'package:car_wash_frontend/views/stateless_views/rounded_icon_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/time_utils.dart';
 import '../bottom_panel/bottom_panel.dart';
@@ -26,13 +26,16 @@ class AcceptedOrderPanel extends StatefulWidget {
 class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   final _bottomPanelKey = GlobalKey<BottomPanelState>();
   late AcceptedOrderPresenter _presenter;
+  bool _isRouteCreated = false;
 
   @override
   void initState() {
     super.initState();
     _presenter = AcceptedOrderPresenter();
     widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [];
-    widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
+    widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
+    widget.mapKey.currentState!.routeBuilder = _buildRoute;
+    widget.mapKey.currentState!.setState(() {});
   }
 
   @override
@@ -119,16 +122,29 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _styledTextButton(Icons.route_rounded, AppColors.orange),
-        Padding(
-          padding: const EdgeInsets.only(left: 5,),
-          child: _styledTextButton(Icons.delete_rounded, AppColors.darkRed),
+        _styledTextButton(
+          iconData: Icons.route_rounded,
+          iconColor: AppColors.orange,
+          onPressed: () {
+            _isRouteCreated = true;
+            setState(() {});
+          },
+        ),
+        const SizedBox(width: 5,),
+        _styledTextButton(
+          iconData: Icons.delete_rounded,
+          iconColor: AppColors.darkRed,
+          onPressed: () {},
         ),
       ],
     );
   }
 
-  Widget _styledTextButton(IconData iconData, Color iconColor) {
+  Widget _styledTextButton({
+    required IconData iconData,
+    required Color iconColor,
+    required Function() onPressed
+  }) {
     return SizedBox(
       width: 58,
       child: TextButton(
@@ -141,7 +157,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
           foregroundColor: iconColor,
           iconColor: Colors.black,
         ),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Icon(
           iconData,
           color: iconColor,
@@ -185,6 +201,48 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       if (i != _presenter.order.services.length - 1) {
         result += ", ";
       }
+    }
+    return result;
+  }
+
+  Widget _placemarkWidget() {
+    return const Icon(
+      Icons.location_on_rounded,
+      color: AppColors.orange,
+      size: 70,
+      shadows: [
+        Shadow(
+          color: Color.fromRGBO(0, 0, 0, 0.4),
+          offset: Offset(0, 0),
+          blurRadius: 6,
+        ),
+      ],
+    );
+  }
+
+  List<PlacemarkData> _buildPlacemarks() {
+    return [
+      PlacemarkData(
+        widget: _placemarkWidget(),
+        position: Point(
+          latitude: _presenter.order.carWashPosition.latitude,
+          longitude: _presenter.order.carWashPosition.longitude,
+        ),
+        offset: const Offset(0.5, 0.87),
+        onPressed: () {},
+      ),
+    ];
+  }
+
+  List<RouteData> _buildRoute() {
+    List<RouteData> result = [];
+    if (_isRouteCreated) {
+      result.add(
+        RouteData(
+          startPosition: MapPosition(56.664692, 47.815634),
+          endPosition: _presenter.order.carWashPosition,
+        ),
+      );
     }
     return result;
   }

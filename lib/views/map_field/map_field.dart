@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:great_circle_distance_calculator/great_circle_distance_calculator.dart';
@@ -18,6 +19,7 @@ class MapField extends StatefulWidget {
 class MapFieldState extends State<MapField> {
   List<Widget> Function() topLayerWidgetsBuilder = () => [];
   List<PlacemarkData> Function() placemarksWidgetsBuilder = () => [];
+  List<RouteData> Function() routeBuilder = () => [];
   Function(CameraPosition) onCameraPositionChanged = (position) {};
   List<MapObject> _placemarks = [];
   final _screenshotController = ScreenshotController();
@@ -71,11 +73,46 @@ class MapFieldState extends State<MapField> {
     );
   }
 
+  Future<PolylineMapObject> _makeRoute(RouteData routeData) async {
+    DrivingSessionResult sessionResult = await YandexDriving.requestRoutes(
+      drivingOptions: const DrivingOptions(
+        avoidPoorConditions: true,
+        avoidUnpaved: true,
+      ),
+      points: [
+        RequestPoint(
+          requestPointType: RequestPointType.wayPoint,
+          point: Point(
+            latitude: routeData.startPosition.latitude,
+            longitude: routeData.startPosition.longitude,
+          ),
+        ),
+        RequestPoint(
+          requestPointType: RequestPointType.wayPoint,
+          point: Point(
+            latitude: routeData.endPosition.latitude,
+            longitude: routeData.endPosition.longitude,
+          ),
+        ),
+      ],
+    ).result;
+    return PolylineMapObject(
+      mapId: MapObjectId("${routeData.startPosition} ${routeData.endPosition}"),
+      zIndex: -1000,
+      gapLength: 4,
+      dashLength: 10,
+      polyline: Polyline(points: sessionResult.routes![0].geometry),
+    );
+  }
+
   Future<List<MapObject>> _makePlacemarks() async {
     List<MapObject> placemarks = [];
-    for (PlacemarkData data in placemarksWidgetsBuilder()) {
-      Uint8List image = await _makeImageFromOfferWidget(data.widget);
-      placemarks.add(_makePlacemark(data, image));
+    for (RouteData routeData in routeBuilder()) {
+      placemarks.add(await _makeRoute(routeData));
+    }
+    for (PlacemarkData placemarkData in placemarksWidgetsBuilder()) {
+      Uint8List image = await _makeImageFromOfferWidget(placemarkData.widget);
+      placemarks.add(_makePlacemark(placemarkData, image));
     }
     return placemarks;
   }
@@ -146,5 +183,15 @@ class PlacemarkData {
     required this.position,
     required this.onPressed,
     required this.offset,
+  });
+}
+
+class RouteData {
+  MapPosition startPosition;
+  MapPosition endPosition;
+
+  RouteData({
+    required this.startPosition,
+    required this.endPosition,
   });
 }
