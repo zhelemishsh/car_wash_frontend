@@ -1,4 +1,3 @@
-import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
@@ -19,7 +18,18 @@ class MainPage extends StatefulWidget {
 
 class MainPageState extends State<MainPage> {
   final _mapKey = GlobalKey<MapFieldState>();
+  final _bottomPanelKey = GlobalKey<BottomPanelState>();
   OrderState _orderState = OrderState.orderCreation;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _mapKey.currentState!.onCameraPositionChanged.add((_, isFinished) {
+        _onMapCameraPositionChanged(isFinished);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +39,10 @@ class MainPageState extends State<MainPage> {
       body: Stack(
         children: [
           mapField,
-          _orderStateWidget(),
+          BottomPanel(
+            key: _bottomPanelKey,
+            child: _orderStateWidget(),
+          ),
           _menuButton(),
           _userPositionButton(),
         ],
@@ -58,6 +71,16 @@ class MainPageState extends State<MainPage> {
     );
   }
 
+  void _onMapCameraPositionChanged(bool isFinished) {
+    if (isFinished) {
+      Future.delayed(const Duration(milliseconds: 200))
+          .then((_) => _bottomPanelKey.currentState!.openBottomPanel());
+    }
+    else {
+      _bottomPanelKey.currentState!.closeBottomPanel();
+    }
+  }
+
   Widget _userPositionButton() {
     return Positioned(
         top: 30,
@@ -83,7 +106,7 @@ class MainPageState extends State<MainPage> {
           mapKey: _mapKey,
           onOrderMade: () {
             _orderState = OrderState.offerSelection;
-            setState(() {});
+            _reopenBottomPanel();
           },
         );
       case OrderState.offerSelection:
@@ -91,7 +114,7 @@ class MainPageState extends State<MainPage> {
           mapKey: _mapKey,
           onOfferSelected: () {
             _orderState = OrderState.waitingForWash;
-            setState(() {});
+            _reopenBottomPanel();
           },
         );
       case OrderState.waitingForWash:
@@ -99,6 +122,13 @@ class MainPageState extends State<MainPage> {
           mapKey: _mapKey,
         );
     }
+  }
+
+  void _reopenBottomPanel() {
+    Future(_bottomPanelKey.currentState!.closeBottomPanel).then((_) {
+      setState(() {});
+      _bottomPanelKey.currentState!.openBottomPanel();
+    });
   }
 }
 

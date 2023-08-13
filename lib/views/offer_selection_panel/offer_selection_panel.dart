@@ -6,7 +6,6 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../models/car_wash_offer.dart';
 import '../../theme/app_colors.dart';
-import '../bottom_panel/bottom_panel.dart';
 import '../map_field/map_field.dart';
 import 'offer_selection_contract.dart';
 
@@ -28,45 +27,45 @@ class OfferSelectionPanel extends StatefulWidget {
 
 class OfferSelectionPanelState
     extends State<OfferSelectionPanel> implements OfferSelectionContract {
-  final _bottomPanelKey = GlobalKey<BottomPanelState>();
   late OfferSelectionPresenter _presenter;
 
   @override
   void initState() {
     super.initState();
     _presenter = OfferSelectionPresenter(this);
-    widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [];
-    widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
-    widget.mapKey.currentState!.setState(() {});
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
+      widget.mapKey.currentState!.setState(() {});
+
       _presenter.loadWashOffers();
     });
   }
 
   @override
+  void dispose() {
+    widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
+    super.dispose();
+  }
+
+  @override
   void setState(VoidCallback fn) {
-    _bottomPanelKey.currentState?.setState(() {});
     widget.mapKey.currentState?.setState(() {});
     super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomPanel(
-      key: _bottomPanelKey,
-      childBuilder: () {
-        return Container(
-          constraints: const BoxConstraints(maxHeight: 350, minHeight: 20),
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: _presenter.offers.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _carWashOfferWidget(_presenter.offers[index]);
-            },
-          ),
-        );
-      },
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 350, minHeight: 0),
+      child: ListView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        itemCount: _presenter.offers.length,
+        itemBuilder: (BuildContext context, int index) {
+          return _carWashOfferWidget(_presenter.offers[index]);
+        },
+      ),
     );
   }
 

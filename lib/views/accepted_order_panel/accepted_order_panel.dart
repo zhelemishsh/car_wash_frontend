@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/time_utils.dart';
-import '../bottom_panel/bottom_panel.dart';
 import '../map_field/map_field.dart';
 import 'accepted_order_presenter.dart';
 
@@ -24,7 +23,6 @@ class AcceptedOrderPanel extends StatefulWidget {
 }
 
 class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
-  final _bottomPanelKey = GlobalKey<BottomPanelState>();
   late AcceptedOrderPresenter _presenter;
   bool _isRouteCreated = false;
 
@@ -32,59 +30,61 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   void initState() {
     super.initState();
     _presenter = AcceptedOrderPresenter();
-    widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [];
-    widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
-    widget.mapKey.currentState!.routeBuilder = _buildRoute;
-    widget.mapKey.currentState!.setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
+      widget.mapKey.currentState!.routeBuilder = _buildRoute;
+      widget.mapKey.currentState!.setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
+    widget.mapKey.currentState!.routeBuilder = () => [];
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomPanel(
-      key: _bottomPanelKey,
-      childBuilder: () {
-        return Table(
-          columnWidths:  const <int, TableColumnWidth>{
-            0: FlexColumnWidth(),
-            1: IntrinsicColumnWidth(),
-          },
-          children: [
-            TableRow(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 5,),
-                  child: _carWashPositionPanel(),
-                ),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.fill,
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 5, left: 5),
-                    child: _actionButtons(),
-                  ),
-                ),
-              ]
-            ),
-            TableRow(
-              children: [
-                _orderInfoPanel(),
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.fill,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: _imagePanel(),
-                  ),
-                ),
-              ],
-            )
-          ],
-        );
+    return Table(
+      columnWidths:  const <int, TableColumnWidth>{
+        0: FlexColumnWidth(),
+        1: IntrinsicColumnWidth(),
       },
+      children: [
+        TableRow(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5,),
+              child: _carWashPositionPanel(),
+            ),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.fill,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 5, left: 5),
+                child: _actionButtons(),
+              ),
+            ),
+          ],
+        ),
+        TableRow(
+          children: [
+            _orderInfoPanel(),
+            TableCell(
+              verticalAlignment: TableCellVerticalAlignment.fill,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 5),
+                child: _imagePanel(),
+              ),
+            ),
+          ],
+        )
+      ],
     );
   }
 
   @override
   void setState(VoidCallback fn) {
-    _bottomPanelKey.currentState?.setState(() {});
     widget.mapKey.currentState?.setState(() {});
     super.setState(fn);
   }

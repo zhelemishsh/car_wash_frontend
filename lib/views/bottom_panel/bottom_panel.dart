@@ -1,12 +1,13 @@
-import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../theme/app_colors.dart';
+
 class BottomPanel extends StatefulWidget {
-  final Widget Function() childBuilder;
+  final Widget child;
 
   const BottomPanel({
     Key? key,
-    required this.childBuilder,
+    required this.child,
   }) : super(key: key);
 
   @override
@@ -15,75 +16,32 @@ class BottomPanel extends StatefulWidget {
   }
 }
 
-class BottomPanelState extends State<BottomPanel> {
-  final _childKey = GlobalKey<StatefulWrapperState>();
-  bool _isPanelOpened = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _showBottomPanel(context);
-      _isPanelOpened = true;
-    });
-  }
+class BottomPanelState extends State<BottomPanel>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+  bool isHidden = false;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: _isPanelOpened ? null : Container(
-            margin: const EdgeInsets.only(bottom: 10),
-            width: 60,
-            height: 10,
-            child: TextButton(
-              onPressed: () {
-                _isPanelOpened = true;
-                _showBottomPanel(context);
-                setState(() {});
-              },
-              style: TextButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                backgroundColor: AppColors.darkGrey,
-              ),
-              child: Container(),
-            ),
-          )
-        )
-      ],
-    );
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    _childKey.currentState?.setState(() {});
-    super.setState(fn);
-  }
-
-  Future<void> closePanel() async {
-    if (_isPanelOpened) {
-      _isPanelOpened = false;
-      Navigator.pop(context);
-      await Future.delayed(const Duration(milliseconds: 300,));
-      setState(() {});
-    }
-  }
-
-  void _showBottomPanel(BuildContext context) {
-    Scaffold.of(context).showBottomSheet(
-      (context) {
-        return Container(
-          width: double.infinity,
-          decoration: const BoxDecoration(
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SlideTransition(
+        position: Tween(
+          begin: Offset.zero,
+          end: const Offset(0, 2),
+        ).animate(CurvedAnimation(
+          parent: _controller,
+          curve: Curves.easeInOutQuad,
+        )),
+        child: Container(
+          padding: const EdgeInsets.all(6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(15),
-            ),
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.4),
                 spreadRadius: 2,
@@ -92,38 +50,21 @@ class BottomPanelState extends State<BottomPanel> {
               ),
             ],
           ),
-          padding: const EdgeInsets.all(6),
-          child: StatefulWrapper(
-            key: _childKey,
-            childBuilder: widget.childBuilder,
-          ),
-        );
-      },
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+          child: widget.child,
+        ),
       ),
-      enableDrag: false,
     );
   }
-}
 
-class StatefulWrapper extends StatefulWidget {
-  final Widget Function() childBuilder;
-
-  const StatefulWrapper({
-    Key? key,
-    required this.childBuilder
-  }) : super(key: key);
-
-  @override
-  StatefulWrapperState createState() {
-    return StatefulWrapperState();
+  void openBottomPanel() async {
+    if (!isHidden) return;
+    isHidden = false;
+    await _controller.reverse();
   }
-}
 
-class StatefulWrapperState extends State<StatefulWrapper> {
-  @override
-  Widget build(BuildContext context) {
-    return widget.childBuilder();
+  void closeBottomPanel() async {
+    if (isHidden) return;
+    isHidden = true;
+    await _controller.forward();
   }
 }

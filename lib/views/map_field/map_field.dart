@@ -20,7 +20,7 @@ class MapFieldState extends State<MapField> {
   List<Widget> Function() topLayerWidgetsBuilder = () => [];
   List<PlacemarkData> Function() placemarksWidgetsBuilder = () => [];
   List<RouteData> Function() routeBuilder = () => [];
-  Function(CameraPosition) onCameraPositionChanged = (position) {};
+  List<Function(CameraPosition, bool)> onCameraPositionChanged = [];
   List<MapObject> _placemarks = [];
   final _screenshotController = ScreenshotController();
   late YandexMapController mapController;
@@ -58,7 +58,9 @@ class MapFieldState extends State<MapField> {
         }
         return YandexMap(
           onCameraPositionChanged: (position, reason, finish) {
-            onCameraPositionChanged(position);
+            for (var func in onCameraPositionChanged) {
+              func(position, finish);
+            }
           },
           logoAlignment: const MapAlignment(
             horizontal: HorizontalAlignment.right,

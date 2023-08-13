@@ -1,6 +1,5 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
-import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/map_field/map_field.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_contract.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_presenter.dart';
@@ -33,7 +32,6 @@ class OrderCreationPanelState
     extends State<OrderCreationPanel> implements OrderCreationContract{
   late OrderCreationPresenter _presenter;
   final double _minZoom = 10.5;
-  final _bottomPanelKey = GlobalKey<BottomPanelState>();
   final _searchAreaCircleKey = GlobalKey<SearchAreaCircleState>();
   final List<ServiceWidgetData> _carServices = [
     ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask),
@@ -46,78 +44,78 @@ class OrderCreationPanelState
   void initState() {
     super.initState();
     _presenter = OrderCreationPresenter(this);
-    widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [
-      SearchAreaCircle(
-        key: _searchAreaCircleKey,
-        minZoom: _minZoom,
-        mapKey: widget.mapKey,
-        radius: 170,
-      ),
-    ];
-    widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
-    widget.mapKey.currentState!.setState(() {});
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [
+        SearchAreaCircle(
+          key: _searchAreaCircleKey,
+          minZoom: _minZoom,
+          mapKey: widget.mapKey,
+          radius: 170,
+        ),
+      ];
+      widget.mapKey.currentState!.setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [];
+    super.dispose();
   }
 
   @override
   void setState(VoidCallback fn) {
-    _bottomPanelKey.currentState?.setState(() {});
+    widget.mapKey.currentState!.setState(() {});
     super.setState(fn);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomPanel(
-      key: _bottomPanelKey,
-      childBuilder: () => Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 45,
-            child: Row(
-              children: [
-                Expanded(flex: 5, child: _startTimeButton(),),
-                Expanded(flex: 1, child: _timeDivider(),),
-                Expanded(flex: 5, child: _endTimeButton(),),
-                Expanded(flex: 2, child: _startSearchButton()),
-              ],
-            ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: 45,
+          child: Row(
+            children: [
+              Expanded(flex: 5, child: _startTimeButton(),),
+              Expanded(flex: 1, child: _timeDivider(),),
+              Expanded(flex: 5, child: _endTimeButton(),),
+              Expanded(flex: 2, child: _startSearchButton()),
+            ],
           ),
-          SizedBox(
+        ),
+        SizedBox(
+          height: 32,
+          child: Row(
+            children: [
+              Expanded(flex: 1, child: _dayButton("Today"),),
+              Expanded(flex: 1, child: _dayButton("Tomorrow"),),
+              Expanded(flex: 1, child: _dayButton("Day about"),),
+            ],
+          ),
+        ),
+        SizedBox(
             height: 32,
             child: Row(
-              children: [
-                Expanded(flex: 1, child: _dayButton("Today"),),
-                Expanded(flex: 1, child: _dayButton("Tomorrow"),),
-                Expanded(flex: 1, child: _dayButton("Day about"),),
-              ],
-            ),
+              mainAxisSize: MainAxisSize.min,
+              children: _carNamesList(),
+            )
+        ),
+        SizedBox(
+          height: 55,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: _carServices.length,
+            itemBuilder: (BuildContext context, int index) {
+              return _carServiceWidget(_carServices[index]);
+            },
           ),
-          SizedBox(
-              height: 32,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: _carNamesList(),
-              )
-          ),
-          SizedBox(
-            height: 55,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: _carServices.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _carServiceWidget(_carServices[index]);
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
-  }
-
-  @override
-  void closeBottomPanel() async {
-    await _bottomPanelKey.currentState!.closePanel();
   }
 
   Widget _carServiceWidget(ServiceWidgetData serviceData) {

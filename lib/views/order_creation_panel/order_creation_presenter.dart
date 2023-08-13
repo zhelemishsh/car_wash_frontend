@@ -14,7 +14,6 @@ class OrderCreationPresenter {
   OrderCreationPresenter(this._view);
 
   void makeOrder() async {
-    await _view.closeBottomPanel();
     print("Order created!");
   }
 }

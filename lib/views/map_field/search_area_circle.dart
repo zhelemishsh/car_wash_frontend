@@ -30,11 +30,12 @@ class SearchAreaCircleState extends State<SearchAreaCircle> {
   @override
   void initState() {
     super.initState();
-    widget.mapKey.currentState!.onCameraPositionChanged =
-        onMapCameraPositionChanged;
+    widget.mapKey.currentState!.onCameraPositionChanged.add(
+      onMapCameraPositionChanged,
+    );
   }
 
-  void onMapCameraPositionChanged(CameraPosition position) {
+  void onMapCameraPositionChanged(CameraPosition position, bool isFinished) {
     if (!_isZoomTooSmall && position.zoom < widget.minZoom) {
       _isZoomTooSmall = true;
       setState(() {});
@@ -97,5 +98,12 @@ class SearchAreaCircleState extends State<SearchAreaCircle> {
       MapPosition(centerPoint!.latitude, centerPoint.longitude),
       radius,
     );
+  }
+
+  @override
+  void dispose() {
+    widget.mapKey.currentState!
+        .onCameraPositionChanged.remove(onMapCameraPositionChanged);
+    super.dispose();
   }
 }
