@@ -73,7 +73,7 @@ class MainPageState extends State<MainPage> {
 
   void _onMapCameraPositionChanged(bool isFinished) {
     if (isFinished) {
-      Future.delayed(const Duration(milliseconds: 200))
+      Future.delayed(const Duration(milliseconds: 300))
           .then((_) => _bottomPanelKey.currentState!.openBottomPanel());
     }
     else {

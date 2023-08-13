@@ -54,16 +54,10 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       children: [
         TableRow(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: 5,),
-              child: _carWashPositionPanel(),
-            ),
+            _carWashPositionPanel(),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.fill,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 5, left: 5),
-                child: _actionButtons(),
-              ),
+              child: _actionButtons(),
             ),
           ],
         ),
@@ -72,10 +66,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
             _orderInfoPanel(),
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.fill,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: _imagePanel(),
-              ),
+              child: _imagePanel(),
             ),
           ],
         )
@@ -91,6 +82,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
 
   Widget _imagePanel() {
     return Container(
+      margin: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
@@ -102,18 +94,21 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   }
 
   Widget _carWashPositionPanel() {
-    return MarkedList(
-      size: 25,
-      markedTexts: [
-        MarkedTextData(
-          text: _presenter.order.carWashName,
-          textStyle: Theme.of(context).textTheme.titleLarge,
-        ),
-        MarkedTextData(
-          text: _presenter.order.carWashAddress,
-          textStyle: Theme.of(context).textTheme.titleSmall,
-        ),
-      ],
+    return Container(
+      margin: const EdgeInsets.all(3),
+      child: MarkedList(
+        size: 25,
+        markedTexts: [
+          MarkedTextData(
+            text: _presenter.order.carWashName,
+            textStyle: Theme.of(context).textTheme.titleLarge,
+          ),
+          MarkedTextData(
+            text: _presenter.order.carWashAddress,
+            textStyle: Theme.of(context).textTheme.titleSmall,
+          ),
+        ],
+      ),
     );
   }
 
@@ -130,7 +125,6 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
             setState(() {});
           },
         ),
-        const SizedBox(width: 5,),
         _styledTextButton(
           iconData: Icons.delete_rounded,
           iconColor: AppColors.darkRed,
@@ -145,8 +139,9 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     required Color iconColor,
     required Function() onPressed
   }) {
-    return SizedBox(
+    return Container(
       width: 58,
+      margin: const EdgeInsets.all(3),
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
@@ -168,27 +163,30 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   }
 
   Widget _orderInfoPanel() {
-    return MarkedList(
-      size: 25,
-      markedTexts: [
-        MarkedTextData(
-          text: "${TimeUtils.formatDateTime(_presenter.order.startTime)} - "
-              "${TimeUtils.formatDateTime(_presenter.order.endTime)}",
-          iconData: Icons.schedule_rounded,
-        ),
-        MarkedTextData(
-          text: _presenter.order.price.toString(),
-          iconData: Icons.currency_ruble_rounded,
-        ),
-        MarkedTextData(
-          text: _presenter.order.car.name,
-          iconData: Icons.directions_car_rounded,
-        ),
-        MarkedTextData(
-          text: _serviceListString(),
-          iconData: Icons.settings_rounded,
-        ),
-      ],
+    return Container(
+      margin: const EdgeInsets.all(3),
+      child: MarkedList(
+        size: 25,
+        markedTexts: [
+          MarkedTextData(
+            text: "${TimeUtils.formatDateTime(_presenter.order.startTime)} - "
+                "${TimeUtils.formatDateTime(_presenter.order.endTime)}",
+            iconData: Icons.schedule_rounded,
+          ),
+          MarkedTextData(
+            text: _presenter.order.price.toString(),
+            iconData: Icons.currency_ruble_rounded,
+          ),
+          MarkedTextData(
+            text: _presenter.order.car.name,
+            iconData: Icons.directions_car_rounded,
+          ),
+          MarkedTextData(
+            text: _serviceListString(),
+            iconData: Icons.settings_rounded,
+          ),
+        ],
+      ),
     );
   }
 

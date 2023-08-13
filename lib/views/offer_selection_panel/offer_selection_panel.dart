@@ -91,25 +91,29 @@ class OfferSelectionPanelState
   }
 
   Widget _carWashOfferWidget(CarWashOffer offer) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+    return IntrinsicHeight(
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
+          AspectRatio(aspectRatio: 1, child: _imagePanel(),),
           Expanded(
-            flex: 2,
-            child: Container(
-              margin: const EdgeInsets.only(right: 10),
-              child: const CircleAvatar(
-                backgroundImage: AssetImage("assets/goshan.jpg"),
-                radius: 40,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 7,
             child: _carWashInfoPanel(offer),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _imagePanel() {
+    return Container(
+      width: 75,
+      margin: const EdgeInsets.all(3),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: const DecorationImage(
+          image:  AssetImage("assets/goshan.jpg"),
+          fit: BoxFit.fitHeight,
+        ),
       ),
     );
   }
@@ -129,45 +133,48 @@ class OfferSelectionPanelState
   }
 
   Widget _carWashInfoPanel(CarWashOffer offer) {
-    return TextButton(
-      style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.all(10),
-        backgroundColor: AppColors.lightGrey,
-        foregroundColor: Colors.orange,
-        iconColor: Colors.black,
-      ),
-      onPressed: () {
-        _showConfirmingDialog(offer);
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                flex: 4,
-                child: Text(
-                  offer.name,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              Expanded(flex: 1, child: _ratingPanel(offer.rating),),
-            ],
+    return Container(
+      margin: const EdgeInsets.all(3),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
           ),
-          Text(offer.address, style: Theme.of(context).textTheme.titleSmall,),
-          Container(
-            padding: const EdgeInsets.only(top: 7),
-            child: Row(
+          padding: const EdgeInsets.all(8),
+          backgroundColor: AppColors.lightGrey,
+          foregroundColor: Colors.orange,
+          iconColor: Colors.black,
+        ),
+        onPressed: () {
+          _showConfirmingDialog(offer);
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                Expanded(flex: 2, child: _timePanel(offer.startTime, offer.endTime)),
-                Expanded(flex: 1, child: _pricePanel(offer.price),),
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    offer.name,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ),
+                Expanded(flex: 1, child: _ratingPanel(offer.rating),),
               ],
             ),
-          ),
-        ],
+            Text(offer.address, style: Theme.of(context).textTheme.titleSmall,),
+            Container(
+              padding: const EdgeInsets.only(top: 7),
+              child: Row(
+                children: [
+                  Expanded(flex: 2, child: _timePanel(offer.startTime, offer.endTime)),
+                  Expanded(flex: 1, child: _pricePanel(offer.price),),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -204,6 +211,7 @@ class OfferSelectionPanelState
   Widget _ratingPanel(double rating) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           rating.toString(),

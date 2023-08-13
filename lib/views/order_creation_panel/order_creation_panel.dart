@@ -262,7 +262,7 @@ class OrderCreationPanelState
     required bool isToggled,
   }) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3, horizontal: 4),
+      margin: const EdgeInsets.all(3),
       child: TextButton(
         onPressed: onPressed,
         style: TextButton.styleFrom(
