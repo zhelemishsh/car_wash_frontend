@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
@@ -37,6 +38,7 @@ class MainPageState extends State<MainPage> {
 
     return Scaffold(
       body: Stack(
+        alignment: Alignment.topCenter,
         children: [
           mapField,
           BottomPanel(
@@ -44,8 +46,34 @@ class MainPageState extends State<MainPage> {
             child: _orderStateWidget(),
           ),
           _menuButton(),
+          _descriptionPanel(),
           _userPositionButton(),
         ],
+      ),
+    );
+  }
+
+  Widget _descriptionPanel() {
+    return Positioned(
+      top: 37,
+      height: 30,
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white.withOpacity(0.8),
+              offset: const Offset(0, 0),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Text(
+          _descriptionText(),
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
       ),
     );
   }
@@ -129,6 +157,17 @@ class MainPageState extends State<MainPage> {
       setState(() {});
       _bottomPanelKey.currentState!.openBottomPanel();
     });
+  }
+
+  String _descriptionText() {
+    switch (_orderState) {
+      case OrderState.orderCreation:
+        return "Select order options";
+      case OrderState.offerSelection:
+        return "Choose a car wash offer";
+      case OrderState.waitingForWash:
+        return "Order waiting for you";
+    }
   }
 }
 
