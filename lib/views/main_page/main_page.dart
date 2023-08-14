@@ -1,4 +1,3 @@
-import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
@@ -37,6 +36,12 @@ class MainPageState extends State<MainPage> {
     var mapField = MapField(key: _mapKey,);
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: _appBarPanel(),
+      ),
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
@@ -45,57 +50,93 @@ class MainPageState extends State<MainPage> {
             key: _bottomPanelKey,
             child: _orderStateWidget(),
           ),
-          _menuButton(),
-          _descriptionPanel(),
-          _userPositionButton(),
         ],
       ),
     );
   }
 
+  Widget _appBarPanel() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: _menuButton(),
+        ),
+        _descriptionPanel(),
+        Align(
+          alignment: Alignment.centerRight,
+          child: _userPositionButton(),
+        )
+      ],
+    );
+  }
+
   Widget _descriptionPanel() {
-    return Positioned(
-      top: 37,
-      height: 30,
-      child: Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.white.withOpacity(0.8),
-              offset: const Offset(0, 0),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Text(
-          _descriptionText(),
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.8),
+            offset: const Offset(0, 0),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+      child: Text(
+        _descriptionText(),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }
 
+  Widget _userPositionButton() {
+    return _topPanelButton(
+      iconData: Icons.near_me_rounded,
+      onPressed: () {
+        _mapKey.currentState?.moveCameraToUser(10);
+      },
+    );
+  }
+
   Widget _menuButton() {
-    return Positioned(
-      top: 30,
-      left: 10,
-      child: FloatingActionButton.small(
-        heroTag: "menu button",
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        child: const Icon(
-          Icons.menu_rounded,
+    return _topPanelButton(
+      iconData: Icons.menu_rounded,
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const AccountMenuPage()),
+        );
+      },
+    );
+  }
+
+  Widget _topPanelButton({
+    required IconData iconData,
+    required Function() onPressed
+  }) {
+    double buttonSize = 40;
+    return SizedBox(
+      height: buttonSize,
+      width: buttonSize,
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          elevation: 5,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(buttonSize / 2),
+          ),
+          padding: const EdgeInsets.all(8),
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.orange,
         ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AccountMenuPage()),
-          );
-        },
-      )
+        child: Icon(
+          iconData,
+          color: Colors.black,
+        ),
+      ),
     );
   }
 
@@ -107,24 +148,6 @@ class MainPageState extends State<MainPage> {
     else {
       _bottomPanelKey.currentState!.closeBottomPanel();
     }
-  }
-
-  Widget _userPositionButton() {
-    return Positioned(
-        top: 30,
-        right: 10,
-        child: FloatingActionButton.small(
-          heroTag: "user position button",
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          child: const Icon(
-            Icons.near_me_rounded,
-          ),
-          onPressed: () {
-            _mapKey.currentState?.moveCameraToUser(10);
-          },
-        )
-    );
   }
 
   Widget _orderStateWidget() {
