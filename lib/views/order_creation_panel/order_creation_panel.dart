@@ -276,8 +276,8 @@ class OrderCreationPanelState
           padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
           foregroundColor: Colors.black,
           backgroundColor: isToggled
-              ? AppColors.orange
-              : AppColors.lightGrey,
+              ? AppColors.lightOrange
+              : AppColors.dirtyWhite,
         ),
         child: Container(
           alignment: Alignment.center,

@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
@@ -129,12 +130,12 @@ class MainPageState extends State<MainPage> {
             borderRadius: BorderRadius.circular(buttonSize / 2),
           ),
           padding: const EdgeInsets.all(8),
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.orange,
+          backgroundColor: AppColors.grey,
+          foregroundColor: AppColors.orange,
         ),
         child: Icon(
           iconData,
-          color: Colors.black,
+          color: AppColors.dirtyWhite,
         ),
       ),
     );

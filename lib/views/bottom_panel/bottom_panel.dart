@@ -40,7 +40,7 @@ class BottomPanelState extends State<BottomPanel>
           padding: const EdgeInsets.all(6),
           decoration: const BoxDecoration(
             borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-            color: Colors.white,
+            color: AppColors.grey,
             boxShadow: [
               BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.4),

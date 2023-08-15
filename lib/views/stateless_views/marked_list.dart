@@ -17,7 +17,7 @@ class MarkedList extends StatelessWidget {
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.lightGrey,
+        color: AppColors.dirtyWhite,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

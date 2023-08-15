@@ -48,7 +48,7 @@ class SearchAreaCircleState extends State<SearchAreaCircle> {
 
   @override
   Widget build(BuildContext context) {
-    Color circleColor = _isZoomTooSmall ? AppColors.orange : AppColors.mapBlue;
+    Color circleColor = _isZoomTooSmall ? AppColors.orange : AppColors.routeBlue;
 
     return Align(
       alignment: Alignment.center,
@@ -60,7 +60,7 @@ class SearchAreaCircleState extends State<SearchAreaCircle> {
           decoration: BoxDecoration(
             border: Border.all(
               color: circleColor.withOpacity(0.7),
-              width: 3,
+              width: 2,
             ),
             color: circleColor.withOpacity(0.2),
             borderRadius: BorderRadius.all(
