@@ -83,7 +83,7 @@ class OrderCreationPanelState
               Expanded(flex: 5, child: _startTimeButton(),),
               Expanded(flex: 1, child: _timeDivider(),),
               Expanded(flex: 5, child: _endTimeButton(),),
-              Expanded(flex: 2, child: _startSearchButton()),
+              _startSearchButton(),
             ],
           ),
         ),
@@ -203,16 +203,20 @@ class OrderCreationPanelState
 
   Widget _startSearchButton() {
     return Container(
+      width: 54,
       alignment: Alignment.center,
-      child: IconButton(
+      child: TextButton(
         onPressed: () async {
           _presenter.orderBuilder.searchArea = await _searchAreaCircleKey
               .currentState!.getSearchArea();
           Future(_presenter.makeOrder).then((value) => widget.onOrderMade());
         },
-        iconSize: 35,
-        icon: const Icon(
-          Icons.wifi_tethering_rounded,
+        child: Transform.scale(
+          scale: 1.6,
+          child: const Icon(
+            Icons.wifi_tethering_rounded,
+            color: AppColors.orange,
+          ),
         ),
       ),
     );
