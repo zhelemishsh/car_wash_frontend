@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
+import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:great_circle_distance_calculator/great_circle_distance_calculator.dart';
@@ -19,7 +20,7 @@ class MapField extends StatefulWidget {
 class MapFieldState extends State<MapField> {
   List<Widget> Function() topLayerWidgetsBuilder = () => [];
   List<PlacemarkData> Function() placemarksWidgetsBuilder = () => [];
-  List<RouteData> Function() routeBuilder = () => [];
+  MapPosition? Function() routeBuilder = () => null;
   List<Function(CameraPosition, bool)> onCameraPositionChanged = [];
   List<MapObject> _placemarks = [];
   final _screenshotController = ScreenshotController();
@@ -37,7 +38,7 @@ class MapFieldState extends State<MapField> {
     mapController.moveCamera(
       CameraUpdate.newCameraPosition(CameraPosition(
         zoom: zoom,
-        target: await _getUserLocation(),
+        target: await _getUserPosition(),
       )),
       animation: const MapAnimation(type: MapAnimationType.smooth),
     );
@@ -68,7 +69,17 @@ class MapFieldState extends State<MapField> {
           ),
           onMapCreated: (YandexMapController controller) {
             mapController = controller;
+            mapController.toggleUserLayer(visible: true);
             _getUserLocationPermission();
+          },
+          onUserLocationAdded: (userLocationView) async {
+            PlacemarkMapObject placemark = await _buildLocationPlacemark(userLocationView.pin);
+            PlacemarkMapObject arrow = await _buildLocationPlacemark(userLocationView.arrow);
+
+            return userLocationView.copyWith(
+              pin: placemark,
+              arrow: arrow,
+            );
           },
           mapObjects: _placemarks,
         );
@@ -76,7 +87,7 @@ class MapFieldState extends State<MapField> {
     );
   }
 
-  Future<PolylineMapObject> _makeRoute(RouteData routeData) async {
+  Future<PolylineMapObject> _makeRoute(MapPosition endPosition) async {
     DrivingSessionResult sessionResult = await YandexDriving.requestRoutes(
       drivingOptions: const DrivingOptions(
         avoidPoorConditions: true,
@@ -85,22 +96,20 @@ class MapFieldState extends State<MapField> {
       points: [
         RequestPoint(
           requestPointType: RequestPointType.wayPoint,
-          point: Point(
-            latitude: routeData.startPosition.latitude,
-            longitude: routeData.startPosition.longitude,
-          ),
+          point: await _getUserPosition(),
         ),
         RequestPoint(
           requestPointType: RequestPointType.wayPoint,
           point: Point(
-            latitude: routeData.endPosition.latitude,
-            longitude: routeData.endPosition.longitude,
+            latitude: endPosition.latitude,
+            longitude: endPosition.longitude,
           ),
         ),
       ],
     ).result;
     return PolylineMapObject(
-      mapId: MapObjectId("${routeData.startPosition} ${routeData.endPosition}"),
+      mapId: const MapObjectId("route"),
+      strokeColor: AppColors.routeBlue,
       zIndex: -1000,
       gapLength: 4,
       dashLength: 10,
@@ -110,17 +119,20 @@ class MapFieldState extends State<MapField> {
 
   Future<List<MapObject>> _makePlacemarks() async {
     List<MapObject> placemarks = [];
-    for (RouteData routeData in routeBuilder()) {
-      placemarks.add(await _makeRoute(routeData));
-    }
+    MapPosition? routeEnd = routeBuilder();
+    if (routeEnd != null) placemarks.add(await _makeRoute(routeEnd));
+
     for (PlacemarkData placemarkData in placemarksWidgetsBuilder()) {
-      Uint8List image = await _makeImageFromOfferWidget(placemarkData.widget);
+      Uint8List image = await _makeImageFromWidget(placemarkData.widget);
       placemarks.add(_makePlacemark(placemarkData, image));
     }
     return placemarks;
   }
 
-  Future<Point> _getUserLocation() async {
+  Future<Point> _getUserPosition() async {
+    CameraPosition? userCameraPosition = await mapController.getUserCameraPosition();
+    return userCameraPosition!.target;
+
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     return Point(latitude: position.latitude, longitude: position.longitude);
@@ -167,10 +179,30 @@ class MapFieldState extends State<MapField> {
     );
   }
 
-  Future<Uint8List> _makeImageFromOfferWidget(Widget widget) async {
+  Future<Uint8List> _makeImageFromWidget(Widget widget) async {
     return await _screenshotController.captureFromWidget(
       widget,
       delay: const Duration(seconds: 0),
+    );
+  }
+
+  Future<PlacemarkMapObject> _buildLocationPlacemark(PlacemarkMapObject pin) async {
+    Uint8List userImage = await _makeImageFromWidget(
+      const Icon(
+        Icons.person_pin_circle_rounded,
+        color: AppColors.routeBlue,
+        size: 40,
+      ),
+    );
+
+    return pin.copyWith(
+      icon: PlacemarkIcon.single(
+        PlacemarkIconStyle(
+          image: BitmapDescriptor.fromBytes(userImage),
+          anchor: const Offset(0.5, 0.85),
+        ),
+      ),
+      opacity: 1,
     );
   }
 }
@@ -186,15 +218,5 @@ class PlacemarkData {
     required this.position,
     required this.onPressed,
     required this.offset,
-  });
-}
-
-class RouteData {
-  MapPosition startPosition;
-  MapPosition endPosition;
-
-  RouteData({
-    required this.startPosition,
-    required this.endPosition,
   });
 }

@@ -40,7 +40,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   @override
   void dispose() {
     widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
-    widget.mapKey.currentState!.routeBuilder = () => [];
+    widget.mapKey.currentState!.routeBuilder = () => null;
     super.dispose();
   }
 
@@ -119,7 +119,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       children: [
         _styledTextButton(
           iconData: Icons.route_rounded,
-          iconColor: AppColors.orange,
+          iconColor: AppColors.routeBlue,
           onPressed: () {
             _isRouteCreated = true;
             setState(() {});
@@ -232,16 +232,10 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     ];
   }
 
-  List<RouteData> _buildRoute() {
-    List<RouteData> result = [];
+  MapPosition? _buildRoute() {
     if (_isRouteCreated) {
-      result.add(
-        RouteData(
-          startPosition: MapPosition(56.664692, 47.815634),
-          endPosition: _presenter.order.carWashPosition,
-        ),
-      );
+      return _presenter.order.carWashPosition;
     }
-    return result;
+    return null;
   }
 }

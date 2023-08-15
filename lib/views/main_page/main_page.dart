@@ -96,7 +96,7 @@ class MainPageState extends State<MainPage> {
     return _topPanelButton(
       iconData: Icons.near_me_rounded,
       onPressed: () {
-        _mapKey.currentState?.moveCameraToUser(10);
+        _mapKey.currentState?.moveCameraToUser(11);
       },
     );
   }
