@@ -1,29 +1,25 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:flutter/material.dart';
 
 class MarkedList extends StatelessWidget {
   final List<MarkedTextData> markedTexts;
-  final double size;
+  final double iconSize;
+  final TextStyle? textStyle;
 
   const MarkedList({
     Key? key,
+    this.textStyle,
     required this.markedTexts,
-    required this.size,
+    required this.iconSize,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(6),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: AppColors.dirtyWhite,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: _textWidgetsList(context),
-      )
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: _textWidgetsList(context),
     );
   }
 
@@ -34,8 +30,7 @@ class MarkedList extends StatelessWidget {
   }
 
   Widget _markedText(BuildContext context, MarkedTextData data) {
-    TextStyle textStyle = data.textStyle
-        ?? Theme.of(context).textTheme.titleLarge!.copyWith(fontSize: size - 6,);
+    TextStyle? style = data.textStyle ?? textStyle;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,7 +39,7 @@ class MarkedList extends StatelessWidget {
         Icon(
           data.iconData,
           color: AppColors.orange,
-          size: data.iconData != null ? size : 0,
+          size: data.iconData != null ? iconSize : 0,
         ),
         const SizedBox(width: 6,),
         Expanded(
@@ -52,7 +47,7 @@ class MarkedList extends StatelessWidget {
             padding: const EdgeInsets.only(top: 3),
             child: Text(
               data.text,
-              style: textStyle,
+              style: style,
             ),
           ),
         ),

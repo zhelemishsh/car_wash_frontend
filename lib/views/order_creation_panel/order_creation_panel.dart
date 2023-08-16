@@ -3,6 +3,7 @@ import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/map_field/map_field.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_contract.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_presenter.dart';
+import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -88,7 +89,7 @@ class OrderCreationPanelState
           ),
         ),
         SizedBox(
-          height: 32,
+          height: 38,
           child: Row(
             children: [
               Expanded(flex: 1, child: _dayButton("Today"),),
@@ -98,11 +99,11 @@ class OrderCreationPanelState
           ),
         ),
         SizedBox(
-            height: 32,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: _carNamesList(),
-            )
+          height: 38,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: _carNamesList(),
+          ),
         ),
         SizedBox(
           height: 55,
@@ -119,31 +120,36 @@ class OrderCreationPanelState
   }
 
   Widget _carServiceWidget(ServiceWidgetData serviceData) {
-    return _styledButton(
-        isToggled: _presenter.orderBuilder.services.contains(serviceData.service),
-        onPressed: () {
-          if (_presenter.orderBuilder.services.contains(serviceData.service)) {
-            _presenter.orderBuilder.deleteService(serviceData.service);
-          }
-          else {
-            _presenter.orderBuilder.addService(serviceData.service);
-          }
-          setState(() {});
-        },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              serviceData.iconData,
-              size: 35,
+    return DataButtonPanel(
+      margin: 3,
+      isToggled: _presenter.orderBuilder.services.contains(serviceData.service),
+      onPressed: () {
+        if (_presenter.orderBuilder.services.contains(serviceData.service)) {
+          _presenter.orderBuilder.deleteService(serviceData.service);
+        }
+        else {
+          _presenter.orderBuilder.addService(serviceData.service);
+        }
+        setState(() {});
+      },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            serviceData.iconData,
+            size: 35,
+          ),
+          Container(
+            constraints: const BoxConstraints(maxWidth: 75),
+            padding: const EdgeInsets.only(left: 4),
+            child: Text(
+              serviceData.service.parseToString(),
+              softWrap: true,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
-            Container(
-              constraints: const BoxConstraints(maxWidth: 75),
-              padding: const EdgeInsets.only(left: 4),
-              child: Text(serviceData.service.parseToString(), softWrap: true,),
-            ),
-          ],
-        )
+          ),
+        ],
+      ),
     );
   }
 
@@ -153,13 +159,17 @@ class OrderCreationPanelState
       carNames.add(
         Expanded(
           flex: 1,
-          child: _styledButton(
+          child: DataButtonPanel(
+            margin: 3,
             onPressed: () {
               _presenter.orderBuilder.car = car;
               setState(() {});
             },
             isToggled: _presenter.orderBuilder.car?.number == car.number,
-            child: Text(car.name),
+            child: Text(
+              car.name,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
           ),
         ),
       );
@@ -226,8 +236,8 @@ class OrderCreationPanelState
     required TimeOfDay time,
     required bool Function(TimeOfDay) onTimePicked
   }) {
-    return _styledButton(
-      isToggled: false,
+    return DataButtonPanel(
+      margin: 3,
       onPressed: () {
         showDialog(
           context: context,
@@ -247,7 +257,8 @@ class OrderCreationPanelState
   }
 
   Widget _dayButton(String day) {
-    return _styledButton(
+    return DataButtonPanel(
+      margin: 3,
       onPressed: () {
         _presenter.orderBuilder.washDay = day;
         setState(() {});
@@ -256,34 +267,6 @@ class OrderCreationPanelState
       child: Text(
         day,
         style: Theme.of(context).textTheme.titleSmall,
-      ),
-    );
-  }
-
-  Widget _styledButton({
-    required Widget child,
-    required Function() onPressed,
-    required bool isToggled,
-  }) {
-    return Container(
-      margin: const EdgeInsets.all(3),
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          foregroundColor: Colors.black,
-          backgroundColor: isToggled
-              ? AppColors.lightOrange
-              : AppColors.dirtyWhite,
-        ),
-        child: Container(
-          alignment: Alignment.center,
-          height: double.infinity,
-          child: child,
-        ),
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/views/offer_selection_panel/confirming_dialog.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_placemark_widget.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_presenter.dart';
+import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -135,16 +136,7 @@ class OfferSelectionPanelState
   Widget _carWashInfoPanel(CarWashOffer offer) {
     return Container(
       margin: const EdgeInsets.all(3),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(8),
-          backgroundColor: AppColors.dirtyWhite,
-          foregroundColor: Colors.orange,
-          iconColor: Colors.black,
-        ),
+      child: DataButtonPanel(
         onPressed: () {
           _showConfirmingDialog(offer);
         },

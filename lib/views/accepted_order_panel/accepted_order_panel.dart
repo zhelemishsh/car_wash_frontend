@@ -1,5 +1,6 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
+import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -95,10 +96,10 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   }
 
   Widget _carWashPositionPanel() {
-    return Container(
-      margin: const EdgeInsets.all(3),
+    return DataPanel(
+      margin: 3,
       child: MarkedList(
-        size: 25,
+        iconSize: 25,
         markedTexts: [
           MarkedTextData(
             text: _presenter.order.carWashName,
@@ -118,7 +119,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        _styledTextButton(
+        _styledButton(
           iconData: Icons.route_rounded,
           iconColor: AppColors.routeBlue,
           onPressed: () {
@@ -126,7 +127,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
             setState(() {});
           },
         ),
-        _styledTextButton(
+        _styledButton(
           iconData: Icons.delete_rounded,
           iconColor: AppColors.darkRed,
           onPressed: () {},
@@ -135,24 +136,16 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     );
   }
 
-  Widget _styledTextButton({
+  Widget _styledButton({
     required IconData iconData,
     required Color iconColor,
     required Function() onPressed
   }) {
-    return Container(
-      width: 58,
-      margin: const EdgeInsets.all(3),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(10),
-          backgroundColor: AppColors.dirtyWhite,
-          foregroundColor: iconColor,
-          iconColor: Colors.black,
-        ),
+    return SizedBox(
+      width: 67,
+      child: DataButtonPanel(
+        margin: 3,
+        splashColor: iconColor,
         onPressed: onPressed,
         child: Icon(
           iconData,
@@ -164,18 +157,19 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   }
 
   Widget _orderInfoPanel() {
-    return Container(
-      margin: const EdgeInsets.all(3),
+    return DataPanel(
+      margin: 3,
       child: MarkedList(
-        size: 25,
+        textStyle: Theme.of(context).textTheme.titleMedium,
+        iconSize: 25,
         markedTexts: [
           MarkedTextData(
             text: DateFormat.MMMMd('en_US').format(_presenter.order.startTime),
             iconData: Icons.calendar_month_rounded,
           ),
           MarkedTextData(
-            text: "${TimeUtils.formatDateTime(_presenter.order.startTime)} - "
-                "${TimeUtils.formatDateTime(_presenter.order.endTime)}",
+            text: "${DateFormat.Hm().format(_presenter.order.startTime)} - "
+                "${DateFormat.Hm().format(_presenter.order.endTime)}",
             iconData: Icons.schedule_rounded,
           ),
           MarkedTextData(
