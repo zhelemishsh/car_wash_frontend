@@ -2,6 +2,7 @@ import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/time_utils.dart';
@@ -168,6 +169,10 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       child: MarkedList(
         size: 25,
         markedTexts: [
+          MarkedTextData(
+            text: DateFormat.MMMMd('en_US').format(_presenter.order.startTime),
+            iconData: Icons.calendar_month_rounded,
+          ),
           MarkedTextData(
             text: "${TimeUtils.formatDateTime(_presenter.order.startTime)} - "
                 "${TimeUtils.formatDateTime(_presenter.order.endTime)}",

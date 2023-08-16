@@ -35,6 +35,7 @@ dependencies:
   flutter_swipe_detector: ^2.0.0
   screenshot: ^2.1.0
   great_circle_distance_calculator: ^1.0.4
+  intl: ^0.18.1
 
 
   # The following adds the Cupertino Icons font to your application.
