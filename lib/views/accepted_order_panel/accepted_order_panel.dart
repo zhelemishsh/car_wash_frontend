@@ -148,7 +148,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(10),
-          backgroundColor: AppColors.lightGrey,
+          backgroundColor: AppColors.dirtyWhite,
           foregroundColor: iconColor,
           iconColor: Colors.black,
         ),

@@ -54,7 +54,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
       alignment: Alignment.center,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
-        color: AppColors.lightGrey,
+        color: AppColors.dirtyWhite,
         boxShadow: [
           BoxShadow(
             color: Color.fromRGBO(0, 0, 0, 0.4),
