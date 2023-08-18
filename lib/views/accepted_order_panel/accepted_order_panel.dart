@@ -9,6 +9,7 @@ import '../../theme/app_colors.dart';
 import '../../utils/time_utils.dart';
 import '../map_field/map_field.dart';
 import 'accepted_order_presenter.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class AcceptedOrderPanel extends StatefulWidget {
   final GlobalKey<MapFieldState> mapKey;
@@ -31,6 +32,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   @override
   void initState() {
     super.initState();
+
     _presenter = AcceptedOrderPresenter();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
@@ -164,7 +166,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
         iconSize: 25,
         markedTexts: [
           MarkedTextData(
-            text: DateFormat.MMMMd('en_US').format(_presenter.order.startTime),
+            text: DateFormat('dd.MM.yy').format(_presenter.order.startTime),
             iconData: Icons.calendar_month_rounded,
           ),
           MarkedTextData(

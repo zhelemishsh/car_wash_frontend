@@ -92,9 +92,9 @@ class OrderCreationPanelState
           height: 40,
           child: Row(
             children: [
-              Expanded(flex: 1, child: _dayButton("Today"),),
-              Expanded(flex: 1, child: _dayButton("Tomorrow"),),
-              Expanded(flex: 1, child: _dayButton("Day about"),),
+              Expanded(flex: 1, child: _dayButton("Сегодня"),),
+              Expanded(flex: 1, child: _dayButton("Завтра"),),
+              Expanded(flex: 1, child: _dayButton("Послезавтра"),),
             ],
           ),
         ),
@@ -140,7 +140,7 @@ class OrderCreationPanelState
             size: 35,
           ),
           Container(
-            constraints: const BoxConstraints(maxWidth: 75),
+            constraints: const BoxConstraints(maxWidth: 80),
             padding: const EdgeInsets.only(left: 4),
             child: Text(
               serviceData.service.parseToString(),

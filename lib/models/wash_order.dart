@@ -96,13 +96,13 @@ extension ParseToString on WashService {
   String parseToString() {
     switch (this) {
       case WashService.interiorDryCleaning:
-        return "Interior dry cleaning";
+        return "Химчистка салона";
       case WashService.diskCleaning:
-        return "Disk cleaning";
+        return "Чистка дисков";
       case WashService.bodyPolishing:
-        return "Body polishing";
+        return "Полировка кузова";
       case WashService.engineCleaning:
-        return "Engine cleaning";
+        return "Мойка двигателя";
     }
   }
 }

@@ -126,7 +126,7 @@ class AccountMenuPageState extends State<AccountMenuPage> {
     }
 
     return TitledPanel(
-      title: "Your cars:",
+      title: "Ваши машины:",
       buttonIconData: iconData,
       buttonColor: buttonColor,
       onButtonPressed: buttonFunction,
