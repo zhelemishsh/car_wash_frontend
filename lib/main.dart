@@ -8,8 +8,10 @@ void main() {
   runApp(MaterialApp(
     theme: ThemeData(
       primarySwatch: Colors.blue,
+      useMaterial3: true,
       appBarTheme: const AppBarTheme(
-        color: AppColors.orange,
+        foregroundColor: AppColors.orange,
+        color: AppColors.grey,
       ),
     ),
     title: 'Navigation Basics',

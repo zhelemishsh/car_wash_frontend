@@ -5,11 +5,13 @@ import '../../theme/app_colors.dart';
 class DataPanel extends StatelessWidget {
   final Widget child;
   final double margin;
+  final Color? backgroundColor;
 
   const DataPanel({
     Key? key,
     required this.child,
     this.margin = 0,
+    this.backgroundColor,
   }) : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class DataPanel extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: AppColors.dirtyWhite,
+        color: backgroundColor ?? AppColors.dirtyWhite,
       ),
       child: child,
     );

@@ -78,7 +78,7 @@ class OrderCreationPanelState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 45,
+          height: 50,
           child: Row(
             children: [
               Expanded(flex: 5, child: _startTimeButton(),),
@@ -89,7 +89,7 @@ class OrderCreationPanelState
           ),
         ),
         SizedBox(
-          height: 38,
+          height: 40,
           child: Row(
             children: [
               Expanded(flex: 1, child: _dayButton("Today"),),
@@ -99,14 +99,14 @@ class OrderCreationPanelState
           ),
         ),
         SizedBox(
-          height: 38,
+          height: 40,
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: _carNamesList(),
           ),
         ),
         SizedBox(
-          height: 55,
+          height: 60,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: _carServices.length,

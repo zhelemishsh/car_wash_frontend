@@ -43,15 +43,18 @@ class MainPageState extends State<MainPage> {
         elevation: 0,
         title: _appBarPanel(),
       ),
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          mapField,
-          BottomPanel(
-            key: _bottomPanelKey,
-            child: _orderStateWidget(),
-          ),
-        ],
+      body: SafeArea(
+        top: false,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            mapField,
+            BottomPanel(
+              key: _bottomPanelKey,
+              child: _orderStateWidget(),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -103,7 +103,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
         markedTexts: [
           MarkedTextData(
             text: _presenter.order.carWashName,
-            textStyle: Theme.of(context).textTheme.titleLarge,
+            textStyle: Theme.of(context).textTheme.titleMedium,
           ),
           MarkedTextData(
             text: _presenter.order.carWashAddress,

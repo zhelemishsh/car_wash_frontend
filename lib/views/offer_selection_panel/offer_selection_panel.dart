@@ -146,13 +146,12 @@ class OfferSelectionPanelState
             Row(
               children: [
                 Expanded(
-                  flex: 4,
                   child: Text(
                     offer.name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                Expanded(flex: 1, child: _ratingPanel(offer.rating),),
+                _ratingPanel(offer.rating),
               ],
             ),
             Text(offer.address, style: Theme.of(context).textTheme.titleSmall,),
@@ -160,8 +159,8 @@ class OfferSelectionPanelState
               padding: const EdgeInsets.only(top: 7),
               child: Row(
                 children: [
-                  Expanded(flex: 2, child: _timePanel(offer.startTime, offer.endTime)),
-                  Expanded(flex: 1, child: _pricePanel(offer.price),),
+                  Expanded(child: _timePanel(offer.startTime, offer.endTime)),
+                  _pricePanel(offer.price),
                 ],
               ),
             ),
@@ -176,10 +175,11 @@ class OfferSelectionPanelState
       children: [
         const Icon(
           Icons.schedule_rounded,
+          size: 20,
         ),
         Text(
           "${_formatTime(startTime)} - ${_formatTime(endTime)}",
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleMedium,
         )
       ],
     );
@@ -191,10 +191,11 @@ class OfferSelectionPanelState
       children: [
         Text(
           price.toString(),
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const Icon(
           Icons.currency_ruble_rounded,
+          size: 20,
         ),
       ],
     );
