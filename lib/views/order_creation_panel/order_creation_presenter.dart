@@ -8,7 +8,7 @@ class OrderCreationPresenter {
   final OrderCreationContract _view;
   final WashOrderBuilder orderBuilder = WashOrderBuilder();
   final List<Car> cars = [
-    Car("1", "Mercedes-Benz A"), Car("2", "BMW X7 M60i"),
+    Car("1", "Mercedes-Benz A", CarType.passengerCar), Car("2", "BMW X7 M60i", CarType.truck),
   ];
 
   OrderCreationPresenter(this._view);

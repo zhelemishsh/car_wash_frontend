@@ -58,7 +58,7 @@ class OfferSelectionPanelState
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 350, minHeight: 0),
+      constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
       child: ListView.builder(
         padding: EdgeInsets.zero,
         shrinkWrap: true,

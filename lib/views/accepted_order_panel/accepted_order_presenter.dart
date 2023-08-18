@@ -13,7 +13,7 @@ class AcceptedOrderPresenter {
     500,
     DateTime.now(),
     DateTime.now(),
-    Car("123", "Mersedes"),
+    Car("123", "Mersedes", CarType.passengerCar),
     [WashService.interiorDryCleaning, WashService.diskCleaning,]
   );
 }

@@ -161,10 +161,7 @@ class AccountMenuPageState extends State<AccountMenuPage> {
       isToggled: _presenter.selectedCars.contains(car),
       child: Row(
         children: [
-          const Icon(
-            Icons.local_shipping_rounded,
-            size: 40,
-          ),
+          Icon(_carIcon(car.type), size: 40,),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(left: 5),
@@ -213,5 +210,14 @@ class AccountMenuPageState extends State<AccountMenuPage> {
         ),
       ],
     );
+  }
+
+  IconData _carIcon(CarType carType) {
+    switch (carType) {
+      case CarType.passengerCar:
+        return Icons.drive_eta_rounded;
+      case CarType.truck:
+        return Icons.local_shipping_rounded;
+    }
   }
 }
