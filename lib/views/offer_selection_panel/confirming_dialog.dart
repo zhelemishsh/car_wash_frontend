@@ -2,8 +2,6 @@ import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
-import 'package:car_wash_frontend/views/stateless_views/rounded_icon_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/car_wash_offer.dart';
@@ -150,23 +148,6 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
         padding: const EdgeInsets.symmetric(vertical: 4),
         backgroundColor: AppColors.dirtyWhite,
         foregroundColor: AppColors.orange,
-      ),
-    );
-  }
-
-  Widget _roundedIcon(double size, IconData iconData) {
-    return Container(
-      width: size,
-      height: size,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.lightGrey,
-        borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-      ),
-      child: Icon(
-        iconData,
-        color: AppColors.orange,
-        size: size - 5,
       ),
     );
   }
