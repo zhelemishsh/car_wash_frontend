@@ -34,6 +34,7 @@ class DataButtonPanel extends StatelessWidget {
   final Color? splashColor;
   final bool isToggled;
   final double margin;
+  final Color? backgroundColor;
 
   const DataButtonPanel({
     Key? key,
@@ -42,6 +43,7 @@ class DataButtonPanel extends StatelessWidget {
     this.splashColor,
     this.isToggled = false,
     this.margin = 0,
+    this.backgroundColor = AppColors.dirtyWhite,
   }) : super(key: key);
 
   @override
@@ -56,7 +58,7 @@ class DataButtonPanel extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           padding: const EdgeInsets.all(8),
-          backgroundColor: isToggled ? AppColors.lightOrange : AppColors.dirtyWhite,
+          backgroundColor: isToggled ? AppColors.lightOrange : backgroundColor,
           foregroundColor: splashColor ?? AppColors.orange,
           iconColor: AppColors.black,
         ),

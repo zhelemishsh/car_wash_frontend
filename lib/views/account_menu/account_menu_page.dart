@@ -1,10 +1,11 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/views/account_menu/account_menu_contract.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_presenter.dart';
+import 'package:car_wash_frontend/views/account_menu/add_car_dialog.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:car_wash_frontend/views/stateless_views/titled_panel.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import '../../models/car.dart';
 
@@ -17,12 +18,13 @@ class AccountMenuPage extends StatefulWidget {
   }
 }
 
-class AccountMenuPageState extends State<AccountMenuPage> {
+class AccountMenuPageState extends State<AccountMenuPage>
+    implements AccountMenuContract {
   late AccountMenuPresenter _presenter;
 
   @override
   void initState() {
-    _presenter = AccountMenuPresenter();
+    _presenter = AccountMenuPresenter(this);
     super.initState();
   }
 
@@ -117,7 +119,18 @@ class AccountMenuPageState extends State<AccountMenuPage> {
     if (_presenter.selectedCars.isEmpty) {
       iconData = Icons.add_rounded;
       buttonColor = AppColors.orange;
-      buttonFunction = () {};
+      buttonFunction = () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AddCarDialog(
+              onAdded: (addedCar) {
+                _presenter.addCar(addedCar);
+              },
+            );
+          },
+        );
+      };
     }
     else {
       iconData = Icons.delete_rounded;
@@ -161,7 +174,7 @@ class AccountMenuPageState extends State<AccountMenuPage> {
       isToggled: _presenter.selectedCars.contains(car),
       child: Row(
         children: [
-          Icon(_carIcon(car.type), size: 40,),
+          Icon(car.type.carIcon(), size: 40,),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(left: 5),
@@ -212,12 +225,17 @@ class AccountMenuPageState extends State<AccountMenuPage> {
     );
   }
 
-  IconData _carIcon(CarType carType) {
-    switch (carType) {
-      case CarType.passengerCar:
-        return Icons.drive_eta_rounded;
-      case CarType.truck:
-        return Icons.local_shipping_rounded;
-    }
+  @override
+  void showError(String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(errorMessage),
+      ),
+    );
+  }
+
+  @override
+  void update() {
+    setState(() {});
   }
 }
