@@ -1,19 +1,18 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
-import 'package:car_wash_frontend/views/sign_up_page/sign_up_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
-class LoginPage extends StatefulWidget{
-  const LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget{
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  LoginPageState createState(){
-    return LoginPageState();
+  SignUpPageState createState() {
+    return SignUpPageState();
   }
 }
 
-class LoginPageState extends State<LoginPage>{
+class SignUpPageState extends State<SignUpPage>{
+
   final _formKey = GlobalKey<FormState>();
 
   final _phoneInputFormatter = MaskTextInputFormatter(
@@ -23,44 +22,60 @@ class LoginPageState extends State<LoginPage>{
   );
 
   var _isPasswordObscured = true;
+  String _userName = '';
   String _password = '';
   String _phoneNumber = '';
 
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: _loginPanelWidget(),
+      appBar: AppBar(
+        backgroundColor: AppColors.dirtyWhite,
+        elevation: 0.0,
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            size: 40,
+          ),
+          color: AppColors.orange,
+          alignment: Alignment.centerLeft,
+        ),
+      ),
+      body: _signUpPanelWidget(),
     );
   }
 
-
-  Widget _loginPanelWidget(){
+  Widget _signUpPanelWidget(){
     return Container(
       color: AppColors.dirtyWhite,
       alignment: Alignment.center,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            "PomoiCar",
-            style: TextStyle(
-                color: AppColors.darkGrey,
-                fontSize: 50,
-                fontWeight: FontWeight.w800
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Регистация",
+              style: TextStyle(
+                  color: AppColors.darkGrey,
+                  fontSize: 50,
+                  fontWeight: FontWeight.w800
+              ),
             ),
-          ),
 
-          Container(
-            constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 400.0),
-            padding: const EdgeInsets.all(20.0),
-            decoration: BoxDecoration(
-              color: AppColors.darkGrey,
-              borderRadius: BorderRadius.circular(15),
+            Container(
+              constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 500.0),
+              padding: const EdgeInsets.all(20.0),
+              decoration: BoxDecoration(
+                color: AppColors.darkGrey,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: _inputPanelsWidget(),
             ),
-            child: _inputPanelsWidget(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -70,6 +85,23 @@ class LoginPageState extends State<LoginPage>{
       key: _formKey,
       child: Column(
         children: [
+          _avatarPanel(),
+
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Имя:',
+              style: TextStyle(
+                  fontSize: 15.0,
+                  color: AppColors.orange
+              ),
+            ),
+          ),
+
+          _userNameInputPanel(),
+
+          const SizedBox(height: 20.0),
+
           const Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -100,26 +132,78 @@ class LoginPageState extends State<LoginPage>{
 
           const SizedBox(height: 20.0),
 
-          _loginButton(),
-
-          const SizedBox(height: 20.0),
-
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Ещё не зарегистрированы?',
-              style: TextStyle(
-                  fontSize: 15.0,
-                  color: AppColors.lightOrange
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 5.0),
-
-          _signUpButton()
+          _signUpButton(),
         ],
       ),
+    );
+  }
+
+  Widget _avatarPanel(){
+    return Stack(
+      children: [
+        const CircleAvatar(
+          foregroundImage: AssetImage("assets/goshan.jpg"),
+          radius: 40.0,
+        ),
+
+        Positioned(
+          bottom: -10,
+          right: -10,
+          child: IconButton(
+            color: AppColors.lightOrange,
+            onPressed: (){},
+            icon: const Icon(
+                Icons.photo_camera
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget _userNameInputPanel(){
+    return TextFormField(
+      keyboardType: TextInputType.text,
+      style: const TextStyle(
+          color: AppColors.dirtyWhite
+      ),
+      decoration: const InputDecoration(
+        hintText: "Введите имя",
+        hintStyle: TextStyle(
+          color: Color.fromRGBO(230, 230, 230, 0.5),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2.0,
+            color: AppColors.lightOrange,
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2.0,
+            color: AppColors.orange,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2.0,
+            color: AppColors.errorRed,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 2.0,
+            color: AppColors.orange,
+          ),
+        ),
+      ),
+      validator: (String? value){
+        if (value != null && value.isEmpty) {
+          return 'Пожалуйста введите имя';
+        }
+        _userName = value!;
+        return null;
+      },
     );
   }
 
@@ -233,7 +317,7 @@ class LoginPageState extends State<LoginPage>{
     );
   }
 
-  Widget _loginButton(){
+  Widget _signUpButton(){
     return ElevatedButton(
       onPressed: (){
         if(_formKey.currentState!.validate()) {
@@ -245,7 +329,7 @@ class LoginPageState extends State<LoginPage>{
         }
       },
       child: const Text(
-        'Авторизоваться',
+        'Зарегестрироваться',
         style: TextStyle(
             color: AppColors.dirtyWhite
         ),
@@ -256,30 +340,4 @@ class LoginPageState extends State<LoginPage>{
       ),
     );
   }
-
-  Widget _signUpButton(){
-    return ElevatedButton(
-      onPressed: (){
-        Navigator.push(
-          context,
-          CupertinoPageRoute(builder: (context) => const SignUpPage()),
-        );
-      },
-      child: const Text(
-        'Зарегистрироваться',
-        style: TextStyle(
-          color: AppColors.lightOrange
-        ),
-      ),
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size.fromHeight(50),
-        backgroundColor: AppColors.grey,
-        side: const BorderSide(
-          color: AppColors.lightOrange,
-          width: 2.0,
-        )
-      ),
-    );
-  }
-
 }

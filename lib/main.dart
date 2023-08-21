@@ -15,8 +15,7 @@ void main() {
     ),
     title: 'Navigation Basics',
     // home: CarWashSelectionPage(),
-    //home: MainPage(),
-    home: LoginPage(),
+    home: MainPage(),
   ));
 }
 
