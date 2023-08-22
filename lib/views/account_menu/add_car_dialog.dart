@@ -1,5 +1,6 @@
 import 'package:car_wash_frontend/models/car.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
+import 'package:car_wash_frontend/views/stateless_views/input_panel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -85,8 +86,8 @@ class AddCarDialogState extends State<AddCarDialog> {
   }
 
   Widget _carNameInputPanel() {
-    return TextFormField(
-      decoration: _inputDecoration("Название"),
+    return InputPanel(
+      labelText: "Название",
       validator: (String? value){
         if (value == null || value.isEmpty) {
           return 'Введите название машины';
@@ -98,8 +99,8 @@ class AddCarDialogState extends State<AddCarDialog> {
   }
 
   Widget _carNumberInputPanel() {
-    return TextFormField(
-      decoration: _inputDecoration("Номер"),
+    return InputPanel(
+      labelText: "Номер",
       validator: (String? value){
         if (value == null || value.isEmpty) {
           return 'Введите номер машины';
@@ -111,29 +112,6 @@ class AddCarDialogState extends State<AddCarDialog> {
         return null;
       },
       inputFormatters: [_carNumberFormatter],
-    );
-  }
-
-  InputBorder _inputFieldBorder(Color color) {
-    return OutlineInputBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(10)),
-      borderSide: BorderSide(
-        width: 2.0,
-        color: color,
-      ),
-    );
-  }
-
-  InputDecoration _inputDecoration(String labelText) {
-    return InputDecoration(
-      contentPadding: const EdgeInsets.all(10),
-      errorBorder: _inputFieldBorder(AppColors.darkRed),
-      focusedErrorBorder: _inputFieldBorder(AppColors.orange),
-      enabledBorder: _inputFieldBorder(AppColors.lightOrange),
-      focusedBorder: _inputFieldBorder(AppColors.orange),
-      labelText: labelText,
-      labelStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.lightOrange),
-      floatingLabelStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.orange),
     );
   }
 

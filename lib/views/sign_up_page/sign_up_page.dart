@@ -1,6 +1,10 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/views/login_page/login_page.dart';
+import 'package:car_wash_frontend/views/stateless_views/input_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
+import '../stateless_views/data_panel.dart';
 
 class SignUpPage extends StatefulWidget{
   const SignUpPage({Key? key}) : super(key: key);
@@ -21,7 +25,6 @@ class SignUpPageState extends State<SignUpPage>{
     type: MaskAutoCompletionType.lazy,
   );
 
-  var _isPasswordObscured = true;
   String _userName = '';
   String _password = '';
   String _phoneNumber = '';
@@ -30,229 +33,118 @@ class SignUpPageState extends State<SignUpPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.dirtyWhite,
-        elevation: 0.0,
-        leading: IconButton(
-          onPressed: (){
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 40,
-          ),
-          color: AppColors.orange,
-          alignment: Alignment.centerLeft,
-        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
-      body: _signUpPanelWidget(),
-    );
-  }
-
-  Widget _signUpPanelWidget(){
-    return Container(
-      color: AppColors.dirtyWhite,
-      alignment: Alignment.center,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Регистация",
-              style: TextStyle(
+      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.dirtyWhite,
+      body: Align(
+        alignment: Alignment.center,
+        child: SizedBox(
+          width: 320,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Регистрация",
+                style: TextStyle(
                   color: AppColors.black,
-                  fontSize: 50,
-                  fontWeight: FontWeight.w800
+                  fontSize: 45,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            ),
 
-            Container(
-              constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 550.0),
-              padding: const EdgeInsets.all(20.0),
-              decoration: BoxDecoration(
-                color: AppColors.black,
-                borderRadius: BorderRadius.circular(15),
+              DataPanel(
+                backgroundColor: AppColors.black,
+                borderRadius: 16,
+                padding: 11,
+                child: _signUpForm(),
               ),
-              child: _inputPanelsWidget(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _inputPanelsWidget(){
+  Widget _signUpForm(){
     return Form(
       key: _formKey,
       child: Column(
         children: [
-          _avatarPanel(),
-
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Имя:',
-              style: TextStyle(
-                  fontSize: 15.0,
-                  color: AppColors.orange
-              ),
-            ),
-          ),
-
-          _userNameInputPanel(),
-
-          const SizedBox(height: 20.0),
-
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Номер телефона:',
-              style: TextStyle(
-                  fontSize: 15.0,
-                  color: AppColors.orange
-              ),
-            ),
-          ),
-
-          _phoneInputPanel(),
-
-          const SizedBox(height: 20.0),
-
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Пароль:',
-              style: TextStyle(
-                  fontSize: 15.0,
-                  color: AppColors.orange
-              ),
-            ),
-          ),
-
+          _identityPanel(),
           _passwordInputPanel(),
-
-          const SizedBox(height: 20.0),
-
           _signUpButton(),
         ],
       ),
     );
   }
 
-  Widget _avatarPanel(){
-    return Stack(
-      children: [
-        const CircleAvatar(
-          foregroundImage: AssetImage("assets/goshan.jpg"),
-          radius: 40.0,
-        ),
-
-        Positioned(
-          bottom: -10,
-          right: -10,
-          child: IconButton(
-            color: AppColors.lightOrange,
-            onPressed: (){},
-            icon: const Icon(
-                Icons.photo_camera
+  Widget _identityPanel() {
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _userNameInputPanel(),
+                _phoneInputPanel(),
+              ],
             ),
           ),
-        )
-      ],
+          _userImagePanel(),
+        ],
+      ),
+    );
+  }
+
+  Widget _userImagePanel() {
+    return Container(
+      margin: const EdgeInsets.all(4),
+      constraints: const BoxConstraints(maxWidth: 100),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        image: const DecorationImage(
+          image:  AssetImage("assets/goshan.jpg"),
+          fit: BoxFit.fitHeight,
+        ),
+      ),
     );
   }
 
   Widget _userNameInputPanel(){
-    return TextFormField(
+    return InputPanel(
+      margin: 4,
       keyboardType: TextInputType.text,
-      style: const TextStyle(
-          color: AppColors.dirtyWhite
-      ),
-      decoration: const InputDecoration(
-        hintText: "Введите имя",
-        hintStyle: TextStyle(
-          color: Color.fromRGBO(230, 230, 230, 0.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.lightOrange,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.orange,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.darkRed,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.orange,
-          ),
-        ),
-      ),
+      textColor: AppColors.dirtyWhite,
+      labelText: "Имя",
       validator: (String? value){
-        if (value != null && value.isEmpty) {
-          return 'Пожалуйста введите имя';
+        if (value == null || value.isEmpty) {
+          return 'Введите имя';
         }
-        _userName = value!;
+        _userName = value;
         return null;
       },
     );
   }
 
   Widget _phoneInputPanel(){
-    return TextFormField(
+    return InputPanel(
+      margin: 4,
       keyboardType: TextInputType.phone,
-      style: const TextStyle(
-          color: AppColors.dirtyWhite
-      ),
-      decoration: const InputDecoration(
-        hintText: "+7 (000) 000-00-00",
-        hintStyle: TextStyle(
-          color: Color.fromRGBO(230, 230, 230, 0.5),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.lightOrange,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.orange,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.darkRed,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.orange,
-          ),
-        ),
-      ),
+      textColor: AppColors.dirtyWhite,
+      labelText: "Номер телефона",
       inputFormatters: [
         _phoneInputFormatter
       ],
       validator: (String? value){
         if (value != null && value.isEmpty) {
-          return 'Пожалуйста введите телефон';
+          return 'Введите телефон';
         }
-
         if (_phoneInputFormatter.getUnmaskedText().length != 10) {
-          return "Неправильно введен номер";
+          return "Неполный номер";
         }
         _phoneNumber = _phoneInputFormatter.getMaskedText();
         return null;
@@ -261,83 +153,43 @@ class SignUpPageState extends State<SignUpPage>{
   }
 
   Widget _passwordInputPanel(){
-    return TextFormField(
-      style: const TextStyle(
-          color: AppColors.dirtyWhite
-      ),
-      obscureText: _isPasswordObscured,
-      decoration: InputDecoration(
-        hintText: "Введите пароль",
-        hintStyle: const TextStyle(
-          color: Color.fromRGBO(230, 230, 230, 0.5),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.lightOrange,
-          ),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.orange,
-          ),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.darkRed,
-          ),
-        ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 2.0,
-            color: AppColors.orange,
-          ),
-        ),
-        suffixIcon: IconButton(
-          color: AppColors.lightOrange,
-          onPressed: () {
-            setState(() {
-              _isPasswordObscured = !_isPasswordObscured;
-            });
-          },
-          icon: _isPasswordObscured ?
-          const Icon(Icons.visibility) :
-          const Icon(Icons.visibility_off),
-        ),
-      ),
+    return InputPanel(
+      margin: 4,
+      isPasswordField: true,
+      textColor: AppColors.dirtyWhite,
+      labelText: "Пароль",
       validator: (String? value){
-        if (value != null && value.isEmpty) {
-          return 'Пожалуйста введите пароль';
+        if (value == null || value.isEmpty) {
+          return 'Введите пароль';
         }
-        _password = value!;
+        _password = value;
         return null;
       },
     );
   }
 
   Widget _signUpButton(){
-    return ElevatedButton(
-      onPressed: (){
-        if(_formKey.currentState!.validate()) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(
-                "Phone: " + _phoneNumber + "  Password: " + _password
-            ),
-            backgroundColor: AppColors.lightOrange,));
-        }
-      },
-      child: const Text(
-        'Зарегестрироваться',
-        style: TextStyle(
-            color: AppColors.dirtyWhite
+    return DataButtonPanel(
+      margin: 4,
+      height: 45,
+      splashColor: AppColors.dirtyWhite,
+      backgroundColor: AppColors.orange,
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          'Зарегестрироваться',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
         ),
       ),
-      style: ElevatedButton.styleFrom(
-        minimumSize: const Size.fromHeight(50),
-        backgroundColor: AppColors.orange,
-      ),
+      onPressed: () {
+        if(_formKey.currentState!.validate()) {
+          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        }
+      },
     );
   }
 }
