@@ -66,7 +66,7 @@ class SignUpPageState extends State<SignUpPage>{
             ),
 
             Container(
-              constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 500.0),
+              constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 550.0),
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
                 color: AppColors.darkGrey,

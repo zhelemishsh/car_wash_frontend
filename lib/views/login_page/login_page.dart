@@ -52,7 +52,7 @@ class LoginPageState extends State<LoginPage>{
           ),
 
           Container(
-            constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 400.0),
+            constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 450.0),
             padding: const EdgeInsets.all(20.0),
             decoration: BoxDecoration(
               color: AppColors.darkGrey,
