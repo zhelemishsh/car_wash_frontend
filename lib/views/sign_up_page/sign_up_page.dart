@@ -59,7 +59,7 @@ class SignUpPageState extends State<SignUpPage>{
             const Text(
               "Регистация",
               style: TextStyle(
-                  color: AppColors.darkGrey,
+                  color: AppColors.black,
                   fontSize: 50,
                   fontWeight: FontWeight.w800
               ),
@@ -69,7 +69,7 @@ class SignUpPageState extends State<SignUpPage>{
               constraints: const BoxConstraints(maxWidth: 300.0, maxHeight: 550.0),
               padding: const EdgeInsets.all(20.0),
               decoration: BoxDecoration(
-                color: AppColors.darkGrey,
+                color: AppColors.black,
                 borderRadius: BorderRadius.circular(15),
               ),
               child: _inputPanelsWidget(),
@@ -187,7 +187,7 @@ class SignUpPageState extends State<SignUpPage>{
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             width: 2.0,
-            color: AppColors.errorRed,
+            color: AppColors.darkRed,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
@@ -233,7 +233,7 @@ class SignUpPageState extends State<SignUpPage>{
         errorBorder: OutlineInputBorder(
           borderSide: BorderSide(
             width: 2.0,
-            color: AppColors.errorRed,
+            color: AppColors.darkRed,
           ),
         ),
         focusedErrorBorder: OutlineInputBorder(
@@ -286,7 +286,7 @@ class SignUpPageState extends State<SignUpPage>{
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(
             width: 2.0,
-            color: AppColors.errorRed,
+            color: AppColors.darkRed,
           ),
         ),
         focusedErrorBorder: const OutlineInputBorder(

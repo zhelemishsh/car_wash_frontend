@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/login_page/login_page.dart';
 import 'package:car_wash_frontend/views/main_page/main_page.dart';
+import 'package:car_wash_frontend/views/sign_up_page/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -17,7 +18,7 @@ void main() {
     ),
     title: 'Navigation Basics',
     // home: CarWashSelectionPage(),
-    home: MainPage(),
+    home: LoginPage(),
   ));
 }
 
