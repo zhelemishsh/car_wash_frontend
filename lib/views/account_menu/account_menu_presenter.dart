@@ -25,4 +25,17 @@ class AccountMenuPresenter {
       _view.showError(error.toString());
     });
   }
+
+  void deleteSelectedCars() {
+    List<String> carNumbers = selectedCars.map((car) => car.number).toList();
+    _accountRepository.deleteCars(carNumbers)
+    .then((_) {
+      cars.removeWhere((car) => carNumbers.contains(car.number));
+      selectedCars.clear();
+      _view.update();
+    })
+    .onError((error, _) {
+      _view.showError(error.toString());
+    });
+  }
 }

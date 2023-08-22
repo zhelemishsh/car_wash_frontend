@@ -4,21 +4,28 @@ import 'package:car_wash_frontend/views/main_page/main_page.dart';
 import 'package:car_wash_frontend/views/sign_up_page/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
 
 
 void main() {
-  runApp(MaterialApp(
-    theme: ThemeData(
-      primarySwatch: Colors.blue,
-      useMaterial3: true,
-      appBarTheme: const AppBarTheme(
-        foregroundColor: AppColors.orange,
-        color: AppColors.grey,
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]).then((value) {
+    runApp(MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          foregroundColor: AppColors.orange,
+          color: AppColors.grey,
+        ),
       ),
-    ),
-    title: 'Navigation Basics',
-    // home: CarWashSelectionPage(),
-    home: LoginPage(),
-  ));
+      title: 'Navigation Basics',
+      // home: CarWashSelectionPage(),
+      home: MainPage(),
+    ));
+  });
 }
 

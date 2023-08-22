@@ -15,6 +15,11 @@ class AccountRepository {
     _cars.add(addedCar);
   }
 
+  Future<void> deleteCars(List<String> carNumbers) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    _cars.removeWhere((car) => carNumbers.contains(car.number));
+  }
+
   Future<List<Car>> getCars() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return List.from(_cars);

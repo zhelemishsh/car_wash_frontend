@@ -2,6 +2,7 @@ import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_contract.dart';
 import 'package:car_wash_frontend/views/account_menu/account_menu_presenter.dart';
 import 'package:car_wash_frontend/views/account_menu/add_car_dialog.dart';
+import 'package:car_wash_frontend/views/stateless_views/ask_dialog.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:car_wash_frontend/views/stateless_views/titled_panel.dart';
@@ -135,7 +136,19 @@ class AccountMenuPageState extends State<AccountMenuPage>
     else {
       iconData = Icons.delete_rounded;
       buttonColor = AppColors.darkRed;
-      buttonFunction = () {};
+      buttonFunction = () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AskDialog(
+              text: "Удалить выбранные машины?",
+              onConfirmed: () {
+                _presenter.deleteSelectedCars();
+              },
+            );
+          },
+        );
+      };
     }
 
     return TitledPanel(
