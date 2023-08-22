@@ -7,13 +7,13 @@ import '../../models/car.dart';
 
 class AcceptedOrderPresenter {
   AcceptedOrder order = AcceptedOrder(
-    "Pomoika",
-    "Pushkin street 25 75",
+    "Помойка",
+    "ул. Пушкина 25 75",
     MapPosition(56.632075, 47.869551),
     500,
     DateTime.now(),
     DateTime.now(),
-    Car("123", "Mersedes"),
+    Car("123", "Mersedes", CarType.passengerCar),
     [WashService.interiorDryCleaning, WashService.diskCleaning,]
   );
 }

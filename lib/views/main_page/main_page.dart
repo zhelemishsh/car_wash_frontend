@@ -43,15 +43,18 @@ class MainPageState extends State<MainPage> {
         elevation: 0,
         title: _appBarPanel(),
       ),
-      body: Stack(
-        alignment: Alignment.topCenter,
-        children: [
-          mapField,
-          BottomPanel(
-            key: _bottomPanelKey,
-            child: _orderStateWidget(),
-          ),
-        ],
+      body: SafeArea(
+        top: false,
+        child: Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            mapField,
+            BottomPanel(
+              key: _bottomPanelKey,
+              child: _orderStateWidget(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -75,20 +78,21 @@ class MainPageState extends State<MainPage> {
 
   Widget _descriptionPanel() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
       decoration: BoxDecoration(
+        color: AppColors.dirtyWhite,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.white.withOpacity(0.8),
-            offset: const Offset(0, 0),
-            blurRadius: 10,
+            color: Colors.black.withOpacity(0.4),
+            offset: const Offset(0, 2),
+            blurRadius: 4,
           ),
         ],
       ),
       child: Text(
         _descriptionText(),
-        style: Theme.of(context).textTheme.titleMedium,
+        style: Theme.of(context).textTheme.titleSmall,
       ),
     );
   }
@@ -132,6 +136,7 @@ class MainPageState extends State<MainPage> {
           padding: const EdgeInsets.all(8),
           backgroundColor: AppColors.grey,
           foregroundColor: AppColors.orange,
+          shadowColor: Colors.black.withOpacity(0.8),
         ),
         child: Icon(
           iconData,
@@ -186,11 +191,11 @@ class MainPageState extends State<MainPage> {
   String _descriptionText() {
     switch (_orderState) {
       case OrderState.orderCreation:
-        return "Select order options";
+        return "Выберите параметры заказа";
       case OrderState.offerSelection:
-        return "Choose a car wash offer";
+        return "Выберите предложение";
       case OrderState.waitingForWash:
-        return "Order waiting for you";
+        return "Ваш текущий заказ:";
     }
   }
 }

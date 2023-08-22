@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/views/offer_selection_panel/confirming_dialog.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_placemark_widget.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_presenter.dart';
+import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -57,7 +58,7 @@ class OfferSelectionPanelState
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 350, minHeight: 0),
+      constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
       child: ListView.builder(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
@@ -135,16 +136,7 @@ class OfferSelectionPanelState
   Widget _carWashInfoPanel(CarWashOffer offer) {
     return Container(
       margin: const EdgeInsets.all(3),
-      child: TextButton(
-        style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: const EdgeInsets.all(8),
-          backgroundColor: AppColors.dirtyWhite,
-          foregroundColor: Colors.orange,
-          iconColor: Colors.black,
-        ),
+      child: DataButtonPanel(
         onPressed: () {
           _showConfirmingDialog(offer);
         },
@@ -154,13 +146,12 @@ class OfferSelectionPanelState
             Row(
               children: [
                 Expanded(
-                  flex: 4,
                   child: Text(
                     offer.name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                Expanded(flex: 1, child: _ratingPanel(offer.rating),),
+                _ratingPanel(offer.rating),
               ],
             ),
             Text(offer.address, style: Theme.of(context).textTheme.titleSmall,),
@@ -168,8 +159,8 @@ class OfferSelectionPanelState
               padding: const EdgeInsets.only(top: 7),
               child: Row(
                 children: [
-                  Expanded(flex: 2, child: _timePanel(offer.startTime, offer.endTime)),
-                  Expanded(flex: 1, child: _pricePanel(offer.price),),
+                  Expanded(child: _timePanel(offer.startTime, offer.endTime)),
+                  _pricePanel(offer.price),
                 ],
               ),
             ),
@@ -184,10 +175,11 @@ class OfferSelectionPanelState
       children: [
         const Icon(
           Icons.schedule_rounded,
+          size: 20,
         ),
         Text(
           "${_formatTime(startTime)} - ${_formatTime(endTime)}",
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleMedium,
         )
       ],
     );
@@ -199,10 +191,11 @@ class OfferSelectionPanelState
       children: [
         Text(
           price.toString(),
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const Icon(
           Icons.currency_ruble_rounded,
+          size: 20,
         ),
       ],
     );
