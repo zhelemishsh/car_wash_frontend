@@ -10,6 +10,7 @@ import 'package:car_wash_frontend/views/stateless_views/titled_panel.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/car.dart';
+import '../login_page/login_page.dart';
 
 class AccountMenuPage extends StatefulWidget {
   const AccountMenuPage({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _onExitButtonPressed,
             icon: const Icon(
               Icons.logout_rounded,
             ),
@@ -60,6 +61,25 @@ class AccountMenuPageState extends State<AccountMenuPage>
           ],
         ),
       ),
+    );
+  }
+
+  void _onExitButtonPressed() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AskDialog(
+          text: "Выйти из профиля?",
+          onConfirmed: () {
+            Navigator.pop(context);
+            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            );
+          },
+        );
+      },
     );
   }
 
