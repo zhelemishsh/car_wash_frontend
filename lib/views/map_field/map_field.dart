@@ -69,8 +69,10 @@ class MapFieldState extends State<MapField> {
           ),
           onMapCreated: (YandexMapController controller) {
             mapController = controller;
-            mapController.toggleUserLayer(visible: true);
-            _getUserLocationPermission();
+            _getUserLocationPermission().then((_) {
+              mapController.toggleUserLayer(visible: true);
+              moveCameraToUser(11);
+            });
           },
           onUserLocationAdded: (userLocationView) async {
             PlacemarkMapObject placemark = await _buildLocationPlacemark(userLocationView.pin);
@@ -131,14 +133,17 @@ class MapFieldState extends State<MapField> {
 
   Future<Point> _getUserPosition() async {
     CameraPosition? userCameraPosition = await mapController.getUserCameraPosition();
-    return userCameraPosition!.target;
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    return Point(latitude: position.latitude, longitude: position.longitude);
+    if (userCameraPosition != null) {
+      return userCameraPosition.target;
+    }
+    else {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      return Point(latitude: position.latitude, longitude: position.longitude);
+    }
   }
 
-  void _getUserLocationPermission() async {
+  Future<void> _getUserLocationPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied
         || permission == LocationPermission.deniedForever) {
