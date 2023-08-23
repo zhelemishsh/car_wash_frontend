@@ -4,7 +4,6 @@ import 'package:car_wash_frontend/views/account_menu/account_menu_presenter.dart
 import 'package:car_wash_frontend/views/account_menu/add_car_dialog.dart';
 import 'package:car_wash_frontend/views/stateless_views/ask_dialog.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
-import 'package:car_wash_frontend/views/stateless_views/input_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:car_wash_frontend/views/stateless_views/titled_panel.dart';
 import 'package:flutter/material.dart';
@@ -39,6 +38,11 @@ class AccountMenuPageState extends State<AccountMenuPage>
     return Scaffold(
       backgroundColor: AppColors.dirtyWhite,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_rounded,),
+        ),
         actions: [
           IconButton(
             onPressed: _onExitButtonPressed,
@@ -71,12 +75,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
         return AskDialog(
           text: "Выйти из профиля?",
           onConfirmed: () {
-            Navigator.pop(context);
-            Navigator.pop(context);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            );
+            Navigator.pushNamedAndRemoveUntil(context, "/login_page", (_) => false);
           },
         );
       },

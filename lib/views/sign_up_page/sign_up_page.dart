@@ -1,5 +1,4 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
-import 'package:car_wash_frontend/views/login_page/login_page.dart';
 import 'package:car_wash_frontend/views/stateless_views/input_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -33,6 +32,11 @@ class SignUpPageState extends State<SignUpPage>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.arrow_back_rounded,),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
@@ -183,11 +187,7 @@ class SignUpPageState extends State<SignUpPage>{
       ),
       onPressed: () {
         if(_formKey.currentState!.validate()) {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
+          Navigator.pushNamedAndRemoveUntil(context, "/login_page", (_) => false);
         }
       },
     );

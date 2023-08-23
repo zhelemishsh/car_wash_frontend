@@ -1,11 +1,8 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
-import 'package:car_wash_frontend/views/sign_up_page/sign_up_page.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/input_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
-import '../main_page/main_page.dart';
 
 class LoginPage extends StatefulWidget{
   const LoginPage({Key? key}) : super(key: key);
@@ -129,11 +126,8 @@ class LoginPageState extends State<LoginPage>{
       ),
       onPressed: () {
         if(_formKey.currentState!.validate()) {
-          Navigator.pop(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const MainPage()),
-          );
+          FocusManager.instance.primaryFocus?.unfocus();
+          Navigator.pushReplacementNamed(context, "/main_page");
         }
       },
     );
@@ -154,10 +148,7 @@ class LoginPageState extends State<LoginPage>{
         ),
       ),
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const SignUpPage()),
-        );
+        Navigator.pushNamed(context, "/sign_up_page");
       },
     );
   }

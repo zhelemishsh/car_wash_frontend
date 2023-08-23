@@ -1,5 +1,4 @@
 import 'package:car_wash_frontend/theme/app_colors.dart';
-import 'package:car_wash_frontend/views/account_menu/account_menu_page.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_panel.dart';
@@ -110,10 +109,7 @@ class MainPageState extends State<MainPage> {
     return _topPanelButton(
       iconData: Icons.menu_rounded,
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const AccountMenuPage()),
-        );
+        Navigator.pushNamed(context, "/account_menu_page");
       },
     );
   }
