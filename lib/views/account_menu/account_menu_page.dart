@@ -4,6 +4,7 @@ import 'package:car_wash_frontend/views/account_menu/account_menu_presenter.dart
 import 'package:car_wash_frontend/views/account_menu/add_car_dialog.dart';
 import 'package:car_wash_frontend/views/stateless_views/ask_dialog.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
+import 'package:car_wash_frontend/views/stateless_views/input_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:car_wash_frontend/views/stateless_views/titled_panel.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,9 @@ class AccountMenuPage extends StatefulWidget {
 class AccountMenuPageState extends State<AccountMenuPage>
     implements AccountMenuContract {
   late AccountMenuPresenter _presenter;
+  bool _isNameEntering = false;
+  String _editingName = "";
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -71,18 +75,79 @@ class AccountMenuPageState extends State<AccountMenuPage>
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(3),
-              child: TitledPanel(
-                title: "Goshan",
-                child: _userInfoPanel(),
-                buttonIconData: Icons.edit_rounded,
-                iconSize: 22,
-                onButtonPressed: () {},
-                buttonColor: AppColors.orange,
-              ),
+              child: _userTitledPanel(),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  InputBorder _inputFieldBorder(Color color) {
+    return UnderlineInputBorder(
+      borderSide: BorderSide(
+        width: 2.0,
+        color: color,
+      ),
+    );
+  }
+
+  Widget _nameInputField() {
+    return Form(
+      key: _formKey,
+      child: TextFormField(
+        autofocus: true,
+        initialValue: _presenter.account.name,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+        decoration: InputDecoration(
+          enabledBorder: _inputFieldBorder(AppColors.lightOrange),
+          focusedBorder: _inputFieldBorder(AppColors.orange),
+          errorBorder: _inputFieldBorder(AppColors.darkRed),
+          errorStyle: const TextStyle(height: 0.001),
+          contentPadding: const EdgeInsets.only(bottom: 18),
+        ),
+        validator: (String? value) {
+          if (value == null || value.isEmpty) {
+            return '';
+          }
+          _editingName = value;
+          return null;
+        },
+        onEditingComplete: () {
+          if(_formKey.currentState!.validate()) {
+            _isNameEntering = false;
+            _presenter.changeAccountName(_editingName);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _userTitledPanel() {
+    Widget title;
+    if (!_isNameEntering) {
+      title = Text(
+        _presenter.account.name,
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+      );
+    }
+    else {
+      title = _nameInputField();
+    }
+
+    return TitledPanel(
+      title: title,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 3),
+        child: _userInfoPanel(),
+      ),
+      buttonIconData: Icons.edit_rounded,
+      iconSize: 22,
+      onButtonPressed: () {
+        _isNameEntering = true;
+        setState(() {});
+      },
+      buttonColor: AppColors.orange,
     );
   }
 
@@ -91,8 +156,8 @@ class AccountMenuPageState extends State<AccountMenuPage>
       textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
       iconSize: 22,
       markedTexts: [
-        MarkedTextData(iconData: Icons.call_rounded, text: "89278756682"),
-        MarkedTextData(iconData: Icons.star_rounded, text: "4.99"),
+        MarkedTextData(iconData: Icons.call_rounded, text: _presenter.account.phoneNumber),
+        MarkedTextData(iconData: Icons.star_rounded, text: _presenter.account.rating.toString()),
       ],
     );
   }
@@ -152,7 +217,10 @@ class AccountMenuPageState extends State<AccountMenuPage>
     }
 
     return TitledPanel(
-      title: "Ваши машины:",
+      title: Text(
+        "Ваши машины:",
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+      ),
       buttonIconData: iconData,
       buttonColor: buttonColor,
       onButtonPressed: buttonFunction,
@@ -162,7 +230,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
 
   Widget _carsList() {
     List<Widget> carWidgets = [];
-    for (var car in _presenter.cars) {
+    for (var car in _presenter.account.cars) {
       carWidgets.add(
         Container(
           margin: const EdgeInsets.symmetric(vertical: 3),

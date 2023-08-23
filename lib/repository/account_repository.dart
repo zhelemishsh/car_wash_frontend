@@ -20,6 +20,10 @@ class AccountRepository {
     _cars.removeWhere((car) => carNumbers.contains(car.number));
   }
 
+  Future<void> changeAccountName(String newName) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+  }
+
   Future<List<Car>> getCars() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return List.from(_cars);

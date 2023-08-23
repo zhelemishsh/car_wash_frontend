@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 
 class TitledPanel extends StatelessWidget {
-  final String title;
+  final Widget title;
   final Widget child;
   final IconData buttonIconData;
   final Function() onButtonPressed;
@@ -32,7 +32,10 @@ class TitledPanel extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _titlePanel(context),
+          SizedBox(
+            height: 35,
+            child: _titlePanel(context),
+          ),
           child,
         ],
       ),
@@ -43,10 +46,7 @@ class TitledPanel extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            title,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
-          ),
+          child: title,
         ),
         _titleButton(),
       ],
