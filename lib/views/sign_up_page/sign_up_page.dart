@@ -26,6 +26,7 @@ class SignUpPageState extends State<SignUpPage>{
 
   String _userName = '';
   String _password = '';
+  String _repeatedPassword = '';
   String _phoneNumber = '';
 
   @override
@@ -71,13 +72,14 @@ class SignUpPageState extends State<SignUpPage>{
     );
   }
 
-  Widget _signUpForm(){
+  Widget _signUpForm() {
     return Form(
       key: _formKey,
       child: Column(
         children: [
           _identityPanel(),
           _passwordInputPanel(),
+          _repeatedPasswordInputPanel(),
           _signUpButton(),
         ],
       ),
@@ -167,6 +169,25 @@ class SignUpPageState extends State<SignUpPage>{
           return 'Введите пароль';
         }
         _password = value;
+        return null;
+      },
+    );
+  }
+
+  Widget _repeatedPasswordInputPanel(){
+    return InputPanel(
+      margin: 4,
+      isPasswordField: true,
+      textColor: AppColors.dirtyWhite,
+      labelText: "Повторите пароль",
+      validator: (String? value){
+        if (value == null || value.isEmpty) {
+          return 'Повторите пароль';
+        }
+        if (value != _password) {
+          return 'Пароли не совпадают';
+        }
+        _repeatedPassword = value;
         return null;
       },
     );

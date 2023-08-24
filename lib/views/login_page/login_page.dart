@@ -68,7 +68,26 @@ class LoginPageState extends State<LoginPage>{
           _passwordInputPanel(),
           _loginButton(),
           _signUpButton(),
+          _forgotPasswordButton(),
         ],
+      ),
+    );
+  }
+
+  Widget _forgotPasswordButton() {
+    return Container(
+      alignment: Alignment.centerRight,
+      height: 25,
+      child: TextButton(
+        onPressed: () {},
+        style: TextButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 5),
+          foregroundColor: AppColors.dirtyWhite,
+        ),
+        child: Text(
+          "Забыли пароль?",
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.orange),
+        ),
       ),
     );
   }
