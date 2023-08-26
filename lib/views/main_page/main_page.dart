@@ -130,7 +130,7 @@ class MainPageState extends State<MainPage> {
             borderRadius: BorderRadius.circular(buttonSize / 2),
           ),
           padding: const EdgeInsets.all(8),
-          backgroundColor: AppColors.grey,
+          backgroundColor: AppColors.black,
           foregroundColor: AppColors.orange,
           shadowColor: Colors.black.withOpacity(0.8),
         ),

@@ -105,11 +105,11 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
         markedTexts: [
           MarkedTextData(
             text: _presenter.order.carWashName,
-            textStyle: Theme.of(context).textTheme.titleMedium,
+            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
           ),
           MarkedTextData(
             text: _presenter.order.carWashAddress,
-            textStyle: Theme.of(context).textTheme.titleSmall,
+            textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
           ),
         ],
       ),
@@ -163,7 +163,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     return DataPanel(
       margin: 3,
       child: MarkedList(
-        textStyle: Theme.of(context).textTheme.titleMedium,
+        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
         iconSize: 25,
         markedTexts: [
           MarkedTextData(

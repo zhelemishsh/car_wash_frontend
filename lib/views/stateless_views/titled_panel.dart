@@ -20,7 +20,7 @@ class TitledPanel extends StatelessWidget {
     required this.buttonIconData,
     required this.onButtonPressed,
     required this.buttonColor,
-    this.backgroundColor,
+    this.backgroundColor = AppColors.black,
     this.titleStyle,
     this.iconSize = 25,
   }) : super(key: key);
@@ -28,7 +28,7 @@ class TitledPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataPanel(
-      backgroundColor: backgroundColor ?? AppColors.grey,
+      backgroundColor: backgroundColor,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

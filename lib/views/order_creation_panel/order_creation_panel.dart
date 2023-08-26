@@ -137,6 +137,7 @@ class OrderCreationPanelState
         children: [
           Icon(
             serviceData.iconData,
+            color: AppColors.lightGrey,
             size: 35,
           ),
           Container(
@@ -145,7 +146,7 @@ class OrderCreationPanelState
             child: Text(
               serviceData.service.parseToString(),
               softWrap: true,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
             ),
           ),
         ],
@@ -168,7 +169,7 @@ class OrderCreationPanelState
             isToggled: _presenter.orderBuilder.car?.number == car.number,
             child: Text(
               car.name,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
             ),
           ),
         ),
@@ -182,7 +183,7 @@ class OrderCreationPanelState
       alignment: Alignment.center,
       child: Text(
         "-",
-        style: Theme.of(context).textTheme.headlineSmall,
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.dirtyWhite),
       ),
     );
   }
@@ -248,7 +249,7 @@ class OrderCreationPanelState
       },
       child: Text(
         _to24hours(time),
-        style: Theme.of(context).textTheme.headlineSmall,
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.dirtyWhite),
       ),
     );
   }
@@ -263,7 +264,7 @@ class OrderCreationPanelState
       isToggled: _presenter.orderBuilder.washDay == day,
       child: Text(
         day,
-        style: Theme.of(context).textTheme.titleSmall,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
       ),
     );
   }

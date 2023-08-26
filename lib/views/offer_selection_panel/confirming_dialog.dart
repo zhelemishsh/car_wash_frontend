@@ -26,7 +26,7 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.grey,
+      backgroundColor: AppColors.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
       ),
@@ -71,11 +71,11 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
         markedTexts: [
           MarkedTextData(
             text: widget.offer.name,
-            textStyle: Theme.of(context).textTheme.titleMedium,
+            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
           ),
           MarkedTextData(
             text: widget.offer.address,
-            textStyle: Theme.of(context).textTheme.titleSmall,
+            textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
           ),
         ],
       ),
@@ -87,7 +87,7 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
       margin: 3,
       child: MarkedList(
         iconSize: 22,
-        textStyle: Theme.of(context).textTheme.titleMedium,
+        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
         markedTexts: [
           MarkedTextData(
             iconData: Icons.schedule_rounded,
@@ -119,9 +119,10 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
   
   Widget _acceptButton() {
     return DataButtonPanel(
+      splashColor: AppColors.dirtyWhite,
       height: 45,
       margin: 3,
-      backgroundColor: AppColors.lightOrange,
+      backgroundColor: AppColors.orange,
       onPressed: () {
         Navigator.pop(context);
         widget.onConfirmed();

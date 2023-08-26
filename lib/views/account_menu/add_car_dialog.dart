@@ -44,7 +44,7 @@ class AddCarDialogState extends State<AddCarDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.grey,
+      backgroundColor: AppColors.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
       ),
@@ -87,6 +87,7 @@ class AddCarDialogState extends State<AddCarDialog> {
 
   Widget _carNameInputPanel() {
     return InputPanel(
+      textColor: AppColors.dirtyWhite,
       labelText: "Название",
       validator: (String? value){
         if (value == null || value.isEmpty) {
@@ -100,6 +101,7 @@ class AddCarDialogState extends State<AddCarDialog> {
 
   Widget _carNumberInputPanel() {
     return InputPanel(
+      textColor: AppColors.dirtyWhite,
       labelText: "Номер",
       validator: (String? value){
         if (value == null || value.isEmpty) {
@@ -120,7 +122,8 @@ class AddCarDialogState extends State<AddCarDialog> {
       height: 45,
       margin: const EdgeInsets.all(3),
       child: DataButtonPanel(
-        backgroundColor: AppColors.lightOrange,
+        backgroundColor: AppColors.orange,
+        splashColor: AppColors.dirtyWhite,
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             widget.onAdded(_buildingCar);

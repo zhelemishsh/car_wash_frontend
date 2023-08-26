@@ -274,13 +274,13 @@ class AccountMenuPageState extends State<AccountMenuPage>
       isToggled: _presenter.selectedCars.contains(car),
       child: Row(
         children: [
-          Icon(car.type.carIcon(), size: 40,),
+          Icon(car.type.carIcon(), size: 40, color: AppColors.lightGrey,),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(left: 5),
               child: Text(
                 car.name,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
               ),
             ),
           ),
@@ -297,7 +297,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.lightGrey.withOpacity(0.7),
+            color: AppColors.lightGrey,
           ),
           child: RichText(
             text: TextSpan(

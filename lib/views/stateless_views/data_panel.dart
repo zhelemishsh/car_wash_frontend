@@ -13,7 +13,7 @@ class DataPanel extends StatelessWidget {
     Key? key,
     required this.child,
     this.margin = 0,
-    this.backgroundColor,
+    this.backgroundColor = AppColors.grey,
     this.borderRadius = 10,
     this.padding = 8,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class DataPanel extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
-        color: backgroundColor ?? AppColors.dirtyWhite,
+        color: backgroundColor,
       ),
       child: child,
     );
@@ -50,7 +50,7 @@ class DataButtonPanel extends StatelessWidget {
     this.splashColor,
     this.isToggled = false,
     this.margin = 0,
-    this.backgroundColor = AppColors.dirtyWhite,
+    this.backgroundColor = AppColors.grey,
     this.borderColor,
   }) : super(key: key);
 

@@ -13,7 +13,16 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then((value) {
-    runApp(MaterialApp(
+    runApp(const MyApp());
+  });
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case "/main_page":
@@ -44,13 +53,12 @@ void main() {
         useMaterial3: true,
         appBarTheme: const AppBarTheme(
           foregroundColor: AppColors.orange,
-          color: AppColors.grey,
+          color: AppColors.black,
         ),
       ),
       title: 'Navigation Basics',
       // home: CarWashSelectionPage(),
       home: MainPage(),
-    ));
-  });
+    );
+  }
 }
-
