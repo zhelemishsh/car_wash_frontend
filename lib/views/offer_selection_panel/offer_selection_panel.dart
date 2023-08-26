@@ -148,14 +148,14 @@ class OfferSelectionPanelState
                 Expanded(
                   child: Text(
                     offer.name,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
                 _ratingPanel(offer.rating),
               ],
             ),
             Text(offer.address,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             Container(
               padding: const EdgeInsets.only(top: 7),
@@ -182,7 +182,7 @@ class OfferSelectionPanelState
         ),
         Text(
           "${_formatTime(startTime)} - ${_formatTime(endTime)}",
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+          style: Theme.of(context).textTheme.titleMedium,
         )
       ],
     );
@@ -194,7 +194,7 @@ class OfferSelectionPanelState
       children: [
         Text(
           price.toString(),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const Icon(
           Icons.currency_ruble_rounded,
@@ -212,7 +212,7 @@ class OfferSelectionPanelState
       children: [
         Text(
           rating.toString(),
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         const Icon(
           Icons.star_rounded,

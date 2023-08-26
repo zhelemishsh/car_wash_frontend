@@ -51,10 +51,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         useMaterial3: true,
+        brightness: Brightness.dark,
         appBarTheme: const AppBarTheme(
           foregroundColor: AppColors.orange,
           color: AppColors.black,
         ),
+        dialogBackgroundColor: AppColors.black,
       ),
       title: 'Navigation Basics',
       // home: CarWashSelectionPage(),

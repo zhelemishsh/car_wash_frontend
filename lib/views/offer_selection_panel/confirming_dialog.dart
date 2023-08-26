@@ -71,11 +71,11 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
         markedTexts: [
           MarkedTextData(
             text: widget.offer.name,
-            textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+            textStyle: Theme.of(context).textTheme.titleMedium,
           ),
           MarkedTextData(
             text: widget.offer.address,
-            textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
+            textStyle: Theme.of(context).textTheme.titleSmall,
           ),
         ],
       ),
@@ -87,7 +87,7 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
       margin: 3,
       child: MarkedList(
         iconSize: 22,
-        textStyle: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+        textStyle: Theme.of(context).textTheme.titleMedium,
         markedTexts: [
           MarkedTextData(
             iconData: Icons.schedule_rounded,
@@ -132,7 +132,7 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
         children: [
           Text(
             "Принять предложение",
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           const SizedBox(width: 10,),
           const Icon(

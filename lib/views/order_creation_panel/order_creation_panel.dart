@@ -120,9 +120,11 @@ class OrderCreationPanelState
   }
 
   Widget _carServiceWidget(ServiceWidgetData serviceData) {
+    bool isToggled = _presenter.orderBuilder.services.contains(serviceData.service);
+
     return DataButtonPanel(
       margin: 3,
-      isToggled: _presenter.orderBuilder.services.contains(serviceData.service),
+      backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
       onPressed: () {
         if (_presenter.orderBuilder.services.contains(serviceData.service)) {
           _presenter.orderBuilder.deleteService(serviceData.service);
@@ -137,7 +139,7 @@ class OrderCreationPanelState
         children: [
           Icon(
             serviceData.iconData,
-            color: AppColors.lightGrey,
+            color: AppColors.dirtyWhite,
             size: 35,
           ),
           Container(
@@ -146,7 +148,7 @@ class OrderCreationPanelState
             child: Text(
               serviceData.service.parseToString(),
               softWrap: true,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
         ],
@@ -157,19 +159,20 @@ class OrderCreationPanelState
   List<Widget> _carNamesList() {
     List<Widget> carNames = [];
     for (Car car in _presenter.cars) {
+      bool isToggled = _presenter.orderBuilder.car?.number == car.number;
       carNames.add(
         Expanded(
           flex: 1,
           child: DataButtonPanel(
+            backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
             margin: 3,
             onPressed: () {
               _presenter.orderBuilder.car = car;
               setState(() {});
             },
-            isToggled: _presenter.orderBuilder.car?.number == car.number,
             child: Text(
               car.name,
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
         ),
@@ -183,7 +186,7 @@ class OrderCreationPanelState
       alignment: Alignment.center,
       child: Text(
         "-",
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
     );
   }
@@ -249,22 +252,24 @@ class OrderCreationPanelState
       },
       child: Text(
         _to24hours(time),
-        style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.headlineSmall,
       ),
     );
   }
 
   Widget _dayButton(String day) {
+    bool isToggled = _presenter.orderBuilder.washDay == day;
+
     return DataButtonPanel(
+      backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
       margin: 3,
       onPressed: () {
         _presenter.orderBuilder.washDay = day;
         setState(() {});
       },
-      isToggled: _presenter.orderBuilder.washDay == day,
       child: Text(
         day,
-        style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.titleSmall,
       ),
     );
   }

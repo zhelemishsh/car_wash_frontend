@@ -117,7 +117,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
       child: TextFormField(
         autofocus: true,
         initialValue: _presenter.account.name,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.titleMedium,
         decoration: InputDecoration(
           enabledBorder: _inputFieldBorder(AppColors.lightOrange),
           focusedBorder: _inputFieldBorder(AppColors.orange),
@@ -147,7 +147,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
     if (!_isNameEntering) {
       title = Text(
         _presenter.account.name,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.titleMedium,
       );
     }
     else {
@@ -172,7 +172,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
 
   Widget _userInfoPanel() {
     return MarkedList(
-      textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.dirtyWhite),
+      textStyle: Theme.of(context).textTheme.titleSmall,
       iconSize: 22,
       markedTexts: [
         MarkedTextData(iconData: Icons.call_rounded, text: _presenter.account.phoneNumber),
@@ -238,7 +238,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
     return TitledPanel(
       title: Text(
         "Ваши машины:",
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
       buttonIconData: iconData,
       buttonColor: buttonColor,
@@ -261,7 +261,10 @@ class AccountMenuPageState extends State<AccountMenuPage>
   }
 
   Widget _carInfoPanel(Car car) {
+    bool isToggled = _presenter.selectedCars.contains(car);
+
     return DataButtonPanel(
+      backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
       onPressed: () {
         if (_presenter.selectedCars.contains(car)) {
           _presenter.selectedCars.remove(car);
@@ -271,7 +274,6 @@ class AccountMenuPageState extends State<AccountMenuPage>
         }
         setState(() {});
       },
-      isToggled: _presenter.selectedCars.contains(car),
       child: Row(
         children: [
           Icon(car.type.carIcon(), size: 40, color: AppColors.lightGrey,),
@@ -280,7 +282,7 @@ class AccountMenuPageState extends State<AccountMenuPage>
               padding: const EdgeInsets.only(left: 5),
               child: Text(
                 car.name,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
           ),
@@ -301,18 +303,18 @@ class AccountMenuPageState extends State<AccountMenuPage>
           ),
           child: RichText(
             text: TextSpan(
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 18),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 18, color: AppColors.black),
               children: [
                 TextSpan(
                   text: carNumber[0],
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.black),
                 ),
                 TextSpan(
                   text: carNumber.substring(1, 4),
                 ),
                 TextSpan(
                   text: carNumber.substring(4, 6),
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.black),
                 ),
                 TextSpan(
                   text: carNumber.substring(6, carNumber.length),

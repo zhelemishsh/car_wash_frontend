@@ -16,7 +16,6 @@ class AskDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: AppColors.black,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15.0)),
       ),
@@ -30,7 +29,7 @@ class AskDialog extends StatelessWidget {
               padding: const EdgeInsets.all(4),
               child: Text(
                 text,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.dirtyWhite),
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             Row(
@@ -57,7 +56,7 @@ class AskDialog extends StatelessWidget {
       },
       child: Text(
         "Да",
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
+        style: Theme.of(context).textTheme.titleMedium,
       ),
     );
   }

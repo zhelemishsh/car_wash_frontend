@@ -36,7 +36,6 @@ class DataButtonPanel extends StatelessWidget {
   final Widget child;
   final Function() onPressed;
   final Color? splashColor;
-  final bool isToggled;
   final double margin;
   final Color? backgroundColor;
   final double? height;
@@ -47,8 +46,7 @@ class DataButtonPanel extends StatelessWidget {
     required this.child,
     required this.onPressed,
     this.height,
-    this.splashColor,
-    this.isToggled = false,
+    this.splashColor = AppColors.orange,
     this.margin = 0,
     this.backgroundColor = AppColors.grey,
     this.borderColor,
@@ -71,8 +69,8 @@ class DataButtonPanel extends StatelessWidget {
             ) : BorderSide.none,
           ),
           padding: const EdgeInsets.all(8),
-          backgroundColor: isToggled ? AppColors.lightOrange : backgroundColor,
-          foregroundColor: splashColor ?? AppColors.orange,
+          backgroundColor: backgroundColor,
+          foregroundColor: splashColor,
           iconColor: AppColors.black,
         ),
       ),

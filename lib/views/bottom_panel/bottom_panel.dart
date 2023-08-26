@@ -38,10 +38,10 @@ class BottomPanelState extends State<BottomPanel>
         )),
         child: Container(
           padding: const EdgeInsets.all(6),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-            color: AppColors.black,
-            boxShadow: [
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+            color: Theme.of(context).dialogBackgroundColor,
+            boxShadow: const [
               BoxShadow(
                 color: Color.fromRGBO(0, 0, 0, 0.4),
                 spreadRadius: 2,
