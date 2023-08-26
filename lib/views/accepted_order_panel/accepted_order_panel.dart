@@ -143,19 +143,20 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     required Color iconColor,
     required Function() onPressed
   }) {
-    return SizedBox(
-      width: 67,
-      child: DataButtonPanel(
-        margin: 3,
-        splashColor: iconColor,
+    return Align(
+      alignment: Alignment.center,
+      child: IconButton(
         onPressed: onPressed,
-        child: Icon(
+        padding: const EdgeInsets.all(10),
+        highlightColor: iconColor.withOpacity(0.1),
+        constraints: const BoxConstraints(),
+        iconSize: 40,
+        icon: Icon(
           iconData,
           color: iconColor,
-          size: 30,
         ),
       ),
-    );
+    );;
   }
 
   Widget _orderInfoPanel() {

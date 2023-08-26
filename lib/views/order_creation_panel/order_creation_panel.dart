@@ -212,22 +212,19 @@ class OrderCreationPanelState
   }
 
   Widget _startSearchButton() {
-    return Container(
-      width: 54,
-      alignment: Alignment.center,
-      child: TextButton(
-        onPressed: () async {
-          _presenter.orderBuilder.searchArea = await _searchAreaCircleKey
-              .currentState!.getSearchArea();
-          Future(_presenter.makeOrder).then((value) => widget.onOrderMade());
-        },
-        child: Transform.scale(
-          scale: 1.6,
-          child: const Icon(
-            Icons.wifi_tethering_rounded,
-            color: AppColors.orange,
-          ),
-        ),
+    return IconButton(
+      padding: const EdgeInsets.all(5),
+      highlightColor: AppColors.orange.withOpacity(0.1),
+      constraints: const BoxConstraints(),
+      onPressed: () async {
+        _presenter.orderBuilder.searchArea = await _searchAreaCircleKey
+            .currentState!.getSearchArea();
+        Future(_presenter.makeOrder).then((value) => widget.onOrderMade());
+      },
+      iconSize: 40,
+      icon: const Icon(
+        Icons.wifi_tethering_rounded,
+        color: AppColors.orange,
       ),
     );
   }

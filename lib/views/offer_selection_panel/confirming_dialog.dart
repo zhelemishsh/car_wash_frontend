@@ -36,11 +36,7 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             _dataPanel(),
-            Container(
-              margin: const EdgeInsets.all(3),
-              height: 40,
-              child: _acceptButton(),
-            ),
+            _acceptButton(),
           ],
         )
       ),
@@ -122,7 +118,10 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
   }
   
   Widget _acceptButton() {
-    return TextButton(
+    return DataButtonPanel(
+      height: 45,
+      margin: 3,
+      backgroundColor: AppColors.lightOrange,
       onPressed: () {
         Navigator.pop(context);
         widget.onConfirmed();
@@ -132,22 +131,15 @@ class ConfirmingDialogState extends State<ConfirmingDialog> {
         children: [
           Text(
             "Принять предложение",
-            style: Theme.of(context).textTheme.titleMedium!,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.dirtyWhite),
           ),
           const SizedBox(width: 10,),
           const Icon(
             Icons.done_rounded,
+            color: AppColors.dirtyWhite,
             size: 30,
           ),
         ],
-      ),
-      style: TextButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        backgroundColor: AppColors.dirtyWhite,
-        foregroundColor: AppColors.orange,
       ),
     );
   }
