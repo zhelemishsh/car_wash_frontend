@@ -8,6 +8,7 @@ class DataPanel extends StatelessWidget {
   final Color? backgroundColor;
   final double borderRadius;
   final double padding;
+  final Color? borderColor;
 
   const DataPanel({
     Key? key,
@@ -16,6 +17,7 @@ class DataPanel extends StatelessWidget {
     this.backgroundColor = AppColors.grey,
     this.borderRadius = 10,
     this.padding = 8,
+    this.borderColor,
   }) : super(key: key);
 
   @override
@@ -25,6 +27,10 @@ class DataPanel extends StatelessWidget {
       padding: EdgeInsets.all(padding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadius),
+        border: borderColor != null ? Border.all(
+          color: borderColor!,
+          width: 2.0,
+        ) : null,
         color: backgroundColor,
       ),
       child: child,

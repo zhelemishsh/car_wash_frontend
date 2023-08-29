@@ -244,7 +244,9 @@ class OrderCreationPanelState
           context: context,
           builder: (BuildContext context) {
             return TimePickerPopup(
-              initTime: time,
+              initDay: "Сегодня",
+              initStartTime: const TimeOfDay(hour: 0, minute: 0),
+              initEndTime: const TimeOfDay(hour: 0, minute: 20),
               onTimePicked: onTimePicked,
             );
           },

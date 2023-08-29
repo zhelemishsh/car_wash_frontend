@@ -49,14 +49,16 @@ class MyApp extends StatelessWidget {
         return null;
       },
       theme: ThemeData(
-        primarySwatch: Colors.blue,
         useMaterial3: true,
         brightness: Brightness.dark,
         appBarTheme: const AppBarTheme(
           foregroundColor: AppColors.orange,
           color: AppColors.black,
         ),
-        dialogBackgroundColor: AppColors.black,
+        dialogTheme: const DialogTheme(
+          backgroundColor: AppColors.black,
+          elevation: 0,
+        )
       ),
       title: 'Navigation Basics',
       // home: CarWashSelectionPage(),
