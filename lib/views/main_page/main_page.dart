@@ -79,7 +79,7 @@ class MainPageState extends State<MainPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.dirtyWhite,
+        color: AppColors.black,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
