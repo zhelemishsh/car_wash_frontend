@@ -4,15 +4,15 @@ import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 
+import '../../models/wash_order.dart';
 import '../shaking_dialog/shaking_dialog.dart';
 
 class TimePickerPopup extends StatefulWidget {
-  final bool Function(TimeOfDay) onTimePicked;
+  final Function(TimeOfDay start, TimeOfDay end, WashDay day) onTimePicked;
   final TimeOfDay initStartTime;
   final TimeOfDay initEndTime;
-  final String initDay;
+  final WashDay initDay;
 
   const TimePickerPopup({
     Key? key,
@@ -36,8 +36,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
   late TimeOfDay _selectedStartTime;
   late TimeOfDay _selectedEndTime;
   final _dialogKey = GlobalKey<ShakingDialogState>();
-  final List<String> _days = ["Сегодня", "Завтра", "Послезавтра"];
-  late String _selectedDay;
+  late WashDay _selectedDay;
 
   @override
   void initState() {
@@ -50,12 +49,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
     _initEndTimes((_) => false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startTimesController.jumpToPage(
-        _endTimes.indexWhere((time) => time == _selectedStartTime),
-      );
-      _endTimesController.jumpToPage(
-        _endTimes.indexWhere((time) => time == _selectedEndTime),
-      );
+      _selectDay(_selectedDay);
     });
   }
 
@@ -88,7 +82,10 @@ class TimePickerPopupState extends State<TimePickerPopup> {
       height: 45,
       margin: 3,
       backgroundColor: AppColors.orange,
-      onPressed: () {},
+      onPressed: () {
+        widget.onTimePicked(_selectedStartTime, _selectedEndTime, _selectedDay);
+        Navigator.pop(context);
+      },
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -110,7 +107,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
   Widget _dateSelectionPanel() {
     return SizedBox(
       child: CarouselSlider.builder(
-        itemCount: _days.length,
+        itemCount: WashDay.values.length,
         options: CarouselOptions(
           height: 40,
           enlargeStrategy: CenterPageEnlargeStrategy.zoom,
@@ -118,7 +115,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
           enlargeFactor: 0.5,
           enlargeCenterPage: true,
           onPageChanged: (index, reason) {
-            _selectDay(_days[index]);
+            _selectDay(WashDay.values[index]);
             setState(() {});
           }
         ),
@@ -126,9 +123,9 @@ class TimePickerPopupState extends State<TimePickerPopup> {
           return SizedBox(
             width: 100,
             child: Text(
-              _days[index],
+              WashDay.values[index].parseToString(),
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: _days[index] == _selectedDay
+                color: WashDay.values[index] == _selectedDay
                     ? AppColors.orange
                     : AppColors.lightOrange,
               ),
@@ -140,10 +137,10 @@ class TimePickerPopupState extends State<TimePickerPopup> {
     );
   }
 
-  void _selectDay(String day) {
+  void _selectDay(WashDay day) {
     _selectedDay = day;
     switch (_selectedDay) {
-      case "Сегодня":
+      case WashDay.today:
         _initStartTimes((time) => time.isBefore(TimeOfDay.now()));
         _initEndTimes((time) => time.isBefore(TimeOfDay.now()));
         if (_selectedStartTime.isBefore(_startTimes.first)) {
@@ -151,16 +148,15 @@ class TimePickerPopupState extends State<TimePickerPopup> {
           _selectedEndTime = _endTimes.first;
         }
         break;
-      case "Завтра":
+      case WashDay.tomorrow:
         _initStartTimes((time) => false);
         _initEndTimes((time) => false);
         break;
-      case "Послезавтра":
+      case WashDay.dayAfter:
         _initStartTimes((time) => false);
         _initEndTimes((time) => false);
         break;
     }
-    print("start1: ${TimeUtils.formatTime(_selectedStartTime)}");
     _startTimesController.jumpToPage(
       _startTimes.indexWhere((time) => time == _selectedStartTime),
     );
@@ -192,7 +188,6 @@ class TimePickerPopupState extends State<TimePickerPopup> {
 
   void _onStartTimeSelected(TimeOfDay time, CarouselPageChangedReason reason) {
     if (reason != CarouselPageChangedReason.manual) return;
-    print("start2: ${TimeUtils.formatTime(time)}");
     _selectedStartTime = time;
     if (_selectedEndTime.isBefore(_selectedStartTime.addMinutes(20))) {
       _selectedEndTime = _selectedStartTime.addMinutes(20);
@@ -290,7 +285,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
               ),
               itemBuilder: (context, index, a) {
                 return Text(
-                  TimeUtils.formatTime(items[index]),
+                  items[index].formatTime(),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium,
                 );
@@ -305,24 +300,5 @@ class TimePickerPopupState extends State<TimePickerPopup> {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<TimeOfDay>('_selectedEndTime', _selectedEndTime));
-  }
-}
-
-extension TimeOfDayExtension on TimeOfDay {
-  bool isBefore(TimeOfDay other) {
-    if (hour < other.hour) return true;
-    if (hour > other.hour) return false;
-    if (minute < other.minute) return true;
-    return false;
-  }
-
-  TimeOfDay addMinutes(int minutes) {
-    int total = hour * 60 + minute + minutes;
-    return TimeOfDay(hour: total ~/ 60, minute: total % 60);
-  }
-
-  TimeOfDay subtractMinutes(int minutes) {
-    int total = hour * 60 + minute - minutes;
-    return TimeOfDay(hour: total ~/ 60, minute: total % 60);
   }
 }

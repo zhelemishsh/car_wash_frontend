@@ -13,36 +13,16 @@ class WashOrder {
 }
 
 class WashOrderBuilder {
-  TimeOfDay _startTime = TimeOfDay.now();
-  TimeOfDay _endTime = TimeOfDay(
-    hour: TimeOfDay.now().hour + 1,
-    minute: TimeOfDay.now().minute,
-  );
-  String? washDay;
+  TimeOfDay startTime;
+  TimeOfDay endTime;
+  WashDay washDay;
   Car? car;
   SearchArea? searchArea;
   final List<WashService> _services = [];
 
-  TimeOfDay get startTime => _startTime;
-  TimeOfDay get endTime => _endTime;
+  WashOrderBuilder(this.startTime, this.endTime, this.washDay);
+
   Iterable<WashService> get services => _services;
-
-  set startTime(TimeOfDay time) {
-    if (washDay == "Today" && _isTimeBefore(time, TimeOfDay.now())) {
-      throw Exception("Wrong start time");
-    }
-    _startTime = time;
-    if (_isTimeBefore(_endTime, _startTime)) {
-      _endTime = _startTime;
-    }
-  }
-
-  set endTime(TimeOfDay time) {
-    if (_isTimeBefore(time, _startTime)) {
-      throw Exception("Wrong end time");
-    }
-    _endTime = time;
-  }
 
   void addService(WashService service) {
     if (!_services.contains(service)) {
@@ -54,21 +34,13 @@ class WashOrderBuilder {
     _services.remove(service);
   }
 
-  bool _isTimeBefore(TimeOfDay time1, TimeOfDay time2) {
-    return time1.hour < time2.hour
-        || (time1.hour == time2.hour
-            && time1.minute < time2.minute);
-  }
-
   WashOrder build() {
     DateTime date = DateTime.now();
-    switch (washDay) {
-      case "Tomorrow":
-        date = date.add(const Duration(days: 1));
-        break;
-      case "Day about":
-        date = date.add(const Duration(days: 2));
-    }
+    date = switch (washDay) {
+      WashDay.today => date,
+      WashDay.tomorrow => date.add(const Duration(days: 1)),
+      WashDay.dayAfter => date.add(const Duration(days: 2)),
+    };
     DateTime startDateTime = date.copyWith(
       hour: startTime.hour, minute: startTime.minute,
     );
@@ -92,7 +64,24 @@ enum WashService {
   interiorDryCleaning, diskCleaning, bodyPolishing, engineCleaning
 }
 
-extension ParseToString on WashService {
+enum WashDay {
+  today, tomorrow, dayAfter,
+}
+
+extension DayParseToString on WashDay {
+  String parseToString() {
+    switch (this) {
+      case WashDay.today:
+        return "Сегодня";
+      case WashDay.tomorrow:
+        return "Завтра";
+      case WashDay.dayAfter:
+        return "Послезавтра";
+    }
+  }
+}
+
+extension ServiceParseToString on WashService {
   String parseToString() {
     switch (this) {
       case WashService.interiorDryCleaning:

@@ -1,11 +1,10 @@
-import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:car_wash_frontend/views/map_field/map_field.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_contract.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_presenter.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:flutter/material.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../models/car.dart';
 import '../../models/wash_order.dart';
@@ -78,23 +77,13 @@ class OrderCreationPanelState
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          height: 50,
+          height: 55,
           child: Row(
             children: [
-              Expanded(flex: 5, child: _startTimeButton(),),
-              Expanded(flex: 1, child: _timeDivider(),),
-              Expanded(flex: 5, child: _endTimeButton(),),
+              Expanded(
+                child: _timePickerPanel(),
+              ),
               _startSearchButton(),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 40,
-          child: Row(
-            children: [
-              Expanded(flex: 1, child: _dayButton("Сегодня"),),
-              Expanded(flex: 1, child: _dayButton("Завтра"),),
-              Expanded(flex: 1, child: _dayButton("Послезавтра"),),
             ],
           ),
         ),
@@ -116,6 +105,57 @@ class OrderCreationPanelState
           ),
         ),
       ],
+    );
+  }
+
+  Widget _timePickerPanel() {
+    return DataButtonPanel(
+      margin: 3,
+      onPressed: _showTimePicker,
+      child: Row(
+        children: [
+          DataPanel(
+            padding: 4,
+            backgroundColor: AppColors.lightGrey.withOpacity(0.2),
+            child: Text(
+              _presenter.orderBuilder.washDay.parseToString(),
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          const SizedBox(width: 6,),
+          Expanded(
+            child: DataPanel(
+              padding: 4,
+              backgroundColor: AppColors.lightGrey.withOpacity(0.2),
+              child: Text(
+                "${TimeUtils.formatTime(_presenter.orderBuilder.startTime)} - "
+                    "${TimeUtils.formatTime(_presenter.orderBuilder.endTime)}",
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showTimePicker() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return TimePickerPopup(
+          initDay: _presenter.orderBuilder.washDay,
+          initStartTime: _presenter.orderBuilder.startTime,
+          initEndTime: _presenter.orderBuilder.endTime,
+          onTimePicked: (startTime, endTime, day) {
+            _presenter.orderBuilder.washDay = day;
+            _presenter.orderBuilder.startTime = startTime;
+            _presenter.orderBuilder.endTime = endTime;
+            setState(() {});
+          },
+        );
+      },
     );
   }
 
@@ -181,40 +221,6 @@ class OrderCreationPanelState
     return carNames;
   }
 
-  Widget _timeDivider() {
-    return Container(
-      alignment: Alignment.center,
-      child: Text(
-        "-",
-        style: Theme.of(context).textTheme.headlineSmall,
-      ),
-    );
-  }
-
-  Widget _startTimeButton() {
-    return _timeButton(
-      time: _presenter.orderBuilder.startTime,
-      onTimePicked: (TimeOfDay selectedTime) {
-        try {_presenter.orderBuilder.startTime = selectedTime;}
-        on Exception catch(_) {return false;}
-        setState(() {});
-        return true;
-      },
-    );
-  }
-
-  Widget _endTimeButton() {
-    return _timeButton(
-      time: _presenter.orderBuilder.endTime,
-      onTimePicked: (TimeOfDay selectedTime) {
-        try {_presenter.orderBuilder.endTime = selectedTime;}
-        on Exception catch(_) {return false;}
-        setState(() {});
-        return true;
-      },
-    );
-  }
-
   Widget _startSearchButton() {
     return IconButton(
       padding: const EdgeInsets.all(5),
@@ -231,55 +237,6 @@ class OrderCreationPanelState
         color: AppColors.orange,
       ),
     );
-  }
-
-  Widget _timeButton({
-    required TimeOfDay time,
-    required bool Function(TimeOfDay) onTimePicked
-  }) {
-    return DataButtonPanel(
-      margin: 3,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return TimePickerPopup(
-              initDay: "Сегодня",
-              initStartTime: const TimeOfDay(hour: 0, minute: 0),
-              initEndTime: const TimeOfDay(hour: 0, minute: 20),
-              onTimePicked: onTimePicked,
-            );
-          },
-        );
-      },
-      child: Text(
-        _to24hours(time),
-        style: Theme.of(context).textTheme.headlineSmall,
-      ),
-    );
-  }
-
-  Widget _dayButton(String day) {
-    bool isToggled = _presenter.orderBuilder.washDay == day;
-
-    return DataButtonPanel(
-      backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
-      margin: 3,
-      onPressed: () {
-        _presenter.orderBuilder.washDay = day;
-        setState(() {});
-      },
-      child: Text(
-        day,
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
-    );
-  }
-
-  String _to24hours(TimeOfDay time) {
-    final hour = time.hour.toString().padLeft(2, "0");
-    final min = time.minute.toString().padLeft(2, "0");
-    return "$hour:$min";
   }
 }
 
