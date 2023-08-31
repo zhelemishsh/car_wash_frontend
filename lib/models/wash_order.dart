@@ -7,9 +7,9 @@ class WashOrder {
   DateTime endTime;
   Car car;
   List<WashService> services;
-  SearchArea searchArea;
+  MapPosition startPosition;
 
-  WashOrder(this.startTime, this.endTime, this.car, this.services, this.searchArea);
+  WashOrder(this.startTime, this.endTime, this.car, this.services, this.startPosition);
 }
 
 class WashOrderBuilder {
@@ -17,7 +17,7 @@ class WashOrderBuilder {
   TimeOfDay endTime;
   WashDay washDay;
   Car? car;
-  SearchArea? searchArea;
+  MapPosition? startPosition;
   final List<WashService> _services = [];
 
   WashOrderBuilder(this.startTime, this.endTime, this.washDay);
@@ -48,16 +48,9 @@ class WashOrderBuilder {
       hour: endTime.hour, minute: endTime.minute,
     );
     return WashOrder(
-      startDateTime, endDateTime, car!, services.toList(), searchArea!,
+      startDateTime, endDateTime, car!, services.toList(), startPosition!,
     );
   }
-}
-
-class SearchArea {
-  MapPosition centerPosition;
-  double radius;
-
-  SearchArea(this.centerPosition, this.radius);
 }
 
 enum WashService {

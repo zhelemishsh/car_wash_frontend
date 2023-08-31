@@ -32,7 +32,7 @@ class OrderCreationPanelState
     extends State<OrderCreationPanel> implements OrderCreationContract{
   late OrderCreationPresenter _presenter;
   final double _minZoom = 10.5;
-  final _searchAreaCircleKey = GlobalKey<SearchAreaCircleState>();
+  final _startPositionPinKey = GlobalKey<StartPositionPinState>();
   final List<ServiceWidgetData> _carServices = [
     ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask),
     ServiceWidgetData(WashService.diskCleaning, CustomIcons.disk),
@@ -47,8 +47,8 @@ class OrderCreationPanelState
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.mapKey.currentState!.topLayerWidgetsBuilder = () => [
-        SearchAreaCircle(
-          key: _searchAreaCircleKey,
+        StartPositionPin(
+          key: _startPositionPinKey,
           minZoom: _minZoom,
           mapKey: widget.mapKey,
           radius: 170,
@@ -227,8 +227,8 @@ class OrderCreationPanelState
       highlightColor: AppColors.orange.withOpacity(0.1),
       constraints: const BoxConstraints(),
       onPressed: () async {
-        _presenter.orderBuilder.searchArea = await _searchAreaCircleKey
-            .currentState!.getSearchArea();
+        _presenter.orderBuilder.startPosition = await _startPositionPinKey
+            .currentState!.getStartPosition();
         Future(_presenter.makeOrder).then((value) => widget.onOrderMade());
       },
       iconSize: 40,

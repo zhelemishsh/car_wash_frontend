@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../models/car_wash_offer.dart';
-import '../../models/wash_order.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/custom_icons.dart';
 import 'map_field.dart';
 
-class SearchAreaCircle extends StatefulWidget {
+class StartPositionPin extends StatefulWidget {
   final GlobalKey<MapFieldState> mapKey;
   final double radius;
   final double minZoom;
 
-  const SearchAreaCircle({
+  const StartPositionPin({
     Key? key,
     required this.minZoom,
     required this.radius,
@@ -20,12 +19,12 @@ class SearchAreaCircle extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  SearchAreaCircleState createState() {
-    return SearchAreaCircleState();
+  StartPositionPinState createState() {
+    return StartPositionPinState();
   }
 }
 
-class SearchAreaCircleState extends State<SearchAreaCircle> {
+class StartPositionPinState extends State<StartPositionPin> {
   bool _isMoving = false;
 
   @override
@@ -100,32 +99,22 @@ class SearchAreaCircleState extends State<SearchAreaCircle> {
     );
   }
 
-  Future<SearchArea> getSearchArea() async {
+  Future<MapPosition> getStartPosition() async {
     Size screenSize = MediaQuery.of(context).size;
     double pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     double screenWidth = screenSize.width * pixelRatio;
     double screenHeight = screenSize.height * pixelRatio;
-    double circleRadius = widget.radius * pixelRatio;
 
     ScreenPoint centerScreenPoint = ScreenPoint(
       x: screenWidth / 2,
       y: screenHeight / 2,
     );
-    ScreenPoint borderScreenPoint = ScreenPoint(
-      x: screenWidth / 2,
-      y: screenHeight / 2 - circleRadius,
-    );
 
     Point? centerPoint = await widget.mapKey.currentState!.mapController
         .getPoint(centerScreenPoint);
-    double radius = await widget.mapKey.currentState!
-        .getDistance(centerScreenPoint, borderScreenPoint);
 
-    return SearchArea(
-      MapPosition(centerPoint!.latitude, centerPoint.longitude),
-      radius,
-    );
+    return MapPosition(centerPoint!.latitude, centerPoint.longitude);
   }
 
   @override
