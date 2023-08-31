@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:car_wash_frontend/views/map_field/map_field.dart';
@@ -9,12 +10,12 @@ import 'package:flutter/material.dart';
 import '../../models/car.dart';
 import '../../models/wash_order.dart';
 import '../../theme/custom_icons.dart';
-import '../map_field/search_area_circle.dart';
+import '../map_field/start_position_pin.dart';
 import '../time_picker/time_picker_popup.dart';
 
 class OrderCreationPanel extends StatefulWidget {
   final GlobalKey<MapFieldState> mapKey;
-  final Function() onOrderMade;
+  final Function(MapPosition) onOrderMade;
 
   const OrderCreationPanel({
     Key? key,
@@ -229,7 +230,9 @@ class OrderCreationPanelState
       onPressed: () async {
         _presenter.orderBuilder.startPosition = await _startPositionPinKey
             .currentState!.getStartPosition();
-        Future(_presenter.makeOrder).then((value) => widget.onOrderMade());
+        Future(_presenter.makeOrder).then((_) => widget.onOrderMade(
+          _presenter.orderBuilder.startPosition!,
+        ));
       },
       iconSize: 40,
       icon: const Icon(

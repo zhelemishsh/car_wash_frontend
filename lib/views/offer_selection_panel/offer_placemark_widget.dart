@@ -36,7 +36,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
     return const Icon(
       Icons.location_on_rounded,
       color: AppColors.orange,
-      size: 70,
+      size: 40,
       shadows: [
         Shadow(
           color: Color.fromRGBO(0, 0, 0, 0.4),
@@ -49,9 +49,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
 
   Widget _offerInfoPanel(CarWashOffer offer) {
     return Container(
-      width: 130,
-      height: 70,
-      alignment: Alignment.center,
+      width: 110,
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(10)),
         color: AppColors.dirtyWhite,
@@ -71,54 +69,28 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
           FittedBox(
             child: Text(
               offer.name,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.titleSmall,
             ),
             fit: BoxFit.fill,
           ),
-          Container(
-            child: _pricePanel(offer.price),
-          ),
-          Container(
-            child: _timePanel(offer.startTime, offer.endTime),
-          ),
+          _routeTimePanel(),
         ],
       ),
     );
   }
 
-  Widget _timePanel(TimeOfDay startTime, TimeOfDay endTime) {
+  Widget _routeTimePanel() {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         const Icon(
-          Icons.schedule_rounded,
+          Icons.route_rounded,
           size: 17,
         ),
         Text(
-          "${_formatTime(startTime)} - ${_formatTime(endTime)}",
-          style: Theme.of(context).textTheme.titleMedium,
+          "56 min",
+          style: Theme.of(context).textTheme.titleSmall,
         )
-      ],
-    );
-  }
-
-  String _formatTime(TimeOfDay time) {
-    return '${time.hour.toString().padLeft(2, '0')}'
-        ':${time.minute.toString().padLeft(2, '0')}';
-  }
-
-  Widget _pricePanel(int price) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Icon(
-          Icons.currency_ruble_rounded,
-          size: 17,
-        ),
-        Text(
-          price.toString(),
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
       ],
     );
   }

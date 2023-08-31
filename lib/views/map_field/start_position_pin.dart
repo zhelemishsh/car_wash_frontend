@@ -38,6 +38,7 @@ class StartPositionPinState extends State<StartPositionPin> {
   void onMapCameraPositionChanged(CameraPosition position, bool isFinished) {
     if (isFinished) {
       _isMoving = false;
+      print(position);
       setState(() {});
     }
     else {

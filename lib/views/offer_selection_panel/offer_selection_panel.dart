@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/theme/custom_icons.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/confirming_dialog.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_placemark_widget.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_presenter.dart';
@@ -13,10 +14,12 @@ import 'offer_selection_contract.dart';
 class OfferSelectionPanel extends StatefulWidget {
   final GlobalKey<MapFieldState> mapKey;
   final Function() onOfferSelected;
+  final MapPosition startPosition;
 
   const OfferSelectionPanel({
     Key? key,
     required this.mapKey,
+    required this.startPosition,
     required this.onOfferSelected,
   }) : super(key: key);
 
@@ -74,7 +77,22 @@ class OfferSelectionPanelState
   void updateOffers() => setState(() {});
 
   List<PlacemarkData> _buildPlacemarks() {
-    return _presenter.offers.map((offer) {
+    List<PlacemarkData> result = [
+      PlacemarkData(
+        offset: const Offset(0.5, 0.9),
+        widget: const Icon(
+          CustomIcons.start_pin,
+          size: 80,
+          color: AppColors.darkRed,
+        ),
+        position: Point(
+          latitude: widget.startPosition.latitude,
+          longitude: widget.startPosition.longitude,
+        ),
+        onPressed: () {},
+      ),
+    ];
+    result.addAll(_presenter.offers.map((offer) {
       return PlacemarkData(
         offset: const Offset(0.205, 0.803),
         widget: OfferPlacemarkWidget(
@@ -88,7 +106,8 @@ class OfferSelectionPanelState
           _showConfirmingDialog(offer);
         },
       );
-    }).toList();
+    }).toList());
+    return result;
   }
 
   Widget _carWashOfferWidget(CarWashOffer offer) {

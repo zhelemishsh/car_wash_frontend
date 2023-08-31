@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
@@ -20,6 +21,7 @@ class MainPageState extends State<MainPage> {
   final _mapKey = GlobalKey<MapFieldState>();
   final _bottomPanelKey = GlobalKey<BottomPanelState>();
   OrderState _orderState = OrderState.orderCreation;
+  late MapPosition _startPosition;
 
   @override
   void initState() {
@@ -157,14 +159,16 @@ class MainPageState extends State<MainPage> {
       case OrderState.orderCreation:
         return OrderCreationPanel(
           mapKey: _mapKey,
-          onOrderMade: () {
+          onOrderMade: (MapPosition startPosition) {
             _orderState = OrderState.offerSelection;
+            _startPosition = startPosition;
             _reopenBottomPanel();
           },
         );
       case OrderState.offerSelection:
         return OfferSelectionPanel(
           mapKey: _mapKey,
+          startPosition: _startPosition,
           onOfferSelected: () {
             _orderState = OrderState.waitingForWash;
             _reopenBottomPanel();
