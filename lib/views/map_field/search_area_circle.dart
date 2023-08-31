@@ -4,6 +4,7 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../models/car_wash_offer.dart';
 import '../../models/wash_order.dart';
 import '../../theme/app_colors.dart';
+import '../../theme/custom_icons.dart';
 import 'map_field.dart';
 
 class SearchAreaCircle extends StatefulWidget {
@@ -25,7 +26,7 @@ class SearchAreaCircle extends StatefulWidget {
 }
 
 class SearchAreaCircleState extends State<SearchAreaCircle> {
-  bool _isZoomTooSmall = true;
+  bool _isMoving = false;
 
   @override
   void initState() {
@@ -36,36 +37,63 @@ class SearchAreaCircleState extends State<SearchAreaCircle> {
   }
 
   void onMapCameraPositionChanged(CameraPosition position, bool isFinished) {
-    if (!_isZoomTooSmall && position.zoom < widget.minZoom) {
-      _isZoomTooSmall = true;
+    if (isFinished) {
+      _isMoving = false;
       setState(() {});
     }
-    if (_isZoomTooSmall && position.zoom >= widget.minZoom) {
-      _isZoomTooSmall = false;
-      setState(() {});
+    else {
+      if (!_isMoving) {
+        _isMoving = true;
+        setState(() {});
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    Color circleColor = _isZoomTooSmall ? AppColors.orange : AppColors.routeBlue;
-
     return Align(
       alignment: Alignment.center,
       child: IgnorePointer(
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: widget.radius * 2,
-          height: widget.radius * 2,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: circleColor.withOpacity(0.7),
-              width: 2,
-            ),
-            color: circleColor.withOpacity(0.2),
-            borderRadius: BorderRadius.all(
-              Radius.circular(widget.radius),
-            ),
+        child: SizedBox(
+          height: 200,
+          width: 60,
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              _shadowContainer(),
+              AnimatedPositioned(
+                top: _isMoving ? 4 : 26,
+                curve: Curves.easeInQuad,
+                duration: const Duration(milliseconds: 200),
+                child: const Icon(
+                  CustomIcons.start_pin,
+                  size: 80,
+                  color: AppColors.darkRed,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _shadowContainer() {
+    return Transform.scale(
+      scaleY: 0.5,
+      child: AnimatedContainer(
+        curve: Curves.easeInQuad,
+        duration: const Duration(milliseconds: 200),
+        width: 20,
+        height: 20,
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [
+              _isMoving ? Colors.black.withOpacity(0.3) : Colors.black.withOpacity(0.6),
+              _isMoving ? Colors.black.withOpacity(0.1) : Colors.black.withOpacity(0.25),
+              Colors.transparent,
+            ],
+            focal: Alignment.center,
           ),
         ),
       ),

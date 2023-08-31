@@ -10,4 +10,5 @@ class CustomIcons {
   static const IconData disk = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData flask = IconData(0xe804, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData engine = IconData(0xe805, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData start_pin = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
