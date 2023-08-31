@@ -20,7 +20,7 @@ class MapField extends StatefulWidget {
 class MapFieldState extends State<MapField> {
   List<Widget> Function() topLayerWidgetsBuilder = () => [];
   List<PlacemarkData> Function() placemarksWidgetsBuilder = () => [];
-  MapPosition? Function() routeBuilder = () => null;
+  Future<RouteData?> Function() routeBuilder = () async => null;
   List<Function(CameraPosition, bool)> onCameraPositionChanged = [];
   List<MapObject> _placemarks = [];
   final _screenshotController = ScreenshotController();
@@ -38,7 +38,7 @@ class MapFieldState extends State<MapField> {
     mapController.moveCamera(
       CameraUpdate.newCameraPosition(CameraPosition(
         zoom: zoom,
-        target: await _getUserPosition(),
+        target: await getUserPosition(),
       )),
       animation: const MapAnimation(type: MapAnimationType.smooth),
     );
@@ -58,6 +58,7 @@ class MapFieldState extends State<MapField> {
           _placemarks = snapshot.data!;
         }
         return YandexMap(
+          rotateGesturesEnabled: false,
           onCameraPositionChanged: (position, reason, finish) {
             for (var func in onCameraPositionChanged) {
               func(position, finish);
@@ -89,7 +90,7 @@ class MapFieldState extends State<MapField> {
     );
   }
 
-  Future<PolylineMapObject> _makeRoute(MapPosition endPosition) async {
+  Future<PolylineMapObject> _makeRoute(RouteData routeData) async {
     DrivingSessionResult sessionResult = await YandexDriving.requestRoutes(
       drivingOptions: const DrivingOptions(
         avoidPoorConditions: true,
@@ -98,13 +99,16 @@ class MapFieldState extends State<MapField> {
       points: [
         RequestPoint(
           requestPointType: RequestPointType.wayPoint,
-          point: await _getUserPosition(),
+          point: Point(
+            latitude: routeData.startPosition.latitude,
+            longitude: routeData.startPosition.longitude,
+          ),
         ),
         RequestPoint(
           requestPointType: RequestPointType.wayPoint,
           point: Point(
-            latitude: endPosition.latitude,
-            longitude: endPosition.longitude,
+            latitude: routeData.endPosition.latitude,
+            longitude: routeData.endPosition.longitude,
           ),
         ),
       ],
@@ -121,8 +125,8 @@ class MapFieldState extends State<MapField> {
 
   Future<List<MapObject>> _makePlacemarks() async {
     List<MapObject> placemarks = [];
-    MapPosition? routeEnd = routeBuilder();
-    if (routeEnd != null) placemarks.add(await _makeRoute(routeEnd));
+    RouteData? routeData = await routeBuilder();
+    if (routeData != null) placemarks.add(await _makeRoute(routeData));
 
     for (PlacemarkData placemarkData in placemarksWidgetsBuilder()) {
       Uint8List image = await _makeImageFromWidget(placemarkData.widget);
@@ -131,7 +135,7 @@ class MapFieldState extends State<MapField> {
     return placemarks;
   }
 
-  Future<Point> _getUserPosition() async {
+  Future<Point> getUserPosition() async {
     CameraPosition? userCameraPosition = await mapController.getUserCameraPosition();
     if (userCameraPosition != null) {
       return userCameraPosition.target;
@@ -210,6 +214,13 @@ class MapFieldState extends State<MapField> {
       opacity: 1,
     );
   }
+}
+
+class RouteData {
+  MapPosition startPosition;
+  MapPosition endPosition;
+
+  RouteData(this.startPosition, this.endPosition);
 }
 
 class PlacemarkData {

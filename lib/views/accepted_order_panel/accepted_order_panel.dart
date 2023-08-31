@@ -44,7 +44,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   @override
   void dispose() {
     widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
-    widget.mapKey.currentState!.routeBuilder = () => null;
+    widget.mapKey.currentState!.routeBuilder = () async => null;
     super.dispose();
   }
 
@@ -234,9 +234,14 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     ];
   }
 
-  MapPosition? _buildRoute() {
+  Future<RouteData?> _buildRoute() async {
     if (_isRouteCreated) {
-      return _presenter.order.carWashPosition;
+      Point userPosition = await widget.mapKey.currentState!.getUserPosition();
+
+      return RouteData(
+        MapPosition(userPosition.latitude, userPosition.longitude),
+        _presenter.order.carWashPosition,
+      );
     }
     return null;
   }
