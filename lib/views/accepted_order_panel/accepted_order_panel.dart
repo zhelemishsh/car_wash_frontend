@@ -1,5 +1,6 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
+import 'package:car_wash_frontend/utils/route_utils.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:flutter/material.dart';
@@ -234,9 +235,9 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     ];
   }
 
-  Future<RouteData?> _buildRoute() async {
+  Future<DrivingRoute?> _buildRoute() async {
     if (_isRouteCreated) {
-      return RouteData(
+      return RouteUtils.makeRoute(
         await widget.mapKey.currentState!.getUserPosition(),
         _presenter.order.carWashPosition,
       );

@@ -9,7 +9,7 @@ class AcceptedOrderPresenter {
   AcceptedOrder order = AcceptedOrder(
     "Помойка",
     "ул. Пушкина 25 75",
-    MapPosition(56.632075, 47.869551),
+    MapPosition(59.94473559335115, 30.25908023387789),
     500,
     DateTime.now(),
     DateTime.now(),

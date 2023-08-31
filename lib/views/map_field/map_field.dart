@@ -20,7 +20,7 @@ class MapField extends StatefulWidget {
 class MapFieldState extends State<MapField> {
   List<Widget> Function() topLayerWidgetsBuilder = () => [];
   List<PlacemarkData> Function() placemarksWidgetsBuilder = () => [];
-  Future<RouteData?> Function() routeBuilder = () async => null;
+  Future<DrivingRoute?> Function() routeBuilder = () async => null;
   List<Function(CameraPosition, bool)> onCameraPositionChanged = [];
   List<MapObject> _placemarks = [];
   final _screenshotController = ScreenshotController();
@@ -102,37 +102,21 @@ class MapFieldState extends State<MapField> {
     );
   }
 
-  Future<PolylineMapObject> _makeRoute(RouteData routeData) async {
-    DrivingSessionResult sessionResult = await YandexDriving.requestRoutes(
-      drivingOptions: const DrivingOptions(
-        avoidPoorConditions: true,
-        avoidUnpaved: true,
-      ),
-      points: [
-        RequestPoint(
-          requestPointType: RequestPointType.wayPoint,
-          point: routeData.startPosition.toPoint(),
-        ),
-        RequestPoint(
-          requestPointType: RequestPointType.wayPoint,
-          point: routeData.endPosition.toPoint(),
-        ),
-      ],
-    ).result;
+  Future<PolylineMapObject> _makeRoute(DrivingRoute route) async {
     return PolylineMapObject(
       mapId: const MapObjectId("route"),
       strokeColor: AppColors.routeBlue,
       zIndex: -1000,
       gapLength: 4,
       dashLength: 10,
-      polyline: Polyline(points: sessionResult.routes![0].geometry),
+      polyline: Polyline(points: route.geometry),
     );
   }
 
   Future<List<MapObject>> _makePlacemarks() async {
     List<MapObject> placemarks = [];
-    RouteData? routeData = await routeBuilder();
-    if (routeData != null) placemarks.add(await _makeRoute(routeData));
+    DrivingRoute? route = await routeBuilder();
+    if (route != null) placemarks.add(await _makeRoute(route));
 
     for (PlacemarkData placemarkData in placemarksWidgetsBuilder()) {
       Uint8List image = await _makeImageFromWidget(placemarkData.widget);
@@ -207,13 +191,6 @@ class MapFieldState extends State<MapField> {
   }
 }
 
-class RouteData {
-  MapPosition startPosition;
-  MapPosition endPosition;
-
-  RouteData(this.startPosition, this.endPosition);
-}
-
 class PlacemarkData {
   Widget widget;
   Point position;
@@ -226,16 +203,4 @@ class PlacemarkData {
     required this.onPressed,
     required this.offset,
   });
-}
-
-extension PointToMapPosition on Point {
-  MapPosition toMapPosition() {
-    return MapPosition(latitude, longitude);
-  }
-}
-
-extension MapPositionToPoint on MapPosition {
-  Point toPoint() {
-    return Point(latitude: latitude, longitude: longitude);
-  }
 }

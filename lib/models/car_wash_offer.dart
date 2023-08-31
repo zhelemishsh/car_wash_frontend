@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class CarWashOffer {
   CarWashOffer(
@@ -19,10 +20,23 @@ class CarWashOffer {
   double rating;
   TimeOfDay startTime;
   TimeOfDay endTime;
+  DrivingRoute? route;
 }
 
 class MapPosition {
   double latitude, longitude;
 
   MapPosition(this.latitude, this.longitude);
+}
+
+extension PointToMapPosition on Point {
+  MapPosition toMapPosition() {
+    return MapPosition(latitude, longitude);
+  }
+}
+
+extension MapPositionToPoint on MapPosition {
+  Point toPoint() {
+    return Point(latitude: latitude, longitude: longitude);
+  }
 }

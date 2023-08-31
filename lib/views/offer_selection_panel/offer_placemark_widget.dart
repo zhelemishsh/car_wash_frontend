@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import '../../theme/app_colors.dart';
 
 class OfferPlacemarkWidget extends StatefulWidget {
-  final CarWashOffer offer;
+  final String carWashName;
+  final String driveTime;
 
   const OfferPlacemarkWidget({
     Key? key,
-    required this.offer,
+    required this.carWashName,
+    required this.driveTime,
   }) : super(key: key);
 
   @override
@@ -26,7 +28,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
         mainAxisSize: MainAxisSize.min,
         children: [
           _placemarkIcon(),
-          _offerInfoPanel(widget.offer),
+          _offerInfoPanel(),
         ],
       ),
     );
@@ -47,7 +49,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
     );
   }
 
-  Widget _offerInfoPanel(CarWashOffer offer) {
+  Widget _offerInfoPanel() {
     return Container(
       width: 110,
       decoration: const BoxDecoration(
@@ -68,7 +70,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
         children: [
           FittedBox(
             child: Text(
-              offer.name,
+              widget.carWashName,
               style: Theme.of(context).textTheme.titleSmall,
             ),
             fit: BoxFit.fill,
@@ -88,7 +90,7 @@ class OfferPlacemarkWidgetState extends State<OfferPlacemarkWidget> {
           size: 17,
         ),
         Text(
-          "56 min",
+          widget.driveTime,
           style: Theme.of(context).textTheme.titleSmall,
         )
       ],

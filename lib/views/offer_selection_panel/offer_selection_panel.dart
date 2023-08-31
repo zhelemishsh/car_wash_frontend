@@ -32,14 +32,16 @@ class OfferSelectionPanel extends StatefulWidget {
 class OfferSelectionPanelState
     extends State<OfferSelectionPanel> implements OfferSelectionContract {
   late OfferSelectionPresenter _presenter;
+  CarWashOffer? _selectedOffer;
 
   @override
   void initState() {
     super.initState();
-    _presenter = OfferSelectionPresenter(this);
+    _presenter = OfferSelectionPresenter(this, widget.startPosition);
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       widget.mapKey.currentState!.placemarksWidgetsBuilder = _buildPlacemarks;
+      widget.mapKey.currentState!.routeBuilder = _buildRoute;
       widget.mapKey.currentState!.setState(() {});
 
       _presenter.loadWashOffers();
@@ -49,6 +51,7 @@ class OfferSelectionPanelState
   @override
   void dispose() {
     widget.mapKey.currentState!.placemarksWidgetsBuilder = () => [];
+    widget.mapKey.currentState!.routeBuilder = () async => null;
     super.dispose();
   }
 
@@ -85,10 +88,7 @@ class OfferSelectionPanelState
           size: 80,
           color: AppColors.darkRed,
         ),
-        position: Point(
-          latitude: widget.startPosition.latitude,
-          longitude: widget.startPosition.longitude,
-        ),
+        position: widget.startPosition.toPoint(),
         onPressed: () {},
       ),
     ];
@@ -96,18 +96,24 @@ class OfferSelectionPanelState
       return PlacemarkData(
         offset: const Offset(0.205, 0.803),
         widget: OfferPlacemarkWidget(
-          offer: offer,
+          carWashName: offer.name,
+          driveTime: offer.route!.metadata.weight.timeWithTraffic.text,
         ),
-        position: Point(
-          latitude: offer.position.latitude,
-          longitude: offer.position.longitude,
-        ),
+        position: offer.position.toPoint(),
         onPressed: () {
-          _showConfirmingDialog(offer);
+          _selectedOffer = offer;
+          setState(() {});
         },
       );
     }).toList());
     return result;
+  }
+
+  Future<DrivingRoute?> _buildRoute() async {
+    if (_selectedOffer != null) {
+      return _selectedOffer!.route;
+    }
+    return null;
   }
 
   Widget _carWashOfferWidget(CarWashOffer offer) {
