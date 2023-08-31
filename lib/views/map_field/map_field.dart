@@ -38,7 +38,7 @@ class MapFieldState extends State<MapField> {
     mapController.moveCamera(
       CameraUpdate.newCameraPosition(CameraPosition(
         zoom: zoom,
-        target: await getUserPosition(),
+        target: (await getUserPosition()).toPoint(),
       )),
       animation: const MapAnimation(type: MapAnimationType.smooth),
     );
@@ -48,6 +48,18 @@ class MapFieldState extends State<MapField> {
     Point? mapPoint1 = await mapController.getPoint(point1);
     Point? mapPoint2 = await mapController.getPoint(point2);
     return _calcDistance(mapPoint1!, mapPoint2!);
+  }
+
+  Future<MapPosition> getUserPosition() async {
+    CameraPosition? userCameraPosition = await mapController.getUserCameraPosition();
+    if (userCameraPosition != null) {
+      return userCameraPosition.target.toMapPosition();
+    }
+    else {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      return MapPosition(position.latitude, position.longitude);
+    }
   }
 
   Widget _mapPanel() {
@@ -99,17 +111,11 @@ class MapFieldState extends State<MapField> {
       points: [
         RequestPoint(
           requestPointType: RequestPointType.wayPoint,
-          point: Point(
-            latitude: routeData.startPosition.latitude,
-            longitude: routeData.startPosition.longitude,
-          ),
+          point: routeData.startPosition.toPoint(),
         ),
         RequestPoint(
           requestPointType: RequestPointType.wayPoint,
-          point: Point(
-            latitude: routeData.endPosition.latitude,
-            longitude: routeData.endPosition.longitude,
-          ),
+          point: routeData.endPosition.toPoint(),
         ),
       ],
     ).result;
@@ -133,18 +139,6 @@ class MapFieldState extends State<MapField> {
       placemarks.add(_makePlacemark(placemarkData, image));
     }
     return placemarks;
-  }
-
-  Future<Point> getUserPosition() async {
-    CameraPosition? userCameraPosition = await mapController.getUserCameraPosition();
-    if (userCameraPosition != null) {
-      return userCameraPosition.target;
-    }
-    else {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      return Point(latitude: position.latitude, longitude: position.longitude);
-    }
   }
 
   Future<void> _getUserLocationPermission() async {
@@ -174,10 +168,7 @@ class MapFieldState extends State<MapField> {
       onTap: (mapObject, point) {
         data.onPressed();
       },
-      point: Point(
-        latitude: data.position.latitude,
-        longitude: data.position.longitude,
-      ),
+      point: data.position,
       opacity: 1,
       icon: PlacemarkIcon.single(
         PlacemarkIconStyle(
@@ -235,4 +226,16 @@ class PlacemarkData {
     required this.onPressed,
     required this.offset,
   });
+}
+
+extension PointToMapPosition on Point {
+  MapPosition toMapPosition() {
+    return MapPosition(latitude, longitude);
+  }
+}
+
+extension MapPositionToPoint on MapPosition {
+  Point toPoint() {
+    return Point(latitude: latitude, longitude: longitude);
+  }
 }

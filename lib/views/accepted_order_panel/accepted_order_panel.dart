@@ -236,10 +236,8 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
 
   Future<RouteData?> _buildRoute() async {
     if (_isRouteCreated) {
-      Point userPosition = await widget.mapKey.currentState!.getUserPosition();
-
       return RouteData(
-        MapPosition(userPosition.latitude, userPosition.longitude),
+        await widget.mapKey.currentState!.getUserPosition(),
         _presenter.order.carWashPosition,
       );
     }
