@@ -134,7 +134,7 @@ class OfferSelectionPanelState
     ];
     result.addAll(_presenter.offers.map((offer) {
       return PlacemarkData(
-        offset: const Offset(0.205, 0.803),
+        offset: const Offset(0.155, 0.803),
         widget: OfferPlacemarkWidget(
           carWashName: offer.name,
           driveTime: offer.route!.metadata.weight.timeWithTraffic.text,
