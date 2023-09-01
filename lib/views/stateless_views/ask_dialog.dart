@@ -24,6 +24,7 @@ class AskDialog extends StatelessWidget {
         padding: const EdgeInsets.all(11),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(4),
