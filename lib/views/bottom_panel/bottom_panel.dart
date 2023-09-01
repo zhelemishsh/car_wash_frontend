@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/app_colors.dart';
-
 class BottomPanel extends StatefulWidget {
   final Widget child;
 
@@ -36,22 +34,7 @@ class BottomPanelState extends State<BottomPanel>
           parent: _controller,
           curve: Curves.easeInOutQuad,
         )),
-        child: Container(
-          padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-            color: Theme.of(context).dialogBackgroundColor,
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(0, 0, 0, 0.4),
-                spreadRadius: 2,
-                blurRadius: 14,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: widget.child,
-        ),
+        child: widget.child,
       ),
     );
   }

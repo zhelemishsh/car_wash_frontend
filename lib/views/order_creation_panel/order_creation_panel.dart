@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/utils/time_utils.dart';
+import 'package:car_wash_frontend/views/bottom_panel/bottom_titled_container.dart';
 import 'package:car_wash_frontend/views/map_field/map_field.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_contract.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_presenter.dart';
@@ -73,39 +74,41 @@ class OrderCreationPanelState
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          height: 55,
-          child: Row(
-            children: [
-              Expanded(
-                child: _timePickerPanel(),
-              ),
-              _startSearchButton(),
-            ],
+    return BottomTitledPanel(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            height: 55,
+            child: Row(
+              children: [
+                Expanded(
+                  child: _timePickerPanel(),
+                ),
+                _startSearchButton(),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 40,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: _carNamesList(),
+          SizedBox(
+            height: 40,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: _carNamesList(),
+            ),
           ),
-        ),
-        SizedBox(
-          height: 60,
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: _carServices.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _carServiceWidget(_carServices[index]);
-            },
+          SizedBox(
+            height: 60,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: _carServices.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _carServiceWidget(_carServices[index]);
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

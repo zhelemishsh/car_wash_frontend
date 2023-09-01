@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/utils/route_utils.dart';
+import 'package:car_wash_frontend/views/bottom_panel/bottom_titled_container.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../theme/app_colors.dart';
 import '../../utils/time_utils.dart';
 import '../map_field/map_field.dart';
+import '../stateless_views/circle_button.dart';
 import 'accepted_order_presenter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -51,31 +53,38 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Table(
-      columnWidths:  const <int, TableColumnWidth>{
-        0: FlexColumnWidth(),
-        1: IntrinsicColumnWidth(),
-      },
-      children: [
-        TableRow(
-          children: [
-            _carWashPositionPanel(),
-            TableCell(
-              verticalAlignment: TableCellVerticalAlignment.fill,
-              child: _actionButtons(),
-            ),
-          ],
-        ),
-        TableRow(
-          children: [
-            _orderInfoPanel(),
-            TableCell(
-              verticalAlignment: TableCellVerticalAlignment.fill,
-              child: _imagePanel(),
-            ),
-          ],
-        )
-      ],
+    return BottomTitledPanel(
+      title: CircleButton(
+        iconData: Icons.clear_rounded,
+        size: 40,
+        onPressed: () {  },
+      ),
+      child: Table(
+        columnWidths:  const <int, TableColumnWidth>{
+          0: FlexColumnWidth(),
+          1: IntrinsicColumnWidth(),
+        },
+        children: [
+          TableRow(
+            children: [
+              _carWashPositionPanel(),
+              TableCell(
+                verticalAlignment: TableCellVerticalAlignment.fill,
+                child: _actionButtons(),
+              ),
+            ],
+          ),
+          TableRow(
+            children: [
+              _orderInfoPanel(),
+              TableCell(
+                verticalAlignment: TableCellVerticalAlignment.fill,
+                child: _imagePanel(),
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 

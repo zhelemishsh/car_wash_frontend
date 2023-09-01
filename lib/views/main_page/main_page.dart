@@ -3,6 +3,7 @@ import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_panel.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_panel.dart';
 import 'package:car_wash_frontend/views/order_creation_panel/order_creation_panel.dart';
+import 'package:car_wash_frontend/views/stateless_views/circle_button.dart';
 import 'package:flutter/material.dart';
 
 import '../accepted_order_panel/accepted_order_panel.dart';
@@ -99,7 +100,9 @@ class MainPageState extends State<MainPage> {
   }
 
   Widget _userPositionButton() {
-    return _topPanelButton(
+    return CircleButton(
+      size: 40,
+      iconColor: AppColors.dirtyWhite,
       iconData: Icons.near_me_rounded,
       onPressed: () {
         _mapKey.currentState?.moveCameraToUser(11);
@@ -108,39 +111,13 @@ class MainPageState extends State<MainPage> {
   }
 
   Widget _menuButton() {
-    return _topPanelButton(
+    return CircleButton(
+      size: 40,
+      iconColor: AppColors.dirtyWhite,
       iconData: Icons.menu_rounded,
       onPressed: () {
         Navigator.pushNamed(context, "/account_menu_page");
       },
-    );
-  }
-
-  Widget _topPanelButton({
-    required IconData iconData,
-    required Function() onPressed
-  }) {
-    double buttonSize = 40;
-    return SizedBox(
-      height: buttonSize,
-      width: buttonSize,
-      child: TextButton(
-        onPressed: onPressed,
-        style: TextButton.styleFrom(
-          elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(buttonSize / 2),
-          ),
-          padding: const EdgeInsets.all(8),
-          backgroundColor: AppColors.black,
-          foregroundColor: AppColors.orange,
-          shadowColor: Colors.black.withOpacity(0.8),
-        ),
-        child: Icon(
-          iconData,
-          color: AppColors.dirtyWhite,
-        ),
-      ),
     );
   }
 

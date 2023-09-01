@@ -1,7 +1,9 @@
 import 'package:car_wash_frontend/theme/custom_icons.dart';
+import 'package:car_wash_frontend/views/bottom_panel/bottom_titled_container.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/confirming_dialog.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_placemark_widget.dart';
 import 'package:car_wash_frontend/views/offer_selection_panel/offer_selection_presenter.dart';
+import 'package:car_wash_frontend/views/stateless_views/circle_button.dart';
 import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
@@ -63,15 +65,22 @@ class OfferSelectionPanelState
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
-      child: ListView.builder(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        itemCount: _presenter.offers.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _carWashOfferWidget(_presenter.offers[index]);
-        },
+    return BottomTitledPanel(
+      title: CircleButton(
+        iconData: Icons.clear_rounded,
+        size: 40,
+        onPressed: () {  },
+      ),
+      child: Container(
+        constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
+        child: ListView.builder(
+          padding: EdgeInsets.zero,
+          shrinkWrap: true,
+          itemCount: _presenter.offers.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _carWashOfferWidget(_presenter.offers[index]);
+          },
+        ),
       ),
     );
   }
