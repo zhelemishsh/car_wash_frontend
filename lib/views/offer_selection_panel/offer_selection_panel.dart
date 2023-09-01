@@ -11,11 +11,13 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../models/car_wash_offer.dart';
 import '../../theme/app_colors.dart';
 import '../map_field/map_field.dart';
+import '../stateless_views/ask_dialog.dart';
 import 'offer_selection_contract.dart';
 
 class OfferSelectionPanel extends StatefulWidget {
   final GlobalKey<MapFieldState> mapKey;
   final Function() onOfferSelected;
+  final Function() onSearchStopped;
   final MapPosition startPosition;
 
   const OfferSelectionPanel({
@@ -23,6 +25,7 @@ class OfferSelectionPanel extends StatefulWidget {
     required this.mapKey,
     required this.startPosition,
     required this.onOfferSelected,
+    required this.onSearchStopped,
   }) : super(key: key);
 
   @override
@@ -69,7 +72,7 @@ class OfferSelectionPanelState
       title: CircleButton(
         iconData: Icons.clear_rounded,
         size: 40,
-        onPressed: () {  },
+        onPressed: _showOrderCancelDialog,
       ),
       child: Container(
         constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
@@ -87,6 +90,21 @@ class OfferSelectionPanelState
 
   @override
   void updateOffers() => setState(() {});
+
+  void _showOrderCancelDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AskDialog(
+          text: "Прекратить поиск?",
+          onConfirmed: () {
+            _presenter.stopSearch();
+            widget.onSearchStopped();
+          },
+        );
+      },
+    );
+  }
 
   List<PlacemarkData> _buildPlacemarks() {
     List<PlacemarkData> result = [

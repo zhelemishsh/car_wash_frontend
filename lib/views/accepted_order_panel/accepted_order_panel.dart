@@ -1,4 +1,3 @@
-import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/utils/route_utils.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_titled_container.dart';
@@ -8,18 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../theme/app_colors.dart';
-import '../../utils/time_utils.dart';
 import '../map_field/map_field.dart';
+import '../stateless_views/ask_dialog.dart';
 import '../stateless_views/circle_button.dart';
 import 'accepted_order_presenter.dart';
-import 'package:intl/date_symbol_data_local.dart';
 
 class AcceptedOrderPanel extends StatefulWidget {
   final GlobalKey<MapFieldState> mapKey;
+  final Function() onOrderCanceled;
 
   const AcceptedOrderPanel({
     Key? key,
     required this.mapKey,
+    required this.onOrderCanceled,
   }) : super(key: key);
 
   @override
@@ -57,7 +57,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       title: CircleButton(
         iconData: Icons.clear_rounded,
         size: 40,
-        onPressed: () {  },
+        onPressed: _showOrderCancelDialog,
       ),
       child: Table(
         columnWidths:  const <int, TableColumnWidth>{
@@ -92,6 +92,21 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   void setState(VoidCallback fn) {
     widget.mapKey.currentState?.setState(() {});
     super.setState(fn);
+  }
+
+  void _showOrderCancelDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AskDialog(
+          text: "Отказаться от предложения?",
+          onConfirmed: () {
+            _presenter.cancelOrder();
+            widget.onOrderCanceled();
+          },
+        );
+      },
+    );
   }
 
   Widget _imagePanel() {

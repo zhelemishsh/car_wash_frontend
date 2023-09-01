@@ -31,4 +31,8 @@ class OfferSelectionPresenter {
       }
     }
   }
+
+  void stopSearch() async {
+    print("Search stopped!");
+  }
 }

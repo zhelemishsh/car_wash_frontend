@@ -16,4 +16,8 @@ class AcceptedOrderPresenter {
     Car("123", "Mersedes", CarType.passengerCar),
     [WashService.interiorDryCleaning, WashService.diskCleaning,]
   );
+
+  void cancelOrder() async {
+    print("Order canceled!");
+  }
 }

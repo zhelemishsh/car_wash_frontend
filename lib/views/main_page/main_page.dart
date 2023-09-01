@@ -150,10 +150,18 @@ class MainPageState extends State<MainPage> {
             _orderState = OrderState.waitingForWash;
             _reopenBottomPanel();
           },
+          onSearchStopped: () {
+            _orderState = OrderState.orderCreation;
+            _reopenBottomPanel();
+          },
         );
       case OrderState.waitingForWash:
         return AcceptedOrderPanel(
           mapKey: _mapKey,
+          onOrderCanceled: () {
+            _orderState = OrderState.orderCreation;
+            _reopenBottomPanel();
+          },
         );
     }
   }
