@@ -8,7 +8,8 @@ import '../../models/car.dart';
 class AcceptedOrderPresenter {
   AcceptedOrder order = AcceptedOrder(
     "Помойка",
-    "ул. Пушкина 25 75",
+    "ул. Красноармейская 25 75",
+    "89278756682",
     MapPosition(59.94473559335115, 30.25908023387789),
     500,
     DateTime.now(),

@@ -6,19 +6,21 @@ class MarkedList extends StatelessWidget {
   final List<MarkedTextData> markedTexts;
   final double iconSize;
   final TextStyle? textStyle;
+  final MainAxisSize mainAxisSize;
 
   const MarkedList({
     Key? key,
     this.textStyle,
     required this.markedTexts,
     required this.iconSize,
+    this.mainAxisSize = MainAxisSize.min,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: mainAxisSize,
       children: _textWidgetsList(context),
     );
   }

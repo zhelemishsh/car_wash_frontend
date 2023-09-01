@@ -5,6 +5,7 @@ import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:car_wash_frontend/views/stateless_views/marked_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 import '../../theme/app_colors.dart';
 import '../map_field/map_field.dart';
@@ -60,30 +61,11 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
         size: 40,
         onPressed: _showOrderCancelDialog,
       ),
-      child: Table(
-        columnWidths:  const <int, TableColumnWidth>{
-          0: FlexColumnWidth(),
-          1: IntrinsicColumnWidth(),
-        },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          TableRow(
-            children: [
-              _carWashPositionPanel(),
-              TableCell(
-                verticalAlignment: TableCellVerticalAlignment.fill,
-                child: _actionButtons(),
-              ),
-            ],
-          ),
-          TableRow(
-            children: [
-              _orderInfoPanel(),
-              TableCell(
-                verticalAlignment: TableCellVerticalAlignment.fill,
-                child: _imagePanel(),
-              ),
-            ],
-          )
+          _topPanel(),
+          _bottomPanel(),
         ],
       ),
     );
@@ -93,6 +75,35 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   void setState(VoidCallback fn) {
     widget.mapKey.currentState?.setState(() {});
     super.setState(fn);
+  }
+
+  Widget _topPanel() {
+    return IntrinsicHeight(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: _carWashInfoPanel(),
+          ),
+          _imagePanel(),
+        ],
+      ),
+    );
+  }
+
+  Widget _bottomPanel() {
+    return IntrinsicHeight(
+      child: Row(
+        children: [
+          Expanded(
+            child: _offerInfoPanel(),
+          ),
+          Expanded(
+            child: _washInfoPanel(),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showOrderCancelDialog() {
@@ -111,86 +122,78 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
   }
 
   Widget _imagePanel() {
-    return Container(
-      margin: const EdgeInsets.all(3),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        image: const DecorationImage(
-          image:  AssetImage("assets/goshan.jpg"),
-          fit: BoxFit.fitHeight,
+    return AspectRatio(
+      aspectRatio: 1,
+      child: Container(
+        margin: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: const DecorationImage(
+            image:  AssetImage("assets/goshan.jpg"),
+            fit: BoxFit.fitHeight,
+          ),
         ),
       ),
     );
   }
 
-  Widget _carWashPositionPanel() {
+  Widget _carWashInfoPanel() {
     return DataPanel(
       margin: 3,
-      child: MarkedList(
-        iconSize: 25,
-        markedTexts: [
-          MarkedTextData(
-            text: _presenter.order.carWashName,
-            textStyle: Theme.of(context).textTheme.titleMedium,
-          ),
-          MarkedTextData(
-            text: _presenter.order.carWashAddress,
-            textStyle: Theme.of(context).textTheme.titleSmall,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _carWashMainInfoPanel(),
+          Padding(
+            padding: const EdgeInsets.only(top: 5),
+            child: MarkedList(
+              textStyle: Theme.of(context).textTheme.titleSmall,
+              mainAxisSize: MainAxisSize.max,
+              iconSize: 23,
+              markedTexts: [
+                MarkedTextData(
+                  text: _presenter.order.carWashNumber,
+                  iconData: Icons.phone_rounded,
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _actionButtons() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _styledButton(
-          iconData: Icons.route_rounded,
-          iconColor: AppColors.routeBlue,
-          onPressed: () {
-            _isRouteCreated = true;
-            setState(() {});
-          },
-        ),
-        _styledButton(
-          iconData: Icons.delete_rounded,
-          iconColor: AppColors.darkRed,
-          onPressed: () {},
-        ),
-      ],
+  Widget _carWashMainInfoPanel() {
+    return DataPanel(
+      backgroundColor: AppColors.lightGrey.withOpacity(0.2),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                _presenter.order.carWashName,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              Text(
+                _presenter.order.carWashAddress,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _styledButton({
-    required IconData iconData,
-    required Color iconColor,
-    required Function() onPressed
-  }) {
-    return Align(
-      alignment: Alignment.center,
-      child: IconButton(
-        onPressed: onPressed,
-        padding: const EdgeInsets.all(10),
-        highlightColor: iconColor.withOpacity(0.1),
-        constraints: const BoxConstraints(),
-        iconSize: 40,
-        icon: Icon(
-          iconData,
-          color: iconColor,
-        ),
-      ),
-    );;
-  }
-
-  Widget _orderInfoPanel() {
+  Widget _offerInfoPanel() {
     return DataPanel(
       margin: 3,
       child: MarkedList(
-        textStyle: Theme.of(context).textTheme.titleMedium,
-        iconSize: 25,
+        textStyle: Theme.of(context).textTheme.titleSmall,
+        mainAxisSize: MainAxisSize.max,
+        iconSize: 23,
         markedTexts: [
           MarkedTextData(
             text: DateFormat('dd.MM.yy').format(_presenter.order.startTime),
@@ -209,26 +212,28 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
             text: _presenter.order.car.name,
             iconData: Icons.directions_car_rounded,
           ),
-          MarkedTextData(
-            text: _serviceListString(),
-            iconData: Icons.settings_rounded,
-          ),
         ],
       ),
     );
   }
 
-  String _serviceListString() {
-    String result = "";
-    for (int i = 0; i < _presenter.order.services.length; ++i) {
-      result += i == 0
-          ? _presenter.order.services[i].parseToString()
-          : _presenter.order.services[i].parseToString().toLowerCase();
-      if (i != _presenter.order.services.length - 1) {
-        result += ", ";
-      }
-    }
-    return result;
+  Widget _washInfoPanel() {
+    List<MarkedTextData> markedList = _presenter.order.services.map(
+        (service) => MarkedTextData(
+          text: service.parseToString(),
+          iconData: Icons.water_drop,
+        ),
+    ).toList();
+
+    return DataPanel(
+      margin: 3,
+      child: MarkedList(
+        textStyle: Theme.of(context).textTheme.titleSmall,
+        mainAxisSize: MainAxisSize.max,
+        iconSize: 23,
+        markedTexts: markedList,
+      ),
+    );
   }
 
   Widget _placemarkWidget() {
@@ -255,7 +260,10 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
           longitude: _presenter.order.carWashPosition.longitude,
         ),
         offset: const Offset(0.5, 0.87),
-        onPressed: () {},
+        onPressed: () {
+          _isRouteCreated = true;
+          setState(() {});
+        },
       ),
     ];
   }

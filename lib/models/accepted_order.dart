@@ -5,6 +5,7 @@ import 'package:car_wash_frontend/models/wash_order.dart';
 class AcceptedOrder {
   String carWashName;
   String carWashAddress;
+  String carWashNumber;
   MapPosition carWashPosition;
   int price;
   DateTime startTime;
@@ -15,6 +16,7 @@ class AcceptedOrder {
   AcceptedOrder(
       this.carWashName,
       this.carWashAddress,
+      this.carWashNumber,
       this.carWashPosition,
       this.price,
       this.startTime,
