@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/models/car_wash_offer.dart';
 import 'package:car_wash_frontend/models/wash_order.dart';
 import 'package:car_wash_frontend/utils/route_utils.dart';
 import 'package:car_wash_frontend/views/bottom_panel/bottom_titled_container.dart';
@@ -240,7 +241,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     return const Icon(
       Icons.location_on_rounded,
       color: AppColors.orange,
-      size: 70,
+      size: 40,
       shadows: [
         Shadow(
           color: Color.fromRGBO(0, 0, 0, 0.4),
@@ -255,10 +256,7 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
     return [
       PlacemarkData(
         widget: _placemarkWidget(),
-        position: Point(
-          latitude: _presenter.order.carWashPosition.latitude,
-          longitude: _presenter.order.carWashPosition.longitude,
-        ),
+        position: _presenter.order.carWashPosition.toPoint(),
         offset: const Offset(0.5, 0.87),
         onPressed: () {
           _isRouteCreated = true;

@@ -4,6 +4,7 @@ import 'package:car_wash_frontend/views/stateless_views/data_panel.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 import '../../models/wash_order.dart';
 import '../shaking_dialog/shaking_dialog.dart';
@@ -281,6 +282,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
                 enlargeFactor: 0,
                 onPageChanged: (index, reason) {
                   selectTime(items[index], reason);
+                  HapticFeedback.lightImpact();
                 },
               ),
               itemBuilder: (context, index, a) {
