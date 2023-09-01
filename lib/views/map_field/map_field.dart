@@ -90,10 +90,12 @@ class MapFieldState extends State<MapField> {
           onUserLocationAdded: (userLocationView) async {
             PlacemarkMapObject placemark = await _buildLocationPlacemark(userLocationView.pin);
             PlacemarkMapObject arrow = await _buildLocationPlacemark(userLocationView.arrow);
+            CircleMapObject accuracyCircle = _buildAccuracyCircle(userLocationView.accuracyCircle);
 
             return userLocationView.copyWith(
               pin: placemark,
               arrow: arrow,
+              accuracyCircle: accuracyCircle,
             );
           },
           mapObjects: _placemarks,
@@ -187,6 +189,14 @@ class MapFieldState extends State<MapField> {
         ),
       ),
       opacity: 1,
+    );
+  }
+
+  CircleMapObject _buildAccuracyCircle(CircleMapObject circle) {
+    return circle.copyWith(
+      fillColor: AppColors.routeBlue.withOpacity(0.6),
+      strokeWidth: 2,
+      strokeColor: AppColors.routeBlue,
     );
   }
 }

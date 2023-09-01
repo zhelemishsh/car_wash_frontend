@@ -189,6 +189,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
 
   void _onStartTimeSelected(TimeOfDay time, CarouselPageChangedReason reason) {
     if (reason != CarouselPageChangedReason.manual) return;
+    HapticFeedback.vibrate();
     _selectedStartTime = time;
     if (_selectedEndTime.isBefore(_selectedStartTime.addMinutes(20))) {
       _selectedEndTime = _selectedStartTime.addMinutes(20);
@@ -201,6 +202,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
 
   void _onEndTimeSelected(TimeOfDay time, CarouselPageChangedReason reason) {
     if (reason != CarouselPageChangedReason.manual) return;
+    HapticFeedback.vibrate();
     _selectedEndTime = time;
     if (_selectedEndTime.isBefore(_selectedStartTime.addMinutes(20))) {
       _selectedStartTime = _selectedEndTime.subtractMinutes(20);
@@ -282,7 +284,6 @@ class TimePickerPopupState extends State<TimePickerPopup> {
                 enlargeFactor: 0,
                 onPageChanged: (index, reason) {
                   selectTime(items[index], reason);
-                  HapticFeedback.lightImpact();
                 },
               ),
               itemBuilder: (context, index, a) {
