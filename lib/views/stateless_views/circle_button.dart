@@ -7,12 +7,14 @@ class CircleButton extends StatelessWidget {
   final IconData iconData;
   final double size;
   final Color iconColor;
+  final Color backgroundColor;
 
   const CircleButton({
     required this.iconData,
     required this.onPressed,
     required this.size,
     this.iconColor = AppColors.dirtyWhite,
+    this.backgroundColor = AppColors.black,
     Key? key,
   }) : super(key: key);
 
@@ -30,7 +32,7 @@ class CircleButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(buttonSize / 2),
           ),
           padding: const EdgeInsets.all(8),
-          backgroundColor: AppColors.black,
+          backgroundColor: backgroundColor.withOpacity(0.7),
           foregroundColor: AppColors.orange,
           shadowColor: Colors.black.withOpacity(0.8),
         ),

@@ -71,6 +71,7 @@ class OfferSelectionPanelState
   Widget build(BuildContext context) {
     return BottomTitledPanel(
       title: CircleButton(
+        backgroundColor: AppColors.darkRed,
         iconData: Icons.clear_rounded,
         size: 40,
         onPressed: _showOrderCancelDialog,

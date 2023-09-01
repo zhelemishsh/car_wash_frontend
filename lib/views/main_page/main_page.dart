@@ -82,11 +82,11 @@ class MainPageState extends State<MainPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 3),
       decoration: BoxDecoration(
-        color: AppColors.black,
+        color: AppColors.black.withOpacity(0.7),
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.4),
+            color: Colors.black.withOpacity(0.3),
             offset: const Offset(0, 2),
             blurRadius: 4,
           ),
@@ -102,7 +102,6 @@ class MainPageState extends State<MainPage> {
   Widget _userPositionButton() {
     return CircleButton(
       size: 40,
-      iconColor: AppColors.dirtyWhite,
       iconData: Icons.near_me_rounded,
       onPressed: () {
         _mapKey.currentState?.moveCameraToUser(11);
@@ -113,7 +112,6 @@ class MainPageState extends State<MainPage> {
   Widget _menuButton() {
     return CircleButton(
       size: 40,
-      iconColor: AppColors.dirtyWhite,
       iconData: Icons.menu_rounded,
       onPressed: () {
         Navigator.pushNamed(context, "/account_menu_page");
