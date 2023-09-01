@@ -24,8 +24,9 @@ class OfferSelectionPresenter {
         if (offers.indexWhere(
                 (existingOffer) => existingOffer.id == newOffer.id) == -1) {
           newOffer.route = await RouteUtils.makeRoute(startPosition, newOffer.position);
-          offers.add(newOffer);
-          _view.updateOffers();
+          offers.insert(0, newOffer);
+          _view.addOfferToList();
+          _view.updateMapOffers();
         }
         await Future.delayed(const Duration(seconds: 2));
       }

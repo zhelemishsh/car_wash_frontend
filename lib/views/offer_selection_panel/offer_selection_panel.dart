@@ -37,6 +37,7 @@ class OfferSelectionPanel extends StatefulWidget {
 class OfferSelectionPanelState
     extends State<OfferSelectionPanel> implements OfferSelectionContract {
   late OfferSelectionPresenter _presenter;
+  final _listKey = GlobalKey<AnimatedListState>();
   CarWashOffer? _selectedOffer;
 
   @override
@@ -76,12 +77,16 @@ class OfferSelectionPanelState
       ),
       child: Container(
         constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
-        child: ListView.builder(
+        child: AnimatedList(
+          key: _listKey,
           padding: EdgeInsets.zero,
           shrinkWrap: true,
-          itemCount: _presenter.offers.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _carWashOfferWidget(_presenter.offers[index]);
+          initialItemCount: 0,
+          itemBuilder: (context, index, animation) {
+            return SizeTransition(
+              sizeFactor: animation,
+              child: _carWashOfferWidget(_presenter.offers[index]),
+            );
           },
         ),
       ),
@@ -89,7 +94,14 @@ class OfferSelectionPanelState
   }
 
   @override
-  void updateOffers() => setState(() {});
+  void updateMapOffers() => widget.mapKey.currentState?.setState(() {});
+
+  @override
+  void addOfferToList() {
+    _listKey.currentState!.insertItem(
+      0, duration: const Duration(milliseconds: 300),
+    );
+  }
 
   void _showOrderCancelDialog() {
     showDialog(
