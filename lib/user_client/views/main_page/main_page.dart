@@ -7,7 +7,7 @@ import '../bottom_panel/bottom_panel.dart';
 import '../map_field/map_field.dart';
 import '../offer_selection_panel/offer_selection_panel.dart';
 import '../order_creation_panel/order_creation_panel.dart';
-import '../stateless_views/circle_button.dart';
+import '../../../views/circle_button.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key,}) : super(key: key);

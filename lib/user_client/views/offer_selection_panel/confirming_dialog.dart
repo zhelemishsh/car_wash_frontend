@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../../models/car_wash_offer.dart';
 import '../../utils/time_utils.dart';
-import '../stateless_views/data_panel.dart';
-import '../stateless_views/marked_list.dart';
+import '../../../views/data_panel.dart';
+import '../../../views/marked_list.dart';
 
 class ConfirmingDialog extends StatefulWidget {
   final CarWashOffer offer;

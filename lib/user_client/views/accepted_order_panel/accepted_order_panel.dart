@@ -5,13 +5,13 @@ import 'package:intl/intl.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../theme/app_colors.dart';
+import '../../../views/ask_dialog.dart';
+import '../../../views/data_panel.dart';
+import '../../../views/marked_list.dart';
 import '../../utils/route_utils.dart';
 import '../bottom_panel/bottom_titled_container.dart';
 import '../map_field/map_field.dart';
-import '../stateless_views/ask_dialog.dart';
-import '../stateless_views/circle_button.dart';
-import '../stateless_views/data_panel.dart';
-import '../stateless_views/marked_list.dart';
+import '../../../views/circle_button.dart';
 import 'accepted_order_presenter.dart';
 
 class AcceptedOrderPanel extends StatefulWidget {

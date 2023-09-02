@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import '../../../theme/app_colors.dart';
 import '../../models/wash_order.dart';
 import '../shaking_dialog/shaking_dialog.dart';
-import '../stateless_views/data_panel.dart';
+import '../../../views/data_panel.dart';
 
 class TimePickerPopup extends StatefulWidget {
   final Function(TimeOfDay start, TimeOfDay end, WashDay day) onTimePicked;

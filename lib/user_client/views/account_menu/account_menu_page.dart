@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../../../theme/app_colors.dart';
 import '../../models/car.dart';
-import '../stateless_views/ask_dialog.dart';
-import '../stateless_views/data_panel.dart';
-import '../stateless_views/marked_list.dart';
-import '../stateless_views/titled_panel.dart';
+import '../../../views/ask_dialog.dart';
+import '../../../views/data_panel.dart';
+import '../../../views/marked_list.dart';
+import '../../../views/titled_panel.dart';
 import 'account_menu_contract.dart';
 import 'account_menu_presenter.dart';
 import 'add_car_dialog.dart';

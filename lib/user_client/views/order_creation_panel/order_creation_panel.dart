@@ -9,7 +9,7 @@ import '../../utils/time_utils.dart';
 import '../bottom_panel/bottom_titled_container.dart';
 import '../map_field/map_field.dart';
 import '../map_field/start_position_pin.dart';
-import '../stateless_views/data_panel.dart';
+import '../../../views/data_panel.dart';
 import '../time_picker/time_picker_popup.dart';
 import 'order_creation_contract.dart';
 import 'order_creation_presenter.dart';
