@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 import '../../../theme/app_colors.dart';
 
 class InputPanel extends StatefulWidget {
-  final String labelText;
+  final String? labelText;
+  final String? hintText;
   final double margin;
   final List<TextInputFormatter>? inputFormatters;
   final String? Function(String?)? validator;
@@ -14,7 +15,8 @@ class InputPanel extends StatefulWidget {
 
   const InputPanel({
     Key? key,
-    required this.labelText,
+    this.labelText,
+    this.hintText,
     this.margin = 0,
     this.inputFormatters,
     this.validator,
@@ -61,8 +63,9 @@ class InputPanelState extends State<InputPanel> {
     );
   }
 
-  InputDecoration _inputDecoration(String labelText, BuildContext context) {
+  InputDecoration _inputDecoration(String? labelText, BuildContext context) {
     return InputDecoration(
+      hintText: widget.hintText,
       contentPadding: const EdgeInsets.all(10),
       errorStyle: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.darkRed),
       errorBorder: _inputFieldBorder(AppColors.darkRed),

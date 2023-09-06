@@ -2,7 +2,7 @@ import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:car_wash_frontend/models/wash_service.dart';
 
 class CarWashAccount {
-  Map<WashService, Map<CarType, ServiceData>> servicesData = {};
+  Map<WashService, Map<CarType, ServiceData?>> servicesData = {};
 
   CarWashAccount() {
     for (var service in WashService.values) {
@@ -15,8 +15,8 @@ class CarWashAccount {
 }
 
 class ServiceData {
-  Duration? duration;
-  double? price;
+  Duration duration;
+  double price;
 
   ServiceData(this.duration, this.price);
 }

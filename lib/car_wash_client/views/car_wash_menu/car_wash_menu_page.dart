@@ -1,4 +1,5 @@
 import 'package:car_wash_frontend/car_wash_client/models/car_wash_account.dart';
+import 'package:car_wash_frontend/car_wash_client/views/car_wash_menu/change_service_dialog.dart';
 import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:car_wash_frontend/models/wash_service.dart';
 import 'package:car_wash_frontend/views/data_panel.dart';
@@ -28,6 +29,7 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.dirtyWhite,
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -155,7 +157,7 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
           padding: const EdgeInsets.symmetric(vertical: 3),
           child: DropdownList(
             title: _serviceTitlePanel(serviceCarsData.key),
-            child: _serviceCarsList(serviceCarsData.value),
+            child: _serviceCarsList(serviceCarsData.key, serviceCarsData.value),
           ),
         ),
       );
@@ -167,12 +169,12 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
     );
   }
 
-  Widget _serviceCarsList(Map<CarType, ServiceData> serviceCarsData) {
+  Widget _serviceCarsList(WashService service, Map<CarType, ServiceData?> serviceCarsData) {
     List<Widget> carServicesInfo = [];
 
     for (final carTypeData in serviceCarsData.entries) {
       carServicesInfo.add(
-        _serviceInfoPanel(carTypeData.key, carTypeData.value),
+        _serviceInfoPanel(service, carTypeData.key, carTypeData.value),
       );
     }
 
@@ -182,7 +184,7 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
     );
   }
 
-  Widget _serviceInfoPanel(CarType carType, ServiceData serviceData) {
+  Widget _serviceInfoPanel(WashService service, CarType carType, ServiceData? serviceData) {
     return Row(
       children: [
         Padding(
@@ -198,35 +200,60 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
-        _durationButton(serviceData.duration),
-        _priceButton(serviceData.price),
+        _durationPriceButton(service, carType, serviceData),
       ],
     );
   }
 
-  Widget _durationButton(Duration? duration) {
-    return DataButtonPanel(
-      margin: 3,
-      backgroundColor: AppColors.lightGrey.withOpacity(0.2),
-      height: 35,
-      onPressed: () {},
-      child: Text(
-        duration != null ? "${duration.inMinutes} мин." : "-",
+  Widget _durationPriceButtonInside(ServiceData? serviceData) {
+    if (serviceData == null) {
+      return Text(
+        "Добавить",
         style: Theme.of(context).textTheme.titleSmall,
-      ),
-    );
+      );
+    }
+    else {
+      return Row(
+        children: [
+          Text(
+            "${serviceData.duration.inMinutes} мин.",
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const VerticalDivider(color: AppColors.grey,),
+          Text(
+            "${serviceData.price} ₽",
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+        ],
+      );
+    }
   }
 
-  Widget _priceButton(double? price) {
+  Widget _durationPriceButton(WashService service, CarType carType, ServiceData? serviceData) {
     return DataButtonPanel(
       margin: 3,
       backgroundColor: AppColors.lightGrey.withOpacity(0.2),
       height: 35,
-      onPressed: () {},
-      child: Text(
-        price != null ? "$price ₽" : "-",
-        style: Theme.of(context).textTheme.titleSmall,
-      ),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return ChangeServiceDialog(
+              startData: serviceData,
+              onChanged: (serviceData) {
+                if (serviceData == null) {
+                  _account.servicesData[service]![carType] = null;
+                }
+                else {
+                  _account.servicesData[service]![carType] = serviceData;
+                }
+                setState(() {});
+              },
+            );
+          },
+        );
+      },
+      child: _durationPriceButtonInside(serviceData),
     );
   }
 
