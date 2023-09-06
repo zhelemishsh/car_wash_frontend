@@ -1,5 +1,4 @@
-import 'package:car_wash_frontend/user_client/models/wash_order.dart';
-
+import '../../models/wash_service.dart';
 import 'car.dart';
 import 'car_wash_offer.dart';
 

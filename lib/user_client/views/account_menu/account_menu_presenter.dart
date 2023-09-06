@@ -1,3 +1,4 @@
+import '../../../models/car_type.dart';
 import '../../models/account.dart';
 import '../../models/car.dart';
 import '../../repository/account_repository.dart';

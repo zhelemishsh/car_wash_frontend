@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../../../models/car_type.dart';
 import '../../../theme/app_colors.dart';
 import '../../models/car.dart';
 import '../../../views/data_panel.dart';

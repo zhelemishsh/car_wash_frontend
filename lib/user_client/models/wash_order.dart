@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/wash_service.dart';
 import 'car.dart';
 import 'car_wash_offer.dart';
 
@@ -54,10 +55,6 @@ class WashOrderBuilder {
   }
 }
 
-enum WashService {
-  interiorDryCleaning, diskCleaning, bodyPolishing, engineCleaning
-}
-
 enum WashDay {
   today, tomorrow, dayAfter,
 }
@@ -71,21 +68,6 @@ extension DayParseToString on WashDay {
         return "Завтра";
       case WashDay.dayAfter:
         return "Послезавтра";
-    }
-  }
-}
-
-extension ServiceParseToString on WashService {
-  String parseToString() {
-    switch (this) {
-      case WashService.interiorDryCleaning:
-        return "Химчистка салона";
-      case WashService.diskCleaning:
-        return "Чистка дисков";
-      case WashService.bodyPolishing:
-        return "Полировка кузова";
-      case WashService.engineCleaning:
-        return "Мойка двигателя";
     }
   }
 }

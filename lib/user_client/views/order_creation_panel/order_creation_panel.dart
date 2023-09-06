@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/wash_service.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/custom_icons.dart';
 import '../../models/car.dart';
@@ -35,12 +36,6 @@ class OrderCreationPanelState
   late OrderCreationPresenter _presenter;
   final double _minZoom = 10.5;
   final _startPositionPinKey = GlobalKey<StartPositionPinState>();
-  final List<ServiceWidgetData> _carServices = [
-    ServiceWidgetData(WashService.interiorDryCleaning, CustomIcons.flask),
-    ServiceWidgetData(WashService.diskCleaning, CustomIcons.disk),
-    ServiceWidgetData(WashService.bodyPolishing, CustomIcons.clean),
-    ServiceWidgetData(WashService.engineCleaning, CustomIcons.engine)
-  ];
 
   @override
   void initState() {
@@ -101,9 +96,9 @@ class OrderCreationPanelState
             height: 60,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: _carServices.length,
+              itemCount: WashService.values.length,
               itemBuilder: (BuildContext context, int index) {
-                return _carServiceWidget(_carServices[index]);
+                return _carServiceWidget(WashService.values[index]);
               },
             ),
           ),
@@ -163,18 +158,18 @@ class OrderCreationPanelState
     );
   }
 
-  Widget _carServiceWidget(ServiceWidgetData serviceData) {
-    bool isToggled = _presenter.orderBuilder.services.contains(serviceData.service);
+  Widget _carServiceWidget(WashService service) {
+    bool isToggled = _presenter.orderBuilder.services.contains(service);
 
     return DataButtonPanel(
       margin: 3,
       backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
       onPressed: () {
-        if (_presenter.orderBuilder.services.contains(serviceData.service)) {
-          _presenter.orderBuilder.deleteService(serviceData.service);
+        if (_presenter.orderBuilder.services.contains(service)) {
+          _presenter.orderBuilder.deleteService(service);
         }
         else {
-          _presenter.orderBuilder.addService(serviceData.service);
+          _presenter.orderBuilder.addService(service);
         }
         setState(() {});
       },
@@ -182,7 +177,7 @@ class OrderCreationPanelState
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
-            serviceData.iconData,
+            service.getIconData(),
             color: AppColors.dirtyWhite,
             size: 35,
           ),
@@ -190,7 +185,7 @@ class OrderCreationPanelState
             constraints: const BoxConstraints(maxWidth: 80),
             padding: const EdgeInsets.only(left: 4),
             child: Text(
-              serviceData.service.parseToString(),
+              service.parseToString(),
               softWrap: true,
               style: Theme.of(context).textTheme.titleSmall,
             ),
@@ -244,11 +239,4 @@ class OrderCreationPanelState
       ),
     );
   }
-}
-
-class ServiceWidgetData {
-  WashService service;
-  IconData iconData;
-
-  ServiceWidgetData(this.service, this.iconData);
 }

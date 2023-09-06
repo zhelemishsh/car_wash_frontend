@@ -1,7 +1,8 @@
+import '../../../models/car_type.dart';
+import '../../../models/wash_service.dart';
 import '../../models/accepted_order.dart';
 import '../../models/car.dart';
 import '../../models/car_wash_offer.dart';
-import '../../models/wash_order.dart';
 
 class AcceptedOrderPresenter {
   AcceptedOrder order = AcceptedOrder(

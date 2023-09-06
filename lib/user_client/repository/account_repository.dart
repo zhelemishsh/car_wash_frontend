@@ -1,3 +1,4 @@
+import '../../models/car_type.dart';
 import '../models/car.dart';
 
 class AccountRepository {

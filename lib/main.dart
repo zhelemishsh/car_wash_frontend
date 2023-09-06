@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'car_wash_client/views/car_wash_menu/car_wash_menu_page.dart';
 import 'theme/app_colors.dart';
 import 'user_client/views/account_menu/account_menu_page.dart';
 import 'user_client/views/login_page/login_page.dart';
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Navigation Basics',
       // home: CarWashSelectionPage(),
-      home: MainPage(),
+      home: CarWashMenuPage(),
     );
   }
 }

@@ -1,9 +1,9 @@
 import 'package:car_wash_frontend/user_client/models/car_wash_offer.dart';
-import 'package:car_wash_frontend/user_client/models/wash_order.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
+import '../../../models/wash_service.dart';
 import '../../../theme/app_colors.dart';
 import '../../../views/ask_dialog.dart';
 import '../../../views/data_panel.dart';

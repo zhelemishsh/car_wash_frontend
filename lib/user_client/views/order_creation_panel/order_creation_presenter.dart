@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/user_client/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/car_type.dart';
 import '../../models/car.dart';
 import '../../models/wash_order.dart';
 import 'order_creation_contract.dart';
