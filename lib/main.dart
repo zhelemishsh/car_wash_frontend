@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/car_wash_client/views/orderds_main_page/orders_main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -63,7 +64,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Navigation Basics',
       // home: CarWashSelectionPage(),
-      home: CarWashMenuPage(),
+      home: OrderMainPage(),
     );
   }
 }
