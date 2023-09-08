@@ -28,36 +28,17 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.dirtyWhite,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_rounded,),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.logout_rounded,
-            ),
+    return Container(
+      padding: const EdgeInsets.all(6),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _mainInfoPanel(),
+          Padding(
+            padding: const EdgeInsets.all(3),
+            child: _servicesPanel(),
           ),
         ],
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(6),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _mainInfoPanel(),
-            Padding(
-              padding: const EdgeInsets.all(3),
-              child: _servicesPanel(),
-            ),
-          ],
-        ),
       ),
     );
   }
@@ -138,7 +119,7 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
             ),
           ),
           Container(
-            constraints: const BoxConstraints(maxHeight: 550),
+            constraints: const BoxConstraints(maxHeight: 500),
             child: SingleChildScrollView(
               child: _servicesList(),
             ),

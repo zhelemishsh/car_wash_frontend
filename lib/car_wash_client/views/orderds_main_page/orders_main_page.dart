@@ -1,3 +1,4 @@
+import 'package:car_wash_frontend/car_wash_client/views/car_wash_menu/car_wash_menu_page.dart';
 import 'package:car_wash_frontend/car_wash_client/views/orderds_main_page/bottom_navigation_panel.dart';
 import 'package:car_wash_frontend/car_wash_client/views/orderds_main_page/page_navigatrion_button.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
@@ -20,24 +21,19 @@ class OrderMainPageState extends State<OrderMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
-        color: Colors.transparent,
+        height: 70,
+        // color: Colors.transparent,
         child: _bottomNavigationPanel(),
       ),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: _appBarPanel(),
-      ),
+      appBar: AppBar(),
       backgroundColor: AppColors.dirtyWhite,
       body: PageView(
         controller: _pageController,
         children: [
-          Container(
-            alignment: Alignment.center,
-            child: Text("Waiting orders"),
-          ),
+          const CarWashMenuPage(),
           Container(
             alignment: Alignment.center,
             child: Text("Accepted orders"),

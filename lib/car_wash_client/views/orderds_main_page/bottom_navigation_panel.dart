@@ -48,6 +48,7 @@ class BottomNavigationPanelState extends State<BottomNavigationPanel> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: _keyData.map((keyData) {
         return Padding(
