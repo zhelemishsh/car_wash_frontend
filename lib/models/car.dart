@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/car_type.dart';
+import 'car_type.dart';
 
 class Car {
   String number;

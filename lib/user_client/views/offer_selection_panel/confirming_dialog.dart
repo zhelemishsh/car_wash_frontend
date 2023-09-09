@@ -2,7 +2,7 @@ import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/car_wash_offer.dart';
-import '../../utils/time_utils.dart';
+import '../../../utils/time_utils.dart';
 import '../../../views/data_panel.dart';
 import '../../../views/marked_list.dart';
 

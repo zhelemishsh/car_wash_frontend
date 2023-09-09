@@ -1,6 +1,6 @@
 import '../../models/car_wash_offer.dart';
 import '../../repository/wash_offers_repository.dart';
-import '../../utils/route_utils.dart';
+import '../../../utils/route_utils.dart';
 import 'offer_selection_contract.dart';
 
 class OfferSelectionPresenter {

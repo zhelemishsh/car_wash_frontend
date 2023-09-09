@@ -1,12 +1,13 @@
+import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/wash_service.dart';
 import '../../../theme/app_colors.dart';
 import '../../../theme/custom_icons.dart';
-import '../../models/car.dart';
+import '../../../models/car.dart';
 import '../../models/car_wash_offer.dart';
 import '../../models/wash_order.dart';
-import '../../utils/time_utils.dart';
+import '../../../utils/time_utils.dart';
 import '../bottom_panel/bottom_titled_container.dart';
 import '../map_field/map_field.dart';
 import '../map_field/start_position_pin.dart';

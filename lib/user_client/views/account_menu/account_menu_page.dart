@@ -2,7 +2,7 @@ import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:flutter/material.dart';
 
 import '../../../theme/app_colors.dart';
-import '../../models/car.dart';
+import '../../../models/car.dart';
 import '../../../views/ask_dialog.dart';
 import '../../../views/data_panel.dart';
 import '../../../views/marked_list.dart';

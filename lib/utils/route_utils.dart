@@ -1,6 +1,6 @@
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
-import '../models/car_wash_offer.dart';
+import '../user_client/models/car_wash_offer.dart';
 
 class RouteUtils {
   static Future<DrivingRoute> makeRoute(

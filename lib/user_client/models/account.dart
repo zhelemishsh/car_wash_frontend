@@ -1,4 +1,4 @@
-import 'car.dart';
+import '../../models/car.dart';
 
 class Account {
   String name;

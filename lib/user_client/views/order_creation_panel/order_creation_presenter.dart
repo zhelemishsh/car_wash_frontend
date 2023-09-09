@@ -1,8 +1,10 @@
-import 'package:car_wash_frontend/user_client/utils/time_utils.dart';
+
+import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/car_type.dart';
-import '../../models/car.dart';
+import '../../../models/car.dart';
+import '../../../models/was_day.dart';
 import '../../models/wash_order.dart';
 import 'order_creation_contract.dart';
 

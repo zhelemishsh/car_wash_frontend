@@ -1,11 +1,11 @@
-import 'package:car_wash_frontend/user_client/utils/time_utils.dart';
+import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../../models/was_day.dart';
 import '../../../theme/app_colors.dart';
-import '../../models/wash_order.dart';
 import '../shaking_dialog/shaking_dialog.dart';
 import '../../../views/data_panel.dart';
 

@@ -1,5 +1,5 @@
 import '../../models/car_type.dart';
-import '../models/car.dart';
+import '../../models/car.dart';
 
 class AccountRepository {
   final List<Car> _cars = [

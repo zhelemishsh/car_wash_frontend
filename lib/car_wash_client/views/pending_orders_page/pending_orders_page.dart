@@ -1,9 +1,14 @@
+import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_presenter.dart';
+import 'package:car_wash_frontend/models/car_type.dart';
+import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:car_wash_frontend/views/data_panel.dart';
 import 'package:car_wash_frontend/views/marked_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/wash_service.dart';
+import '../../models/client_order.dart';
 
 class PendingOrdersPage extends StatefulWidget {
   const PendingOrdersPage({Key? key}) : super(key: key);
@@ -15,20 +20,28 @@ class PendingOrdersPage extends StatefulWidget {
 }
 
 class PendingOrdersPageState extends State<PendingOrdersPage> {
+  late PendingOrdersPresenter _presenter;
+
+  @override
+  void initState() {
+    _presenter = PendingOrdersPresenter();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6),
       child: ListView.builder(
-        itemCount: 1,
+        itemCount: _presenter.orders.length,
         itemBuilder: (context, index) {
-          return _orderPanel();
+          return _orderPanel(_presenter.orders[index]);
         },
       ),
     );
   }
 
-  Widget _orderPanel() {
+  Widget _orderPanel(ClientOrder order) {
     return DataPanel(
       margin: 3,
       backgroundColor: AppColors.black,
@@ -36,45 +49,45 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _userDataPanel(),
-          _servicesList([WashService.diskCleaning, WashService.engineCleaning]),
-          _bottomPanel(),
+          _userDataPanel(order),
+          _servicesList(order.services),
+          _bottomPanel(order),
         ],
       )
     );
   }
 
-  Widget _mainInfoPanel() {
+  Widget _mainInfoPanel(ClientOrder order) {
     return DataPanel(
       margin: 3,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _userInfoPanel(),
+          _userInfoPanel(order),
           _markedText(
             iconData: Icons.drive_eta_rounded,
-            text: "Легковая машина",
+            text: order.clientCar.type.parseToString(),
           ),
         ],
       ),
     );
   }
 
-  Widget _orderResultParamsPanel() {
+  Widget _orderResultParamsPanel(ClientOrder order) {
     return DataPanel(
       margin: 3,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           _comparePanel(
-            selfValue: 200,
-            bestValue: 100,
+            selfValue: order.price,
+            bestValue: order.bestPrice,
             bestText: "Лучшая цена: ",
             iconData: Icons.currency_ruble_rounded,
           ),
           _comparePanel(
-              selfValue: 50,
-              bestValue: 60,
+              selfValue: order.duration,
+              bestValue: order.bestDuration,
               bestText: "Лучшее время: ",
               iconData: Icons.schedule_rounded,
               textSuffix: "мин."
@@ -84,25 +97,25 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
     );
   }
 
-  Widget _userInfoPanel() {
+  Widget _userInfoPanel(ClientOrder order) {
     return Row(
       children: [
         Expanded(
           child: Text(
-            "Гошан",
+            order.clientName,
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         _markedText(
           iconData: Icons.star_rounded,
-          text: "4.01",
+          text: order.clientRating.toString(),
           rightIcon: true,
         ),
       ],
     );
   }
 
-  Widget _userDataPanel() {
+  Widget _userDataPanel(ClientOrder order) {
     return IntrinsicHeight(
       child: Row(
         children: [
@@ -117,8 +130,8 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
             flex: 3,
             child: Column(
               children: [
-                _mainInfoPanel(),
-                _orderResultParamsPanel(),
+                _mainInfoPanel(order),
+                _orderResultParamsPanel(order),
               ],
             ),
           ),
@@ -127,10 +140,10 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
     );
   }
 
-  Widget _bottomPanel() {
+  Widget _bottomPanel(ClientOrder order) {
     return Row(
       children: [
-        Expanded(child: _clientTimePanel(TimeOfDay.now(), TimeOfDay.now()),),
+        Expanded(child: _clientTimePanel(order),),
         _actionButton(Icons.close_rounded, AppColors.darkRed),
         _actionButton(Icons.done_rounded, AppColors.yesGreen),
       ],
@@ -142,23 +155,34 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
-          image:  AssetImage("assets/goshan.jpg"),
+          image:  AssetImage("assets/kiruha.jpg"),
           fit: BoxFit.fitHeight,
         ),
       ),
     );
   }
 
-  Widget _clientTimePanel(TimeOfDay startTime, TimeOfDay endTime) {
+  Widget _clientTimePanel(ClientOrder order) {
     return DataPanel(
       margin: 3,
-      child: Align(
-        alignment: Alignment.center,
-        child: Text(
-          "12:20 - 13:40",
-          style: Theme.of(context).textTheme.titleLarge,
+      child: IntrinsicHeight(
+        child: Row(
+          children: [
+            Text(
+              order.day.parseToString(),
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const VerticalDivider(color: AppColors.lightGrey,),
+            Expanded(
+              child: Text(
+                "${TimeUtils.formatTime(order.startTime)} - ${TimeUtils.formatTime(order.endTime)}",
+                style: Theme.of(context).textTheme.titleMedium,
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
         ),
-      )
+      ),
     );
   }
   

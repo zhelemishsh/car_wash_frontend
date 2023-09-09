@@ -1,5 +1,5 @@
 import '../../models/wash_service.dart';
-import 'car.dart';
+import '../../models/car.dart';
 import 'car_wash_offer.dart';
 
 class AcceptedOrder {

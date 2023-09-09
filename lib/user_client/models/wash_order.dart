@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../models/was_day.dart';
 import '../../models/wash_service.dart';
-import 'car.dart';
+import '../../models/car.dart';
 import 'car_wash_offer.dart';
 
 class WashOrder {
@@ -52,22 +53,5 @@ class WashOrderBuilder {
     return WashOrder(
       startDateTime, endDateTime, car!, services.toList(), startPosition!,
     );
-  }
-}
-
-enum WashDay {
-  today, tomorrow, dayAfter,
-}
-
-extension DayParseToString on WashDay {
-  String parseToString() {
-    switch (this) {
-      case WashDay.today:
-        return "Сегодня";
-      case WashDay.tomorrow:
-        return "Завтра";
-      case WashDay.dayAfter:
-        return "Послезавтра";
-    }
   }
 }
