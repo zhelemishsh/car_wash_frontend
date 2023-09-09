@@ -1,6 +1,7 @@
 import 'package:car_wash_frontend/car_wash_client/views/car_wash_menu/car_wash_menu_page.dart';
 import 'package:car_wash_frontend/car_wash_client/views/orderds_main_page/bottom_navigation_panel.dart';
 import 'package:car_wash_frontend/car_wash_client/views/orderds_main_page/page_navigatrion_button.dart';
+import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_page.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
 import 'package:car_wash_frontend/views/circle_button.dart';
 import 'package:car_wash_frontend/views/data_panel.dart';
@@ -34,10 +35,7 @@ class OrderMainPageState extends State<OrderMainPage> {
         controller: _pageController,
         children: [
           const CarWashMenuPage(),
-          Container(
-            alignment: Alignment.center,
-            child: Text("Accepted orders"),
-          ),
+          const PendingOrdersPage(),
           Container(
             alignment: Alignment.center,
             child: Text("Free time"),
