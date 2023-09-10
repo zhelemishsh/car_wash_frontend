@@ -29,7 +29,16 @@ class NavigationPageState extends State<NavigationPage> {
         // color: Colors.transparent,
         child: _bottomNavigationPanel(),
       ),
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.logout_rounded,
+            ),
+          ),
+        ],
+      ),
       backgroundColor: AppColors.dirtyWhite,
       body: PageView(
         controller: _pageController,

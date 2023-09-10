@@ -34,9 +34,11 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _mainInfoPanel(),
-          Padding(
-            padding: const EdgeInsets.all(3),
-            child: _servicesPanel(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(3),
+              child: _servicesPanel(),
+            ),
           ),
         ],
       ),
@@ -119,11 +121,15 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
               style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
-          Container(
-            constraints: const BoxConstraints(maxHeight: 500),
-            child: SingleChildScrollView(
-              child: _servicesList(),
-            ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return Container(
+                constraints: const BoxConstraints(maxHeight: 500),
+                child: SingleChildScrollView(
+                  child: _servicesList(),
+                ),
+              );
+            },
           ),
         ],
       ),
