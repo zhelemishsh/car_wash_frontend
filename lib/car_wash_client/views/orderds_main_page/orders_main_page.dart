@@ -91,7 +91,7 @@ class OrderMainPageState extends State<OrderMainPage> {
       navigationPageController: _pageController,
       navigationButtonsData: [
         NavigationButtonData(Icons.menu_rounded, "Профиль"),
-        NavigationButtonData(Icons.schedule_rounded, "Заказы в ожидании"),
+        NavigationButtonData(Icons.notifications_rounded, "Заказы в ожидании"),
         NavigationButtonData(Icons.done_rounded, "Принятые заказы"),
       ],
     );
