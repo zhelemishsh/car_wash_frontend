@@ -2,6 +2,7 @@ import 'package:car_wash_frontend/car_wash_client/views/accepted_orders_page/acc
 import 'package:car_wash_frontend/car_wash_client/views/car_wash_menu/car_wash_menu_page.dart';
 import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_page.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
+import 'package:car_wash_frontend/views/ask_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'bottom_navigation_panel.dart';
@@ -30,11 +31,17 @@ class NavigationPageState extends State<NavigationPage> {
         child: _bottomNavigationPanel(),
       ),
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: _onExitButtonPressed,
+          icon: const Icon(
+            Icons.logout_rounded,
+          ),
+        ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: _onSupportButtonPressed,
             icon: const Icon(
-              Icons.logout_rounded,
+              Icons.question_mark_rounded,
             ),
           ),
         ],
@@ -65,5 +72,20 @@ class NavigationPageState extends State<NavigationPage> {
         NavigationButtonData(Icons.leaderboard_rounded, "Статистика"),
       ],
     );
+  }
+
+  void _onExitButtonPressed() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AskDialog(
+          text: "Выйти из профиля?",
+          onConfirmed: () {},
+        );
+      },
+    );
+  }
+
+  void _onSupportButtonPressed() {
   }
 }
