@@ -1,4 +1,5 @@
 import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_presenter.dart';
+import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/time_border_panel.dart';
 import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:car_wash_frontend/utils/time_utils.dart';
 import 'package:car_wash_frontend/views/data_panel.dart';
 import 'package:car_wash_frontend/views/marked_list.dart';
 import 'package:flutter/material.dart';
+import 'package:progress_border/progress_border.dart';
 
 import '../../../models/wash_service.dart';
 import '../../models/client_order.dart';
@@ -35,25 +37,9 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
       child: ListView.builder(
         itemCount: _presenter.orders.length,
         itemBuilder: (context, index) {
-          return _orderPanel(_presenter.orders[index]);
+          return _orderTimerPanel(_presenter.orders[index]);
         },
       ),
-    );
-  }
-
-  Widget _orderPanel(ClientOrder order) {
-    return DataPanel(
-      margin: 3,
-      backgroundColor: AppColors.black,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _userDataPanel(order),
-          _servicesList(order.services),
-          _bottomPanel(order),
-        ],
-      )
     );
   }
 
@@ -238,6 +224,29 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _orderTimerPanel(ClientOrder order) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: TimeBorderPanel(
+        startSecond: 0,
+        fullDuration: 60,
+        onTimerFinished: () {
+          _presenter.orders.removeWhere((o) => o == order);
+          setState(() {});
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _userDataPanel(order),
+            _servicesList(order.services),
+            _bottomPanel(order),
+          ],
+        ),
+      ),
     );
   }
 
