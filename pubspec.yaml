@@ -71,6 +71,8 @@ flutter:
   assets:
   - assets/goshan.jpg
   - assets/kiruha.jpg
+  - assets/default_car_wash_image.png
+  - assets/default_person_image.png
 
   fonts:
     - family: CustomIcons

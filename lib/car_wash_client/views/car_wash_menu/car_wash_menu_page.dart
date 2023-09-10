@@ -70,9 +70,10 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
         width: 90,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
+          color: AppColors.lightGrey,
           image: const DecorationImage(
-            image:  AssetImage("assets/goshan.jpg"),
-            fit: BoxFit.fitHeight,
+            image:  AssetImage("assets/default_car_wash_image.png"),
+            fit: BoxFit.contain,
           ),
         ),
       ),

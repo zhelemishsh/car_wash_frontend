@@ -176,9 +176,10 @@ class OfferSelectionPanelState
       margin: const EdgeInsets.all(3),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
+        color: AppColors.lightGrey,
         image: const DecorationImage(
-          image:  AssetImage("assets/goshan.jpg"),
-          fit: BoxFit.fitHeight,
+          image:  AssetImage("assets/default_car_wash_image.png"),
+          fit: BoxFit.contain,
         ),
       ),
     );

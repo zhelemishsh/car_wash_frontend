@@ -166,10 +166,11 @@ class PendingOrdersPageState extends State<PendingOrdersPage>
   Widget _userImagePanel() {
     return Container(
       decoration: BoxDecoration(
+        color: AppColors.lightGrey,
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
-          image:  AssetImage("assets/kiruha.jpg"),
-          fit: BoxFit.fitHeight,
+          image:  AssetImage("assets/default_person_image.png"),
+          fit: BoxFit.contain,
         ),
       ),
     );

@@ -111,10 +111,11 @@ class SignUpPageState extends State<SignUpPage>{
       margin: const EdgeInsets.all(4),
       constraints: const BoxConstraints(maxWidth: 100),
       decoration: BoxDecoration(
+        color: AppColors.lightGrey,
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
-          image:  AssetImage("assets/goshan.jpg"),
-          fit: BoxFit.fitHeight,
+          image:  AssetImage("assets/default_person_image.png"),
+          fit: BoxFit.contain,
         ),
       ),
     );

@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Navigation Basics',
       // home: CarWashSelectionPage(),
-      home: const NavigationPage(),
+      home: const LoginPage(),
     );
   }
 }

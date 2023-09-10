@@ -128,10 +128,11 @@ class AcceptedOrderPanelState extends State<AcceptedOrderPanel> {
       child: Container(
         margin: const EdgeInsets.all(3),
         decoration: BoxDecoration(
+          color: AppColors.lightGrey,
           borderRadius: BorderRadius.circular(10),
           image: const DecorationImage(
-            image:  AssetImage("assets/goshan.jpg"),
-            fit: BoxFit.fitHeight,
+            image:  AssetImage("assets/default_car_wash_image.png"),
+            fit: BoxFit.contain,
           ),
         ),
       ),

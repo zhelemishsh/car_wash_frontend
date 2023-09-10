@@ -195,10 +195,11 @@ class AcceptedOrdersPageState extends State<AcceptedOrdersPage>
   Widget _userImagePanel() {
     return Container(
       decoration: BoxDecoration(
+        color: AppColors.lightGrey,
         borderRadius: BorderRadius.circular(10),
         image: const DecorationImage(
-          image:  AssetImage("assets/kiruha.jpg"),
-          fit: BoxFit.cover,
+          image:  AssetImage("assets/default_person_image.png"),
+          fit: BoxFit.contain,
         ),
       ),
     );

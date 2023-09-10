@@ -187,10 +187,11 @@ class AccountMenuPageState extends State<AccountMenuPage>
       child: Container(
         width: 90,
         decoration: BoxDecoration(
+          color: AppColors.lightGrey,
           borderRadius: BorderRadius.circular(10),
           image: const DecorationImage(
-            image:  AssetImage("assets/goshan.jpg"),
-            fit: BoxFit.fitHeight,
+            image:  AssetImage("assets/default_person_image.png"),
+            fit: BoxFit.contain,
           ),
         ),
       ),
