@@ -1,5 +1,7 @@
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
+import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_contract.dart';
 import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_presenter.dart';
-import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/time_border_panel.dart';
 import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
@@ -11,6 +13,7 @@ import 'package:progress_border/progress_border.dart';
 
 import '../../../models/wash_service.dart';
 import '../../models/client_order.dart';
+import 'order_panel.dart';
 
 class PendingOrdersPage extends StatefulWidget {
   const PendingOrdersPage({Key? key}) : super(key: key);
@@ -21,12 +24,13 @@ class PendingOrdersPage extends StatefulWidget {
   }
 }
 
-class PendingOrdersPageState extends State<PendingOrdersPage> {
+class PendingOrdersPageState extends State<PendingOrdersPage>
+    implements PendingOrdersContract {
   late PendingOrdersPresenter _presenter;
 
   @override
   void initState() {
-    _presenter = PendingOrdersPresenter();
+    _presenter = PendingOrdersPresenter(this);
     super.initState();
   }
 
@@ -34,13 +38,24 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(6),
-      child: ListView.builder(
-        itemCount: _presenter.orders.length,
-        itemBuilder: (context, index) {
-          return _orderTimerPanel(_presenter.orders[index]);
+      child: ImplicitlyAnimatedList(
+        items: _presenter.orders,
+        areItemsTheSame: (a, b) => a == b,
+        itemBuilder: (context, animation, item, index) {
+          return SizeFadeTransition(
+            sizeFraction: 0.7,
+            curve: Curves.easeInOut,
+            animation: animation,
+            child: _orderTimerPanel(item),
+          );
         },
       ),
     );
+  }
+
+  @override
+  updatePage() {
+    setState(() {});
   }
 
   Widget _mainInfoPanel(ClientOrder order) {
@@ -130,8 +145,20 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
     return Row(
       children: [
         Expanded(child: _clientTimePanel(order),),
-        _actionButton(Icons.close_rounded, AppColors.darkRed),
-        _actionButton(Icons.done_rounded, AppColors.yesGreen),
+        _actionButton(
+          iconData: Icons.close_rounded,
+          buttonColor: AppColors.darkRed,
+          onPressed: () {
+            _presenter.declineOrder(order);
+          },
+        ),
+        _actionButton(
+          iconData: Icons.done_rounded,
+          buttonColor: AppColors.yesGreen,
+          onPressed: () {
+            _presenter.acceptOrder(order);
+          },
+        ),
       ],
     );
   }
@@ -172,9 +199,13 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
     );
   }
   
-  Widget _actionButton(IconData iconData, Color buttonColor) {
+  Widget _actionButton({
+    required IconData iconData,
+    required Color buttonColor,
+    required onPressed,
+  }) {
     return IconButton(
-      onPressed: () {},
+      onPressed: onPressed,
       icon: Icon(
         iconData,
         color: buttonColor,
@@ -228,24 +259,20 @@ class PendingOrdersPageState extends State<PendingOrdersPage> {
   }
 
   Widget _orderTimerPanel(ClientOrder order) {
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: TimeBorderPanel(
-        startSecond: 0,
-        fullDuration: 60,
-        onTimerFinished: () {
-          _presenter.orders.removeWhere((o) => o == order);
-          setState(() {});
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _userDataPanel(order),
-            _servicesList(order.services),
-            _bottomPanel(order),
-          ],
-        ),
+    return OrderPanel(
+      startSecond: 0,
+      fullDuration: 60,
+      onTimerFinished: () {
+        _presenter.timeoutOrder(order);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _userDataPanel(order),
+          _servicesList(order.services),
+          _bottomPanel(order),
+        ],
       ),
     );
   }

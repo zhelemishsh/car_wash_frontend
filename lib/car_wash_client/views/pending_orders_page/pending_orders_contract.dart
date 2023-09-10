@@ -1,0 +1,3 @@
+abstract class PendingOrdersContract {
+  updatePage();
+}
