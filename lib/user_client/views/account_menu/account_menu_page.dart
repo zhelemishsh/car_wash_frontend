@@ -1,3 +1,5 @@
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
 import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:flutter/material.dart';
 
@@ -249,23 +251,30 @@ class AccountMenuPageState extends State<AccountMenuPage>
   }
 
   Widget _carsList() {
-    List<Widget> carWidgets = [];
-    for (var car in _presenter.account.cars) {
-      carWidgets.add(
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 3),
-          child: _carInfoPanel(car),
-        ),
-      );
-    }
-    return Column(children: carWidgets,);
+    return ImplicitlyAnimatedList(
+      items: _presenter.account.cars,
+      shrinkWrap: true,
+      areItemsTheSame: (a, b) => a == b,
+      itemBuilder: (context, animation, item, index) {
+        return SizeFadeTransition(
+          sizeFraction: 0.7,
+          curve: Curves.easeInOut,
+          animation: animation,
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 3),
+            child: _carInfoPanel(item),
+          ),
+        );
+      },
+    );
   }
 
   Widget _carInfoPanel(Car car) {
     bool isToggled = _presenter.selectedCars.contains(car);
 
     return DataButtonPanel(
-      backgroundColor: isToggled ? AppColors.lightOrange : AppColors.grey,
+      backgroundColor: AppColors.grey,
+      borderColor: isToggled ? AppColors.lightOrange : null,
       onPressed: () {
         if (_presenter.selectedCars.contains(car)) {
           _presenter.selectedCars.remove(car);
@@ -277,7 +286,11 @@ class AccountMenuPageState extends State<AccountMenuPage>
       },
       child: Row(
         children: [
-          Icon(car.type.carIcon(), size: 40, color: AppColors.lightGrey,),
+          Icon(
+            car.type.carIcon(),
+            size: 40,
+            color: AppColors.lightOrange,
+          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(left: 5),
@@ -300,22 +313,22 @@ class AccountMenuPageState extends State<AccountMenuPage>
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
-            color: AppColors.lightGrey,
+            color: AppColors.lightGrey.withOpacity(0.2),
           ),
           child: RichText(
             text: TextSpan(
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 18, color: AppColors.black),
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(fontSize: 18),
               children: [
                 TextSpan(
                   text: carNumber[0],
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.black),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 TextSpan(
                   text: carNumber.substring(1, 4),
                 ),
                 TextSpan(
                   text: carNumber.substring(4, 6),
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(color: AppColors.black),
+                  style: Theme.of(context).textTheme.titleSmall,
                 ),
                 TextSpan(
                   text: carNumber.substring(6, carNumber.length),
