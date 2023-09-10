@@ -1,3 +1,5 @@
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
 import 'package:flutter/material.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -37,7 +39,6 @@ class OfferSelectionPanel extends StatefulWidget {
 class OfferSelectionPanelState
     extends State<OfferSelectionPanel> implements OfferSelectionContract {
   late OfferSelectionPresenter _presenter;
-  final _listKey = GlobalKey<AnimatedListState>();
   CarWashOffer? _selectedOffer;
 
   @override
@@ -78,29 +79,21 @@ class OfferSelectionPanelState
       ),
       child: Container(
         constraints: const BoxConstraints(maxHeight: 270, minHeight: 0),
-        child: AnimatedList(
-          key: _listKey,
+        child: ImplicitlyAnimatedList(
           padding: EdgeInsets.zero,
+          items: _presenter.offers,
+          areItemsTheSame: (a, b) => a == b,
           shrinkWrap: true,
-          initialItemCount: 0,
-          itemBuilder: (context, index, animation) {
-            return SizeTransition(
-              sizeFactor: animation,
-              child: _carWashOfferWidget(_presenter.offers[index]),
+          itemBuilder: (context, animation, item, index) {
+            return SizeFadeTransition(
+              sizeFraction: 0.7,
+              curve: Curves.easeInOut,
+              animation: animation,
+              child: _carWashOfferWidget(item),
             );
           },
         ),
       ),
-    );
-  }
-
-  @override
-  void updateMapOffers() => widget.mapKey.currentState?.setState(() {});
-
-  @override
-  void addOfferToList() {
-    _listKey.currentState!.insertItem(
-      0, duration: const Duration(milliseconds: 300),
     );
   }
 
@@ -292,5 +285,10 @@ class OfferSelectionPanelState
   String _formatTime(TimeOfDay time) {
     return '${time.hour.toString().padLeft(2, '0')}'
         ':${time.minute.toString().padLeft(2, '0')}';
+  }
+
+  @override
+  void updatePage() {
+    setState(() { });
   }
 }
