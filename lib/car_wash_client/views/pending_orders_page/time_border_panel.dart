@@ -26,6 +26,8 @@ class TimeBorderPanel extends StatefulWidget {
 
 class TimeBorderPanelState extends State<TimeBorderPanel>
     with SingleTickerProviderStateMixin {
+  late int _currentSecond;
+  Color _borderColor = AppColors.lightOrange;
   late final _animationController = AnimationController(
     vsync: this,
     duration: Duration(seconds: widget.fullDuration),
@@ -34,13 +36,18 @@ class TimeBorderPanelState extends State<TimeBorderPanel>
 
   @override
   void initState() {
+    _currentSecond = widget.startSecond;
     _animationController.forward();
     _animationController.addListener(() {
       if (_animationController.isCompleted) {
         widget.onTimerFinished();
         return;
       }
-      setState(() {});
+      int time = (widget.fullDuration * _animationController.value).round();
+      if (time != _currentSecond) {
+        _currentSecond = time;
+        setState(() {});
+      }
     });
     super.initState();
   }
