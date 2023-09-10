@@ -4,9 +4,9 @@ import 'package:flutter/services.dart';
 
 import 'theme/app_colors.dart';
 import 'user_client/views/account_menu/account_menu_page.dart';
-import 'user_client/views/login_page/login_page.dart';
 import 'user_client/views/main_page/main_page.dart';
 import 'user_client/views/sign_up_page/sign_up_page.dart';
+import 'views/login_page/login_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +46,11 @@ class MyApp extends StatelessWidget {
               settings: settings,
               builder: (context) => const SignUpPage(),
             );
+          case "/car_wash_page":
+            return MaterialPageRoute(
+              settings: settings,
+              builder: (context) => const NavigationPage(),
+            );
         }
         return null;
       },
@@ -62,7 +67,7 @@ class MyApp extends StatelessWidget {
         )
       ),
       title: 'Navigation Basics',
-      home: const NavigationPage(),
+      home: const LoginPage(),
     );
   }
 }

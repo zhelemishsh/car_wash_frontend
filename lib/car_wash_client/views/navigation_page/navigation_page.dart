@@ -80,7 +80,9 @@ class NavigationPageState extends State<NavigationPage> {
       builder: (context) {
         return AskDialog(
           text: "Выйти из профиля?",
-          onConfirmed: () {},
+          onConfirmed: () {
+            Navigator.pushNamedAndRemoveUntil(context, "/login_page", (_) => false);
+          },
         );
       },
     );

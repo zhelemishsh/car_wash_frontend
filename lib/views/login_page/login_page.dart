@@ -1,3 +1,4 @@
+import 'package:animated_list_plus/transitions.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
@@ -14,8 +15,19 @@ class LoginPage extends StatefulWidget{
   }
 }
 
-class LoginPageState extends State<LoginPage>{
+class LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin{
+  late final AnimationController _animationController = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+  late final Animation<double> _animation = CurvedAnimation(
+    parent: _animationController,
+    curve: Curves.easeIn,
+  );
+
   final _formKey = GlobalKey<FormState>();
+  bool _isUserMode = true;
 
   final _phoneInputFormatter = MaskTextInputFormatter(
     mask: '+7 (###) ###-##-##',
@@ -30,6 +42,38 @@ class LoginPageState extends State<LoginPage>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: _carWashAnimatedPanel(),
+        actions: [
+          FadeTransition(
+            opacity: _animation,
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.question_mark_rounded,
+              ),
+            ),
+          ),
+        ],
+        leading: IconButton(
+          onPressed: () {
+            if (_isUserMode) {
+              _animationController.forward();
+            }
+            else {
+              _animationController.reverse();
+            }
+            _isUserMode = !_isUserMode;
+            setState(() {});
+          },
+          icon: Icon(
+            _isUserMode ? Icons.local_car_wash_rounded : Icons.person_rounded,
+          ),
+        ),
+      ),
+      extendBodyBehindAppBar: true,
       backgroundColor: AppColors.dirtyWhite,
       body: Align(
         alignment: Alignment.center,
@@ -38,15 +82,7 @@ class LoginPageState extends State<LoginPage>{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "PomoiCar",
-                style: TextStyle(
-                  color: AppColors.black,
-                  fontSize: 45,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-
+              _label(),
               DataPanel(
                 backgroundColor: AppColors.black,
                 borderRadius: 16,
@@ -56,6 +92,31 @@ class LoginPageState extends State<LoginPage>{
             ],
           ),
         ),
+      ),
+    );
+  }
+  
+  Widget? _carWashAnimatedPanel() {
+    if (_isUserMode) return null;
+    return Container(
+      alignment: Alignment.center,
+      child: FadeTransition(
+        opacity: _animation,
+        child: Text(
+          "Автомойка",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.grey),
+        ),
+      ),
+    );
+  }
+
+  Widget _label() {
+    return const Text(
+      "PomoiCar",
+      style: TextStyle(
+        color: AppColors.black,
+        fontSize: 45,
+        fontWeight: FontWeight.w800,
       ),
     );
   }
@@ -147,7 +208,12 @@ class LoginPageState extends State<LoginPage>{
       onPressed: () {
         if(_formKey.currentState!.validate()) {
           FocusManager.instance.primaryFocus?.unfocus();
-          Navigator.pushReplacementNamed(context, "/main_page");
+          if (_isUserMode) {
+            Navigator.pushReplacementNamed(context, "/main_page");
+          }
+          else {
+            Navigator.pushReplacementNamed(context, "/car_wash_page");
+          }
         }
       },
     );
