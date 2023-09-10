@@ -5,12 +5,14 @@ import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:car_wash_frontend/models/wash_service.dart';
 import 'package:car_wash_frontend/utils/time_utils.dart';
+import 'package:car_wash_frontend/views/ask_dialog.dart';
 import 'package:car_wash_frontend/views/data_panel.dart';
 import 'package:flutter/material.dart';
 
 import '../../../models/car.dart';
 import '../../../theme/app_colors.dart';
 import '../../../views/marked_list.dart';
+import 'accepted_orders_contract.dart';
 import 'accepted_orders_presenter.dart';
 
 class AcceptedOrdersPage extends StatefulWidget {
@@ -22,12 +24,13 @@ class AcceptedOrdersPage extends StatefulWidget {
   }
 }
 
-class AcceptedOrdersPageState extends State<AcceptedOrdersPage> {
+class AcceptedOrdersPageState extends State<AcceptedOrdersPage>
+    implements AcceptedOrdersContract {
   late AcceptedOrdersPresenter _presenter;
 
   @override
   void initState() {
-    _presenter = AcceptedOrdersPresenter();
+    _presenter = AcceptedOrdersPresenter(this);
     super.initState();
   }
 
@@ -75,7 +78,19 @@ class AcceptedOrdersPageState extends State<AcceptedOrdersPage> {
         _actionButton(
           iconData: Icons.close_rounded,
           buttonColor: AppColors.darkRed,
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AskDialog(
+                  text: "Отменить предложение?",
+                  onConfirmed: () {
+                    _presenter.cancelOffer(order);
+                  },
+                );
+              },
+            );
+          },
         ),
       ],
     );
@@ -290,5 +305,10 @@ class AcceptedOrdersPageState extends State<AcceptedOrdersPage> {
         rightIcon ? icon : textWidget,
       ],
     );
+  }
+
+  @override
+  updatePage() {
+    setState(() {});
   }
 }

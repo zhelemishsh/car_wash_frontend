@@ -1,4 +1,5 @@
 import 'package:car_wash_frontend/car_wash_client/models/accepted_client_order.dart';
+import 'package:car_wash_frontend/car_wash_client/views/accepted_orders_page/accepted_orders_contract.dart';
 import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,8 @@ import '../../../models/car_type.dart';
 import '../../../models/wash_service.dart';
 
 class AcceptedOrdersPresenter {
+  AcceptedOrdersContract _view;
+
   List<AcceptedClientOrder> orders = [
     AcceptedClientOrder(
       clientName: "Андрюха Петров",
@@ -31,4 +34,14 @@ class AcceptedOrdersPresenter {
       endTime: TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0),
     ),
   ];
+
+  AcceptedOrdersPresenter(this._view);
+
+  void cancelOffer(AcceptedClientOrder order) {
+    Future.delayed(const Duration(milliseconds: 100)).then((_) {
+      print("Offer canceled!");
+      orders.remove(order);
+      _view.updatePage();
+    });
+  }
 }
