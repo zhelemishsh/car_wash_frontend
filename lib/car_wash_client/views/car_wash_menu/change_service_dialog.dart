@@ -106,7 +106,7 @@ class ChangeServiceDialogState extends State<ChangeServiceDialog> {
       height: 45,
       splashColor: AppColors.darkRed,
       borderColor: AppColors.darkRed,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.grey,
       onPressed: () {
         widget.onChanged(null);
         Navigator.pop(context);
