@@ -8,7 +8,7 @@ class AccountMenuPresenter {
   final _accountRepository = AccountRepository();
   final AccountMenuContract _view;
   final account = Account(
-    "Goshan",
+    "Денис",
     "89278756682",
     4.98,
     [
