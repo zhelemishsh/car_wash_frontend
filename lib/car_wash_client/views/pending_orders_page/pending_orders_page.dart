@@ -2,6 +2,7 @@ import 'package:animated_list_plus/animated_list_plus.dart';
 import 'package:animated_list_plus/transitions.dart';
 import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_contract.dart';
 import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/pending_orders_presenter.dart';
+import 'package:car_wash_frontend/car_wash_client/views/pending_orders_page/set_time_dialog.dart';
 import 'package:car_wash_frontend/models/car_type.dart';
 import 'package:car_wash_frontend/models/was_day.dart';
 import 'package:car_wash_frontend/theme/app_colors.dart';
@@ -27,6 +28,7 @@ class PendingOrdersPage extends StatefulWidget {
 class PendingOrdersPageState extends State<PendingOrdersPage>
     implements PendingOrdersContract {
   late PendingOrdersPresenter _presenter;
+  ClientOrder? _timeSelectingOrder;
 
   @override
   void initState() {
@@ -121,14 +123,14 @@ class PendingOrdersPageState extends State<PendingOrdersPage>
       child: Row(
         children: [
           Expanded(
-            flex: 1,
+            flex: 2,
             child: Padding(
               padding: const EdgeInsets.all(3),
               child: _userImagePanel(),
             ),
           ),
           Expanded(
-            flex: 3,
+            flex: 7,
             child: Column(
               children: [
                 _mainInfoPanel(order),
@@ -156,10 +158,28 @@ class PendingOrdersPageState extends State<PendingOrdersPage>
           iconData: Icons.done_rounded,
           buttonColor: AppColors.yesGreen,
           onPressed: () {
-            _presenter.acceptOrder(order);
+            _onOrderAccepted(order);
           },
         ),
       ],
+    );
+  }
+
+  void _onOrderAccepted(ClientOrder order) {
+    _timeSelectingOrder = order;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return SetTimeDialog(
+          lowerLimit: order.startTime,
+          upperLimit: order.endTime.subtractMinutes(order.duration.toInt()),
+          duration: order.duration.toInt(),
+          onTimePicked: (startTime, endTime) {
+            _presenter.acceptOrder(order);
+            _timeSelectingOrder = null;
+          },
+        );
+      },
     );
   }
 
@@ -265,6 +285,9 @@ class PendingOrdersPageState extends State<PendingOrdersPage>
       fullDuration: 60,
       onTimerFinished: () {
         _presenter.timeoutOrder(order);
+        if (_timeSelectingOrder == order) {
+          Navigator.pop(context);
+        }
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

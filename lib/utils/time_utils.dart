@@ -20,6 +20,10 @@ extension TimeOfDayExtension on TimeOfDay {
     return false;
   }
 
+  int getMinutes() {
+    return hour * 60 + minute;
+  }
+
   TimeOfDay getClosest() {
     int total = hour * 60 + minute;
     int closestTotal = (total ~/ 10 + 1) * 10;

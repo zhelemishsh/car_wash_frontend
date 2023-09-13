@@ -89,7 +89,7 @@ class CarWashMenuPageState extends State<CarWashMenuPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Помойка",
+            "Car Wash",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           Text(

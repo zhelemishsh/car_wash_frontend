@@ -12,7 +12,7 @@ class AcceptedOrdersPresenter {
 
   List<AcceptedClientOrder> orders = [
     AcceptedClientOrder(
-      clientName: "Андрей",
+      clientName: "Егор",
       clientCar: Car("G123FG777", "Mersedes Benz A2", CarType.passengerCar),
       clientPhoneNumber: "89878743215",
       clientRating: 4.66,
@@ -23,7 +23,7 @@ class AcceptedOrdersPresenter {
       endTime: TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0),
     ),
     AcceptedClientOrder(
-      clientName: "Кирилл",
+      clientName: "Денис",
       clientCar: Car("A123BC777", "Volga 14", CarType.truck),
       clientPhoneNumber: "89278756682",
       clientRating: 4.88,

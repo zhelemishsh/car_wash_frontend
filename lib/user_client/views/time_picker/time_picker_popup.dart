@@ -295,7 +295,7 @@ class TimePickerPopupState extends State<TimePickerPopup> {
               },
             ),
           ],
-        )
+        ),
       ),
     );
   }

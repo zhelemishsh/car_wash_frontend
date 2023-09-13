@@ -12,20 +12,20 @@ class PendingOrdersPresenter {
 
   List<ClientOrder> orders = [
     ClientOrder(
-      clientName: "Андрюха Петров",
+      clientName: "Андрей",
       clientCar: Car("G123FG777", "Mersedes Benz A2", CarType.passengerCar),
       clientRating: 4.66,
       price: 100,
       bestPrice: 200,
-      duration: 45,
+      duration: 70,
       bestDuration: 30,
       services: [WashService.diskCleaning, WashService.bodyPolishing],
       day: WashDay.today,
-      startTime: TimeOfDay.now(),
-      endTime: TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0),
+      startTime: const TimeOfDay(hour: 12, minute: 40),
+      endTime: const TimeOfDay(hour: 14, minute: 10),
     ),
     ClientOrder(
-      clientName: "Кирюха Захаров",
+      clientName: "Кирилл",
       clientCar: Car("A123BC777", "Volga 14", CarType.truck),
       clientRating: 4.88,
       price: 200,
@@ -34,8 +34,8 @@ class PendingOrdersPresenter {
       bestDuration: 60,
       services: [WashService.interiorDryCleaning, WashService.diskCleaning],
       day: WashDay.tomorrow,
-      startTime: TimeOfDay.now(),
-      endTime: TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0),
+      startTime: const TimeOfDay(hour: 12, minute: 40),
+      endTime: const TimeOfDay(hour: 14, minute: 10),
     ),
   ];
 
